@@ -8,5 +8,48 @@ public class Person {
     private String personId;
     private ArrayList<jobOfPerson> jobs;
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPersonId(String personId) {
+        this.personId = personId;
+    }
+
+    public String getPersonId() {
+        return personId;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setJobs(ArrayList<jobOfPerson> jobs) {
+        this.jobs = jobs;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ArrayList<jobOfPerson> getJobs() {
+        return jobs;
+    }
+    public int getAge(){
+        LocalDate local  = LocalDate.now();
+
+        return local.getYear()-getDateOfBirth().getYear();
+    }
 }
