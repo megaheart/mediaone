@@ -7,7 +7,7 @@ public class Person {
     private String description;
     private String personId;
     private ArrayList<jobOfPerson> jobs;
-
+    public Person(){}
     public void setName(String name) {
         this.name = name;
     }
