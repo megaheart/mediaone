@@ -20,5 +20,10 @@ Tất cả tài liệu và hướng dẫn nằm [tại đây](https://husteduvn-
 
   ![](https://i.imgur.com/NcSOKba.png)
   ![](https://i.imgur.com/tZP5PI7.png)
+  
+### Notices when commit
+  Khi commit phải bỏ tích tất cả các files nằm trong package mediaone, nếu không thực hiện có thể gây xung đột khi merge với `master` branch
 
+  ![](https://i.imgur.com/Qjjy0RX.png)
+ 
 Cách sử dụng Git thì mọi người tự tìm hiểu vì tôi đã dặn rồi :)
