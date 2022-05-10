@@ -45,10 +45,7 @@ public abstract class ImportBill implements IBill {
     }
 
 //    public double getPriceOf(Product item){
-//            if(!includeOf(item)){
-//                return 0;
-//            }
-//            else return ;
+//
 //        }
 
 }
