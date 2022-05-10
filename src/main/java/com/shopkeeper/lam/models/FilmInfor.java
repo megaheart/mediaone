@@ -1,6 +1,6 @@
 package com.shopkeeper.lam.models;
 
-public class FilmInfor extends ProductInfor{
+public final class FilmInfor extends ProductInfor{
     private ProductInfor productInfor;
 
     public ProductInfor getProductInfor() {

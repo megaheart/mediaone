@@ -1,6 +1,6 @@
 package com.shopkeeper.lam.models;
 
-public class SongInfor extends ProductInfor {
+public final class SongInfor extends ProductInfor {
     private ProductInfor productInfor;
 
     public ProductInfor getProductInfor() {
