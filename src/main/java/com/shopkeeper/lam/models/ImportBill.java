@@ -8,8 +8,14 @@ public final class ImportBill implements IBill {
     private String distributor;
     private BillType billType=BillType.Import;
     private ArrayList<BillItem> items;
+    public ImportBill(){}
+    public ImportBill(String distributor, BillType billType, ArrayList<BillItem> items) {
+        this.distributor = distributor;
+        this.billType = billType;
+        this.items = items;
+    }
 
-   //What the fuck
+    //What the fuck
     @Override
     public String getName() {
         return null;
@@ -31,7 +37,8 @@ public final class ImportBill implements IBill {
     }
     @Override
     public LocalDate getTime() {
-        return null;
+
+        return LocalDate.now();
     }
     @Override
     public boolean getIsEffected() {
@@ -41,8 +48,6 @@ public final class ImportBill implements IBill {
     public String getNote() {
         return null;
     }
-
-
     public String getDistributor() {
         return distributor;
     }

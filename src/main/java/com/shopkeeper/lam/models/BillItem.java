@@ -4,7 +4,12 @@ public class BillItem {
     private Product item;
     private double price;
     private double VAT;
-
+    public BillItem(){}
+    public BillItem(Product item,double price,double VAT){
+        this.item=item;
+        this.price=price;
+        this.VAT=VAT;
+    }
     public Product getItem() {
         return item;
     }

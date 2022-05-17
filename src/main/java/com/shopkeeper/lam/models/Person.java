@@ -6,8 +6,8 @@ public class Person {
     private LocalDate dateOfBirth;
     private String description;
     private String personId;
-    private ArrayList<jobOfPerson> jobs;
-    public Person(){}
+    private ArrayList<JobOfPerson> jobs;
+    public Person(){ }
     public void setName(String name) {
         this.name = name;
     }
@@ -32,7 +32,7 @@ public class Person {
         return name;
     }
 
-    public void setJobs(ArrayList<jobOfPerson> jobs) {
+    public void setJobs(ArrayList<JobOfPerson> jobs) {
         this.jobs = jobs;
     }
 
@@ -44,7 +44,7 @@ public class Person {
         return description;
     }
 
-    public ArrayList<jobOfPerson> getJobs() {
+    public ArrayList<JobOfPerson> getJobs() {
         return jobs;
     }
     public int getAge(){
