@@ -1,15 +1,10 @@
 package com.shopkeeper.linh.models;
 
-import com.shopkeeper.mediaone.models.BillItem;
 import com.shopkeeper.mediaone.models.BillType;
 import com.shopkeeper.mediaone.models.IBill;
-import javafx.beans.Observable;
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.security.InvalidParameterException;
-import java.util.*;
 import java.time.*;
 
 
@@ -54,32 +49,20 @@ public class SaleBill implements IBill {
 
     @Override
     public BillType getBillType() {
-        return billType.get();
+        return BillType.Sale;
     }
 
-    public ObjectProperty<BillType> billTypeProperty() {
-        return billType;
-    }
-
-    public void setBillType(BillType billType) {
-        this.billType.set(billType);
-    }
-
-    public ObservableList<BillItem> getItems() {
-        return items;
-    }
-
-    public double getVAT() {
-        return VAT.get();
-    }
-
-    public DoubleProperty VATProperty() {
-        return VAT;
-    }
-
-    public void setVAT(double VAT) {
-        this.VAT.set(VAT);
-    }
+//    public double getVAT() {
+//        return VAT.get();
+//    }
+//
+//    public DoubleProperty VATProperty() {
+//        return VAT;
+//    }
+//
+//    public void setVAT(double VAT) {
+//        this.VAT.set(VAT);
+//    }
 
     public boolean getIsPaid() {
         return isPaid.get();
@@ -156,9 +139,7 @@ public class SaleBill implements IBill {
     private StringProperty name = new SimpleStringProperty();
     private ObjectProperty<Customer> customer = new SimpleObjectProperty<Customer>();
     private StringProperty location = new SimpleStringProperty();
-    private ObjectProperty<BillType> billType = new SimpleObjectProperty<BillType>();
-    private ObservableList<BillItem> items;
-    private DoubleProperty VAT = new SimpleDoubleProperty();
+    //private DoubleProperty VAT = new SimpleDoubleProperty();
     private BooleanProperty isPaid = new SimpleBooleanProperty();
     private DoubleProperty price = new SimpleDoubleProperty();
     private int billId;
@@ -167,11 +148,22 @@ public class SaleBill implements IBill {
     private BooleanProperty effected = new SimpleBooleanProperty();
     private StringProperty note = new SimpleStringProperty();
     public SaleBill(){
-        items = FXCollections.observableArrayList();
+
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append('{'); sb.append('\n');
+        sb.append("    billId: "); sb.append(getBillId());sb.append(",\n");
+        sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
+        sb.append("    customerId: "); sb.append(getCustomer().getCustomerId());sb.append(",\n");
+        sb.append("    location: \""); sb.append(getLocation());sb.append("\",\n");
+        sb.append("    isPaid: "); sb.append(getIsPaid());sb.append(",\n");
+        sb.append("    time: \""); sb.append(getTime());sb.append("\",\n");
+        sb.append("    effected: \""); sb.append(getIsEffected());sb.append("\",\n");
+        sb.append("    note: \""); sb.append(getNote());sb.append("\"\n");
+        sb.append('}');
+        return sb.toString();
     }
 }
