@@ -1,5 +1,8 @@
 package com.shopkeeper.minh.models;
 
+import com.shopkeeper.mediaone.models.BillItem;
+import com.shopkeeper.mediaone.models.BillType;
+import com.shopkeeper.mediaone.models.IBill;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -8,12 +11,11 @@ public final class ImportBill implements IBill{
     private String name;
     private BillType billType;
     private double price;
-    private String billId;
+    private int billId;
     private LocalDate time;
     private boolean isEffected;
     private String note;
     private String distributor;
-    private BillType billType;
     private ArrayList<BillItem> items;
 
     public ImportBill(){
@@ -45,11 +47,11 @@ public final class ImportBill implements IBill{
         return price;
     }
 
-    public void setBillId(String billId) {
+    public void setBillId(int billId) {
         this.billId = billId;
     }
 
-    public String getBillId() {
+    public int getBillId() {
         return billId;
     }
 
