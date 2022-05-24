@@ -1,7 +1,7 @@
 package com.shopkeeper.minh.models;
 
 import java.time.LocalDate;
-import com.shopkeeper.mediaone.models.BillItem;
+
 import com.shopkeeper.mediaone.models.BillType;
 import com.shopkeeper.mediaone.models.IBill;
 
@@ -27,6 +27,7 @@ public final class OtherBill implements IBill {
     }
 
     public void setBillType(BillType billType) {
+        if(billType == BillType.Import || billType == BillType.Sale || billType == BillType.Staff) return;
         this.billType = billType;
     }
 
