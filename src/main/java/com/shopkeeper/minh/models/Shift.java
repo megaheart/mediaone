@@ -1,5 +1,7 @@
 package com.shopkeeper.minh.models;
 
+import com.shopkeeper.linh.models.Staff;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 
