@@ -43,7 +43,8 @@ public class Product {
         return importBill;
     }
 
-    public void setImportBill(ImportBill importBill) {
-        this.importBill = importBill;
+    public void setImportBill(ImportBill importBill){
+        this.importBill=importBill;
     }
+
 }

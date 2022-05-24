@@ -1,7 +1,7 @@
 package com.shopkeeper.lam.models;
 
 public final class FilmInfo extends ProductInfo{
-    private ProductInfo productInfor;
+    private ProductInfo productInfo;
 
     public ProductInfo getProductInfo() {
         return productInfo;
