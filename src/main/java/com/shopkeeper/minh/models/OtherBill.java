@@ -23,6 +23,10 @@ public final class OtherBill implements IBill {
         return name;
     }
 
+    public void setBillType(BillType billType) {
+        this.billType = billType;
+    }
+
     public BillType getBillType() {
         return billType;
     }

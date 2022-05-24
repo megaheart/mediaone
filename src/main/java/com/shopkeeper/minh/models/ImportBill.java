@@ -13,6 +13,7 @@ public final class ImportBill implements IBill{
     private boolean isEffected;
     private String note;
     private String distributor;
+    private BillType billType;
     private ArrayList<BillItem> items;
 
     public ImportBill(){
@@ -26,6 +27,10 @@ public final class ImportBill implements IBill{
 
     public String getName() {
         return name;
+    }
+
+    public void setBillType(BillType billType) {
+        this.billType = billType;
     }
 
     public BillType getBillType() {
