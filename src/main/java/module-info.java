@@ -10,7 +10,9 @@ module com.shopkeeper.mediaone {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
+    requires java.sql;
 
     opens com.shopkeeper.mediaone to javafx.fxml;
+    opens com.shopkeeper.linh to javafx.fxml;
     exports com.shopkeeper.mediaone;
 }
