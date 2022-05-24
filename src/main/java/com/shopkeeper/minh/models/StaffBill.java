@@ -1,7 +1,8 @@
 package com.shopkeeper.minh.models;
 
 import java.time.LocalDate;
-import com.shopkeeper.mediaone.models.BillItem;
+
+import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.mediaone.models.BillType;
 import com.shopkeeper.mediaone.models.IBill;
 
