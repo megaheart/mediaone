@@ -1,9 +1,6 @@
 package com.shopkeeper.linh.database;
 
-import com.shopkeeper.linh.models.Customer;
-import com.shopkeeper.linh.models.Settings;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
+import com.shopkeeper.linh.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
 
@@ -103,7 +100,7 @@ public class DbWorker2 {
     }
     //Return true if success, otherwise return false
     public boolean updateStaff(Staff staff) {
-        String sql = "UPDATE staffs SET name=?,isMale=?,dateOfBirth=?,email=?,phoneNumber=?,description=?,state=? WHERE staffId=?";
+        String sql = "UPDATE staffs SET name=?,isMale=?,dateOfBirth=DATE(?),email=?,phoneNumber=?,description=?,state=? WHERE staffId=?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, staff.getName());
@@ -355,18 +352,19 @@ public class DbWorker2 {
     //Return true if success, otherwise return false
     public boolean setTextValue(String key, String value) {
         if(key == null) return false;
-        if(value == null || value.length() == 0){
-            String sql = "delete from textvalues where [key]=?;";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, key);
-                pstmt.executeUpdate();
-            } catch (Exception e) {
-                System.err.println(e.getMessage());
-                return false;
-            }
-            return true;
-        }
-        else {
+        if(value == null) value = "";
+//        if(value == null || value.length() == 0){
+//            String sql = "delete from textvalues where [key]=?;";
+//            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+//                pstmt.setString(1, key);
+//                pstmt.executeUpdate();
+//            } catch (Exception e) {
+//                System.err.println(e.getMessage());
+//                return false;
+//            }
+//            return true;
+//        }
+//        else {
             String sql = "insert or replace into textvalues([key], value) values (?, ?);";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, key);
@@ -377,7 +375,7 @@ public class DbWorker2 {
                 return false;
             }
             return true;
-        }
+        //}
     }
     //Return true if success, otherwise return false
     public String getTextValue(String key) {
@@ -395,6 +393,123 @@ public class DbWorker2 {
         }
     }
 
+    //endregion
+    //region SaleBill
+    //Return true if success, otherwise return false
+    public boolean createSaleBillsTable() {
+        StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE salebills (");
+        sqlBuilder.append("billId  INTEGER PRIMARY KEY AUTOINCREMENT,");
+        sqlBuilder.append("name          TEXT      NOT NULL,");
+        sqlBuilder.append("location      TEXT      NOT NULL,");
+        sqlBuilder.append("customerId    INTEGER   NOT NULL,");
+        sqlBuilder.append("isPaid        BOOLEAN   NOT NULL,");
+        sqlBuilder.append("price         DOUBLE    NOT NULL,");
+        sqlBuilder.append("time          DATETIME  NOT NULL,");
+        sqlBuilder.append("effected      BOOLEAN   NOT NULL,");
+        sqlBuilder.append("note          TEXT      NOT NULL");
+        sqlBuilder.append(");");
+        String sql = sqlBuilder.toString();
+        try (Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+            //Indexes
+            stmt.execute("CREATE UNIQUE INDEX idx_salebills_billId ON salebills(billId);");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    public void loadSaleBills(DbAdapterCache cache) throws Exception{
+        String sql = "SELECT billId, name, customerId, location ,isPaid, price, time, effected, note FROM salebills";
+        Statement stmt  = conn.createStatement();
+        ResultSet rs    = stmt.executeQuery(sql);
+        SaleBill bill;
+        long customerId;
+        while (rs.next()) {
+            bill = new SaleBill();
+            bill.setBillId(rs.getInt("billId"));
+            bill.setName(rs.getString("name"));
+            bill.setLocation(rs.getString("location"));
+            customerId = rs.getLong("customerId");
+
+            //bill.setCustomer();
+
+            bill.setIsPaid(rs.getBoolean("isPaid"));
+            bill.setPrice(rs.getDouble("price"));
+            bill.setTime(LocalDate.parse(rs.getString("time")));
+            bill.setIsEffected(rs.getBoolean("effected"));
+            bill.setNote(rs.getString("note"));
+            cache.getSaleBills().add(bill);
+        }
+
+        rs.close();
+        stmt.close();
+    }
+    //Auto set id for staff after it was inserted
+    //Return true if success, otherwise return false
+    public boolean insertSaleBill(SaleBill bill) {
+        String sql = "INSERT INTO salebills(name, customerId, location ,isPaid, price, time, effected, note) VALUES(?,?,?,?,?,DATE(?),?,?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, bill.getName());
+            pstmt.setLong(2, bill.getCustomer().getCustomerId());
+            pstmt.setString(3, bill.getLocation());
+            pstmt.setBoolean(4, bill.getIsPaid());
+            pstmt.setDouble(5, bill.getPrice());
+            pstmt.setString(6, bill.getTime().toString());
+            pstmt.setBoolean(7, bill.getIsEffected());
+            pstmt.setString(8, bill.getNote());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Creating bill failed, no rows affected.");
+            //Auto set ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                bill.setBillId(generatedKeys.getInt(1));
+            }
+            else throw new Exception("Creating staff failed, no ID obtained.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean updateSaleBill(SaleBill bill) {
+        String sql = "UPDATE salebills SET name=?, customerId=?, location=?, isPaid=?, price=?, time=DATE(?), effected=?, note=? WHERE billId=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, bill.getName());
+            pstmt.setLong(2, bill.getCustomer().getCustomerId());
+            pstmt.setString(3, bill.getLocation());
+            pstmt.setBoolean(4, bill.getIsPaid());
+            pstmt.setDouble(5, bill.getPrice());
+            pstmt.setString(6, bill.getTime().toString());
+            pstmt.setBoolean(7, bill.getIsEffected());
+            pstmt.setString(8, bill.getNote());
+            pstmt.setInt(9, bill.getBillId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("SaleBill (ID = " + bill.getBillId() + ") does not exist in \"salebills\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean deleteSaleBill(SaleBill bill) {
+        String sql = "DELETE FROM salebills WHERE billId = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, bill.getBillId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("SaleBill (ID = " + bill.getBillId() + ") does not exist in \"salebills\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
     //endregion
     //region Feedback
 
