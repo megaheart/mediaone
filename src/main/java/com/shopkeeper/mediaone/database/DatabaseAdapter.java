@@ -121,6 +121,9 @@ public class DatabaseAdapter {
         return worker2.getTextValue(key);
     }
     //endregion
+    //region SaleBill
+
+    //endregion
     //region Feedback
 
     //endregion
