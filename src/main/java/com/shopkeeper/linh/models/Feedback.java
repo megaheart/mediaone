@@ -14,13 +14,13 @@ import java.time.*;
 
 
 public class Feedback {
-    private int feedbackId;
+    private long feedbackId;
 
-    public int getFeedbackId() {
+    public long getFeedbackId() {
         return feedbackId;
     }
 
-    public void setFeedbackId(int feedbackId) {
+    public void setFeedbackId(long feedbackId) {
         if(this.feedbackId > 0) throw new InvalidParameterException("feedbackId is able to be set only one time.");
         this.feedbackId = feedbackId;
     }
@@ -117,12 +117,12 @@ public class Feedback {
         this.productInfoTarget = productInfoTarget;
     }
 
-    public boolean isUseful() {
+    public boolean getIsUseful() {
         return isUseful;
     }
 
-    public void setUseful(boolean useful) {
-        isUseful = useful;
+    public void setIsUseful(boolean isUseful) {
+        this.isUseful = isUseful;
     }
 
     public LocalDate getTime() {
@@ -219,6 +219,8 @@ public class Feedback {
                 //Do nothing
                 break;
         }
+        sb.append("    isUseful: "); sb.append(getIsUseful());sb.append(",\n");
+        sb.append("    time: "); sb.append(getTime());sb.append("\n");
         sb.append('}');
         return sb.toString();
     }
