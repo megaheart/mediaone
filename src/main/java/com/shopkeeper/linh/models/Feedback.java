@@ -1,6 +1,8 @@
 package com.shopkeeper.linh.models;
 
 
+import com.shopkeeper.lam.models.Product;
+import com.shopkeeper.lam.models.ProductInfo;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -91,6 +93,30 @@ public class Feedback {
         this.staffTarget = staffTarget;
     }
 
+    public Product getProductTarget() throws Exception {
+        if(this.feedbackAbout != FeedbackAbout.Product)
+            throw new Exception("Only feedback whose type is FeedbackAbout.Product has productTarget attribute.");
+        return productTarget;
+    }
+
+    public void setProductTarget(Product productTarget) throws Exception {
+        if(this.feedbackAbout != FeedbackAbout.Product)
+            throw new Exception("Only feedback whose type is FeedbackAbout.Product has productTarget attribute.");
+        this.productTarget = productTarget;
+    }
+
+    public ProductInfo getProductInfoTarget() throws Exception {
+        if(this.feedbackAbout != FeedbackAbout.ProductInfo)
+            throw new Exception("Only feedback whose type is FeedbackAbout.ProductInfo has productInfoTarget attribute.");
+        return productInfoTarget;
+    }
+
+    public void setProductInfoTarget(ProductInfo productInfoTarget) throws Exception {
+        if(this.feedbackAbout != FeedbackAbout.ProductInfo)
+            throw new Exception("Only feedback whose type is FeedbackAbout.ProductInfo has productInfoTarget attribute.");
+        this.productInfoTarget = productInfoTarget;
+    }
+
     public boolean isUseful() {
         return isUseful;
     }
@@ -111,8 +137,9 @@ public class Feedback {
     private StringProperty description = new SimpleStringProperty();;
     private FeedbackAbout feedbackAbout;
     private FeedbackType feedbackType;
-    //private Product productTarget;
-    //private ProductInfo productInfoTarget;
+
+    private Product productTarget;
+    private ProductInfo productInfoTarget;
     private int productInfoRating;
     private Staff staffTarget;
     private boolean isUseful;
@@ -142,22 +169,51 @@ public class Feedback {
                 catch (Exception e){
                     sb.append(e.getMessage());
                 }
-                sb.append(", name: ");
+                sb.append(", name: \"");
                 try {
-                    sb.append('\"');
                     sb.append(getStaffTarget().getName());
-                    sb.append('\"');
+                }
+                catch (Exception e){
+                    sb.append(e.getMessage());
+                }
+                sb.append("\"},\n");
+                break;
+            case ProductInfo:
+                sb.append("    productInfoTarget: {");
+                sb.append("productInfoId: ");
+                try {
+                    sb.append(getProductInfoTarget().getProductInfoId());
+                }
+                catch (Exception e){
+                    sb.append(e.getMessage());
+                }
+                sb.append(", title: \"");
+                try {
+                    sb.append(getProductInfoTarget().getTitle());
+                }
+                catch (Exception e){
+                    sb.append(e.getMessage());
+                }
+                sb.append("\"},\n");
+                sb.append("    productInfoRating: ");
+                try {
+                    sb.append(getProductInfoRating());
+                }
+                catch (Exception e){
+                    sb.append(e.getMessage());
+                }
+                sb.append(",\n");
+                break;
+            case  Product:
+                sb.append("    productTarget: {");
+                sb.append("productId: ");
+                try {
+                    sb.append(getProductTarget().getProductId());
                 }
                 catch (Exception e){
                     sb.append(e.getMessage());
                 }
                 sb.append("},\n");
-                break;
-            case ProductInfo:
-
-                break;
-            case  Product:
-
                 break;
             case Service:
                 //Do nothing
