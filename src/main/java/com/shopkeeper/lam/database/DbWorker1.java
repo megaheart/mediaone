@@ -23,6 +23,11 @@ public class DbWorker1 {
 
     }
 
+
+
+
+    //CATEGORY
+
     public boolean createCategoriesTable() {
         String sql = "CREATE TABLE categories ("
                 + "categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -117,6 +122,9 @@ public class DbWorker1 {
         }
         return true;
     }
+
+
+    //PERSON
 
     public boolean createPersonTable() {
         String sql = "CREATE TABLE people ("
@@ -215,6 +223,9 @@ public class DbWorker1 {
             }
             return true;
         }
+
+        // PRODUCT
+
     public boolean createProductsTable() {
         String sql = "CREATE TABLE products ("
                 +  "productId      INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -326,4 +337,98 @@ public class DbWorker1 {
         }
         return true;
     }
+
+    //PUBLISHER
+    public boolean createPublishersTable() {
+        String sql = "CREATE TABLE publishers ("
+                +  "publisherId    LONG PRIMARY KEY AUTOINCREMENT,"
+                +  "name           TEXT    NOT NULL,"
+                +  "address        TEXT    NOT NULL,"
+                +  "description    TEXT    NOT NULL,"
+                +  ");";
+        try (Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+            //Indexes
+            stmt.execute("CREATE UNIQUE INDEX idx_publishers_publisherId ON publishers(publisherId );");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    public void loadPublishers(DbAdapterCache cache) throws Exception{
+        String sql = "SELECT publisherId, name, address, description  FROM publishers";
+        Statement stmt  = conn.createStatement();
+        ResultSet rs    = stmt.executeQuery(sql);
+        Publisher publisher;
+        while (rs.next()) {
+            publisher = new Publisher();
+            publisher.setPublisherId(rs.getLong("publisherId"));
+            publisher.setName(rs.getString("name"));
+            publisher.setAddress(rs.getString("address"));
+            publisher.setDescription(rs.getString("description"));
+            cache.getPublishers().add(publisher);
+        }
+
+        rs.close();
+        stmt.close();
+    }
+    //Auto set id for staff after it was inserted
+    //Return true if success, otherwise return false
+    public boolean insertPublisher(Publisher publisher) {
+        if(publisher.getPublisherId() != 0) return false;
+        String sql = "INSERT INTO publishers(name, address, description) VALUES(?,?,?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, publisher.getName());
+            pstmt.setString(2, publisher.getAddress());
+            pstmt.setString(3, publisher.getDescription());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Creating publisher failed, no rows affected.");
+            //Auto set ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                publisher.setPublisherId(generatedKeys.getLong(1));
+            }
+            else throw new Exception("Creating publisher failed, no ID obtained.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean updatePublisher(Publisher publisher) {
+        String sql = "UPDATE publishers SET name=?,productType=?,address=?,description=? WHERE publisherId=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, publisher.getName());
+            pstmt.setString(2, publisher.getAddress());
+            pstmt.setString(3, publisher.getDescription());
+            pstmt.setLong(4, publisher.getPublisherId());
+
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean deletePublisher(Publisher publisher) {
+        String sql = "DELETE FROM publishers WHERE publisherId = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, publisher.getPublisherId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
 }
