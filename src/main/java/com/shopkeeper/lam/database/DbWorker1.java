@@ -400,7 +400,7 @@ public class DbWorker1 {
     }
     //Return true if success, otherwise return false
     public boolean updatePublisher(Publisher publisher) {
-        String sql = "UPDATE publishers SET name=?,productType=?,address=?,description=? WHERE publisherId=?";
+        String sql = "UPDATE publishers SET name=?,address=?,description=? WHERE publisherId=?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, publisher.getName());
