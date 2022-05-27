@@ -215,4 +215,115 @@ public class DbWorker1 {
             }
             return true;
         }
+    public boolean createProductsTable() {
+        String sql = "CREATE TABLE products ("
+                +  "productId      INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +  "productInfoId  TEXT    NOT NULL,"
+                +  "productType    TEXT    NOT NULL,"
+                +  "state          TEXT    NOT NULL,"
+                +  "importBillId   TEXT    NOT NULL,"
+                +  "saleBillId     TEXT    NOT NULL,"
+                +  "importCost     DOUBLE  NOT NULL,"
+                +  "saleValue      DOUBLE  NOT NULL,"
+                +  "trialFilename  TEXT    NOT NULL,"
+                +  "placement      TEXT    NOT NULL,"
+                +  ");";
+        try (Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+            //Indexes
+            stmt.execute("CREATE UNIQUE INDEX idx_products_productId ON products(productId);");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
     }
+    public void loadProducts(DbAdapterCache cache) throws Exception{
+        String sql = "SELECT productId, name, isMale, dateOfBirth, email, phoneNumber, description, state FROM products";
+        Statement stmt  = conn.createStatement();
+        ResultSet rs    = stmt.executeQuery(sql);
+        Product product;
+        while (rs.next()) {
+            product = new Product();
+            product.setProductId(rs.getLong("productId"));
+            product.getProductInfo().setProductInfoId(rs.getLong("productInfoId"));
+            product.setProductType(ProductType.valueOf(rs.getString("productType")));
+            product.setState(ProductState.valueOf(rs.getString("productState")));
+            product.getImportBill().setBillId(rs.getInt("importBillId"));
+            product.getSaleBill().setBillId(rs.getInt("saleBillId"));
+            product.setImportCost(rs.getDouble("importCost"));
+            product.setTrialFilename(rs.getString("trialFilename"));
+            product.setPlacement(rs.getString("placement"));
+            cache.getProducts().add(product);
+        }
+
+        rs.close();
+        stmt.close();
+    }
+    //Auto set id for staff after it was inserted
+    //Return true if success, otherwise return false
+    public boolean insertProduct(Product product) {
+        if(product.getProductId() != 0) return false;
+        String sql = "INSERT INTO products(productInfoId, productType, productState, importBillId, saleBillId, importCost, trialFilename,placement) VALUES(?,?,?,?,?,?,?,?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setLong(1, product.getProductInfo().getProductInfoId());
+            pstmt.setString(2, product.getProductType().toString());
+            pstmt.setString(3, product.getState().toString());
+            pstmt.setInt(4, product.getImportBill().getBillId());
+            pstmt.setInt(5, product.getSaleBill().getBillId());
+            pstmt.setDouble(6, product.getImportCost());
+            pstmt.setString(7, product.getTrialFilename());
+            pstmt.setString(8, product.getPlacement());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Creating product failed, no rows affected.");
+            //Auto set ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                product.setProductId(generatedKeys.getLong(1));
+            }
+            else throw new Exception("Creating product failed, no ID obtained.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean updateProduct(Product product) {
+        String sql = "UPDATE products SET productInfoId=?,productType=?,productState=?,importBillId=?,saleBillId=?,importCost=?,trialFilename=?,placement=? WHERE productId=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, product.getProductInfo().getProductInfoId());
+            pstmt.setString(2, product.getProductType().toString());
+            pstmt.setString(3, product.getState().toString());
+            pstmt.setInt(4, product.getImportBill().getBillId());
+            pstmt.setInt(5, product.getSaleBill().getBillId());
+            pstmt.setDouble(6, product.getImportCost());
+            pstmt.setString(7, product.getTrialFilename());
+            pstmt.setString(8, product.getPlacement());
+            pstmt.setLong(9, product.getProductId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Product (ID = " + product.getProductId() + ") does not exist in \"products\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean deleteProduct(Product product) {
+        String sql = "DELETE FROM products WHERE productId = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, product.getProductId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Product (ID = " + product.getProductId() + ") does not exist in \"products\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+}

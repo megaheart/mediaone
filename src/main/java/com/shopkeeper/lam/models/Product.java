@@ -19,14 +19,22 @@ public class Product implements IReferencedCounter {
     public ImportBill importBill;
     public SaleBill saleBill;
     public double importCost;
+    public double saleValue;
+    public String trialFilename;
+    public String placement;
     public Product(){productId = 0;}
-    public Product(long productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill) {
+
+    public Product(long productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
         this.productId = productId;
         this.productInfo = productInfo;
         this.productType = productType;
         this.state = state;
         this.importBill = importBill;
         this.saleBill = saleBill;
+        this.importCost = importCost;
+        this.saleValue = saleValue;
+        this.trialFilename = trialFilename;
+        this.placement = placement;
     }
 
     public SaleBill getSaleBill() {
@@ -41,9 +49,7 @@ public class Product implements IReferencedCounter {
         return importCost;
     }
 
-    private double saleValue;
-    private String trialFilename;
-    private String placement;
+
 
     public void setImportCost(double importCost) {
         this.importCost = importCost;
