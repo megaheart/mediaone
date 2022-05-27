@@ -95,7 +95,8 @@ public class Customer implements IReferencedCounter {
     }
 
     @Override
-    public void decreaseTimesToBeReferenced() {
+    public void decreaseTimesToBeReferenced() throws Exception {
+        if(timesToBeReferenced == 0) throw new Exception("cannot decreaseTimesToBeReferenced() when countTimesToBeReferenced() = 0");
         timesToBeReferenced--;
     }
 }
