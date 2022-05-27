@@ -148,9 +148,18 @@ public class SaleBill implements IBill {
     private BooleanProperty effected = new SimpleBooleanProperty();
     private StringProperty note = new SimpleStringProperty();
     public SaleBill(){
-
+        customer.set(null);
     }
-
+    public SaleBill(String name, Customer customer, String location, boolean isPaid, double price, LocalDate time, boolean isEffected, String note){
+        this.name.set(name);
+        this.customer.set(customer);
+        this.location.set(location);
+        this.isPaid.set(isPaid);
+        this.price.set(price);
+        this.time.set(time);
+        this.effected.set(isEffected);
+        this.setNote(note);
+    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
