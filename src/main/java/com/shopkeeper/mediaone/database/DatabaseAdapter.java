@@ -66,6 +66,10 @@ public class DatabaseAdapter {
         throw new Exception("staff is not in DbAdapter's cache");
     }
     public boolean deleteStaff(Staff staff) throws Exception{
+        if(staff.countTimesToBeReferenced() != 0)  {
+            System.err.println("Something have referenced to this staff.");
+            return false;
+        }
         int index = cache.getStaffs().indexOf(staff);
         if(index > -1){
             if(worker2.deleteStaff(staff)){
@@ -113,6 +117,10 @@ public class DatabaseAdapter {
         throw new Exception("customer is not in DbAdapter's cache");
     }
     public boolean deleteCustomer(Customer customer) throws Exception{
+        if(customer.countTimesToBeReferenced() != 0) {
+            System.err.println("Something have referenced to this customer.");
+            return false;
+        }
         int index = cache.getCustomers().indexOf(customer);
         if(index > -1){
             if(worker2.deleteCustomer(customer)){
