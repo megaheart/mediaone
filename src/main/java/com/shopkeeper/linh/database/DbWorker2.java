@@ -19,11 +19,14 @@ public class DbWorker2 {
         if(createSettingsTable()) throw new Exception("DatabaseWorker2 created Settings tables false");
         if(createCustomersTable()) throw new Exception("DatabaseWorker2 created Customers tables false");
         if(createTextValuesTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
+        if(createStaffsTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
+        if(createFeedbacksTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
     }
     public void load1(DbAdapterCache cache) throws Exception{
         loadStaffs(cache);
         loadSettings(cache);
         loadCustomers(cache);
+        loadSaleBills(cache);
     }
     //region Staffs Database
     //Return true if success, otherwise return false
@@ -74,6 +77,7 @@ public class DbWorker2 {
     //Auto set id for staff after it was inserted
     //Return true if success, otherwise return false
     public boolean insertStaff(Staff staff) {
+        if(staff.getStaffId() != 0) return false;
         String sql = "INSERT INTO staffs(name, isMale, dateOfBirth, email, phoneNumber, description, state) VALUES(?,?,DATE(?),?,?,?,?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -276,6 +280,7 @@ public class DbWorker2 {
     //Auto set id for staff after it was inserted
     //Return true if success, otherwise return false
     public boolean insertCustomer(Customer customer) {
+        if(customer.getCustomerId() != 0) return false;
         String sql = "INSERT INTO customers(name, defaultLocation, phoneNumber) VALUES(?,?,?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -426,15 +431,21 @@ public class DbWorker2 {
         ResultSet rs    = stmt.executeQuery(sql);
         SaleBill bill;
         long customerId;
+        var customers = cache.getCustomers();
         while (rs.next()) {
             bill = new SaleBill();
             bill.setBillId(rs.getInt("billId"));
             bill.setName(rs.getString("name"));
             bill.setLocation(rs.getString("location"));
             customerId = rs.getLong("customerId");
-
-            //bill.setCustomer();
-
+            for(int i = 0; i < customers.size(); i++){
+                if(customers.get(i).getCustomerId() == customerId){
+                    bill.setCustomer(customers.get(i));
+                }
+            }
+            if(bill.getCustomer() == null){
+                throw new Exception("Be careful when delete a customer, the action can affect to a salebill whose customer is deleted.");
+            }
             bill.setIsPaid(rs.getBoolean("isPaid"));
             bill.setPrice(rs.getDouble("price"));
             bill.setTime(LocalDate.parse(rs.getString("time")));
@@ -449,6 +460,7 @@ public class DbWorker2 {
     //Auto set id for staff after it was inserted
     //Return true if success, otherwise return false
     public boolean insertSaleBill(SaleBill bill) {
+        if(bill.getBillId() != 0) return false;
         String sql = "INSERT INTO salebills(name, customerId, location ,isPaid, price, time, effected, note) VALUES(?,?,?,?,?,DATE(?),?,?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -461,13 +473,13 @@ public class DbWorker2 {
             pstmt.setBoolean(7, bill.getIsEffected());
             pstmt.setString(8, bill.getNote());
             int affected = pstmt.executeUpdate();
-            if(affected == 0) throw new Exception("Creating bill failed, no rows affected.");
+            if(affected == 0) throw new Exception("Creating salebill failed, no rows affected.");
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 bill.setBillId(generatedKeys.getInt(1));
             }
-            else throw new Exception("Creating staff failed, no ID obtained.");
+            else throw new Exception("Creating salebill failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -512,6 +524,180 @@ public class DbWorker2 {
     }
     //endregion
     //region Feedback
+    public boolean createFeedbacksTable() {
+        StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE feedbacks (");
+        sqlBuilder.append("feedbackId  INTEGER PRIMARY KEY AUTOINCREMENT,");
+        sqlBuilder.append("title                 TEXT        NOT NULL,");
+        sqlBuilder.append("description           TEXT        NOT NULL,");
+        sqlBuilder.append("feedbackAbout         TEXT        NOT NULL,");
+        sqlBuilder.append("feedbackType          TEXT        NOT NULL,");
+        sqlBuilder.append("productTargetId       TEXT        NOT NULL,");
+        sqlBuilder.append("productInfoTargetId   TEXT        NOT NULL,");
+        sqlBuilder.append("productInfoRating     INTEGER     NOT NULL,");
+        sqlBuilder.append("staffTargetId         INTEGER     NOT NULL,");
+        sqlBuilder.append("isUseful              BOOLEAN     NOT NULL,");
+        sqlBuilder.append("time                  DATETIME    NOT NULL");
+        sqlBuilder.append(");");
+        String sql = sqlBuilder.toString();
+        try (Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+            //Indexes
+            stmt.execute("CREATE UNIQUE INDEX idx_feedbacks_feedbackId ON feedbacks(feedbackId);");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    public void loadFeedbacks(DbAdapterCache cache) throws Exception{
+        String sql = "SELECT feedbackId, title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time FROM feedbacks";
+        Statement stmt  = conn.createStatement();
+        ResultSet rs    = stmt.executeQuery(sql);
+        Feedback feedback;
+        long id;
+        while (rs.next()) {
+            feedback = new Feedback();
+            feedback.setFeedbackId(rs.getLong("feedbackId"));
+            feedback.setTitle(rs.getString("title"));
+            feedback.setDescription(rs.getString("description"));
+            feedback.setFeedbackAbout(FeedbackAbout.valueOf(rs.getString("feedbackAbout")));
+            feedback.setFeedbackType(FeedbackType.valueOf(rs.getString("feedbackType")));
+            switch (feedback.getFeedbackAbout()){
+                case Staff:
 
+                    //feedback.setStaffTarget();
+
+                    break;
+                case ProductInfo:
+
+                    //feedback.setProductInfoTarget();
+
+                    feedback.setProductInfoRating(rs.getInt("productInfoRating"));
+                    break;
+                case  Product:
+
+                    //feedback.setProductTarget();
+
+                    break;
+                case Service:
+                    //Do nothing
+                    break;
+            }
+            feedback.setIsUseful(rs.getBoolean("isUseful"));
+            feedback.setTime(LocalDate.parse(rs.getString("time")));
+            cache.getFeedbacks().add(feedback);
+        }
+
+        rs.close();
+        stmt.close();
+    }
+    //Auto set id for staff after it was inserted
+    //Return true if success, otherwise return false
+    public boolean insertFeedback(Feedback feedback) {
+        if(feedback.getFeedbackId() != 0) return false;
+        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time) VALUES(?,?,?,?,?,?,?,?,?,DATE(?))";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, feedback.getTitle());
+            pstmt.setString(2, feedback.getDescription());
+            pstmt.setString(3, feedback.getFeedbackAbout().toString());
+            pstmt.setString(4, feedback.getFeedbackType().toString());
+            switch (feedback.getFeedbackAbout()){
+                case Staff:
+                    pstmt.setInt(5, 0);//productTarget
+                    pstmt.setString(6, "");//productInfoTarget
+                    pstmt.setInt(7, 0);//productInfoRating
+                    pstmt.setLong(8, feedback.getStaffTarget().getStaffId());//staffTarget
+                    break;
+                case ProductInfo:
+                    pstmt.setInt(5, 0);//productTarget
+                    pstmt.setString(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
+                    pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
+                    pstmt.setLong(8, 0);//staffTarget
+                    break;
+                case  Product:
+                    pstmt.setInt(5, feedback.getProductTarget().getProductId());//productTarget
+                    pstmt.setString(6, "");//productInfoTarget
+                    pstmt.setInt(7, 0);//productInfoRating
+                    pstmt.setLong(8, 0);//staffTarget
+                    break;
+                case Service:
+                    //Do nothing
+                    break;
+            }
+            pstmt.setBoolean(9, feedback.getIsUseful());
+            pstmt.setString(10, feedback.getTime().toString());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Creating feedback failed, no rows affected.");
+            //Auto set ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                feedback.setFeedbackId(generatedKeys.getInt(1));
+            }
+            else throw new Exception("Creating feedback failed, no ID obtained.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean updateFeedback(Feedback feedback) {
+        String sql = "UPDATE feedbacks SET title=?, description=?, feedbackAbout=?, feedbackType=?, productTargetId=?, productInfoTargetId=?, productInfoRating=?, staffTargetId=?, isUseful=?, time=? WHERE feedbackId=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, feedback.getTitle());
+            pstmt.setString(2, feedback.getDescription());
+            pstmt.setString(3, feedback.getFeedbackAbout().toString());
+            pstmt.setString(4, feedback.getFeedbackType().toString());
+            switch (feedback.getFeedbackAbout()){
+                case Staff:
+                    pstmt.setInt(5, 0);//productTarget
+                    pstmt.setString(6, "");//productInfoTarget
+                    pstmt.setInt(7, 0);//productInfoRating
+                    pstmt.setLong(8, feedback.getStaffTarget().getStaffId());//staffTarget
+                    break;
+                case ProductInfo:
+                    pstmt.setInt(5, 0);//productTarget
+                    pstmt.setString(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
+                    pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
+                    pstmt.setLong(8, 0);//staffTarget
+                    break;
+                case  Product:
+                    pstmt.setInt(5, feedback.getProductTarget().getProductId());//productTarget
+                    pstmt.setString(6, "");//productInfoTarget
+                    pstmt.setInt(7, 0);//productInfoRating
+                    pstmt.setLong(8, 0);//staffTarget
+                    break;
+                case Service:
+                    //Do nothing
+                    break;
+            }
+            pstmt.setBoolean(9, feedback.getIsUseful());
+            pstmt.setString(10, feedback.getTime().toString());
+            pstmt.setLong(11, feedback.getFeedbackId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Feedback (ID = " + feedback.getFeedbackId() + ") does not exist in \"feedbacks\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean deleteFeedback(Feedback feedback) {
+        String sql = "DELETE FROM feedbacks WHERE feedbackId = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, feedback.getFeedbackId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Feedback (ID = " + feedback.getFeedbackId() + ") does not exist in \"feedbacks\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
     //endregion
 }
