@@ -443,6 +443,9 @@ public class DbWorker2 {
                     bill.setCustomer(customers.get(i));
                 }
             }
+            if(bill.getCustomer() == null){
+                throw new Exception("Be careful when delete a customer, the action can affect to a salebill whose customer is deleted.");
+            }
             bill.setIsPaid(rs.getBoolean("isPaid"));
             bill.setPrice(rs.getDouble("price"));
             bill.setTime(LocalDate.parse(rs.getString("time")));

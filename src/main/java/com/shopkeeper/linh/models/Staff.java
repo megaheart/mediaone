@@ -1,6 +1,7 @@
 package com.shopkeeper.linh.models;
 
 
+import com.shopkeeper.mediaone.models.IReferencedCounter;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
@@ -11,7 +12,7 @@ import java.util.*;
 import java.time.*;
 
 
-public class Staff {
+public class Staff implements IReferencedCounter {
     public long getStaffId() {
         return staffId;
     }
@@ -145,5 +146,20 @@ public class Staff {
         sb.append("    state: "); sb.append(getState());sb.append("\n");
         sb.append('}');
         return sb.toString();
+    }
+    private int timesToBeReferenced;
+    @Override
+    public int countTimesToBeReferenced() {
+        return timesToBeReferenced;
+    }
+
+    @Override
+    public void increaseTimesToBeReferenced() {
+        timesToBeReferenced++;
+    }
+
+    @Override
+    public void decreaseTimesToBeReferenced() {
+        timesToBeReferenced--;
     }
 }

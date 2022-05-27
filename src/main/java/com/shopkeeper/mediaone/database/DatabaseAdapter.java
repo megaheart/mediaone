@@ -1,10 +1,12 @@
 package com.shopkeeper.mediaone.database;
 
+import com.shopkeeper.lam.models.Product;
 import com.shopkeeper.linh.database.DbWorker2;
 import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.models.Settings;
 import com.shopkeeper.linh.models.Staff;
+import com.shopkeeper.minh.models.ImportBill;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -13,6 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseAdapter {
     private static DatabaseAdapter _adapter;
@@ -165,8 +168,24 @@ public class DatabaseAdapter {
         throw new Exception("bill:SaleBill is not in DbAdapter's cache");
 
     }
+    public ArrayList<Product> getItems(SaleBill bill){
+        ArrayList<Product> products = new ArrayList<>();
+        cache.getProducts().forEach(product -> {
+            if(product.getSaleBill() == bill) products.add(product);
+        });
+        return products;
+    }
     //endregion
     //region Feedback
 
+    //endregion
+    //region ImportBill
+    public ArrayList<Product> getItems(ImportBill bill){
+        ArrayList<Product> products = new ArrayList<>();
+        cache.getProducts().forEach(product -> {
+            if(product.getImportBill() == bill) products.add(product);
+        });
+        return products;
+    }
     //endregion
 }
