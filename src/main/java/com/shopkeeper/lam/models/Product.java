@@ -2,15 +2,32 @@ package com.shopkeeper.lam.models;
 
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.minh.models.ImportBill;
+import com.shopkeeper.mediaone.models.IReferencedCounter;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
-public class Product {
-    private int productId;
-    private ProductInfo productInfo;
-    private ProductType productType;
-    private ProductState state;
-    private ImportBill importBill;
-    private SaleBill saleBill;
-    private double importCost;
+import java.security.InvalidParameterException;
+import java.util.*;
+import java.time.*;
+public class Product implements IReferencedCounter {
+    public long productId;
+    public ProductInfo productInfo;
+    public ProductType productType;
+    public ProductState state;
+    public ImportBill importBill;
+    public SaleBill saleBill;
+    public double importCost;
+    public Product(){productId = 0;}
+    public Product(long productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill) {
+        this.productId = productId;
+        this.productInfo = productInfo;
+        this.productType = productType;
+        this.state = state;
+        this.importBill = importBill;
+        this.saleBill = saleBill;
+    }
 
     public SaleBill getSaleBill() {
         return saleBill;
@@ -55,11 +72,12 @@ public class Product {
     public void setPlacement(String placement) {
         this.placement = placement;
     }
-    public int getProductId() {
+    public long getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(long productId) throws InvalidParameterException {
+        if(productId > 0) throw new InvalidParameterException("productId is able to be set only one time.");
         this.productId = productId;
     }
 
@@ -94,5 +112,33 @@ public class Product {
     public void setImportBill(ImportBill importBill){
         this.importBill=importBill;
     }
+    private int timesToBeReferenced;
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append('{'); sb.append('\n');
+        sb.append("    productId: \""); sb.append(getProductId());sb.append("\",\n");
+        sb.append("    productInfo: \""); sb.append(getProductInfo());sb.append("\",\n");
+        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
+        sb.append("    productState: \""); sb.append(getState());sb.append("\",\n");
+        sb.append("    importBill: \""); sb.append(getImportBill());sb.append("\",\n");
+        sb.append("    saleBill: \""); sb.append(getSaleBill());sb.append("\",\n");
+        sb.append('}');
+        return sb.toString();
+    }
+    @Override
+    public int countTimesToBeReferenced() {
+        return timesToBeReferenced;
+    }
 
+    @Override
+    public void increaseTimesToBeReferenced() {
+        timesToBeReferenced++;
+    }
+
+    @Override
+    public void decreaseTimesToBeReferenced() throws Exception {
+        if(timesToBeReferenced == 0) throw new Exception("cannot decreaseTimesToBeReferenced() when countTimesToBeReferenced() = 0");
+        timesToBeReferenced--;
+    }
 }
