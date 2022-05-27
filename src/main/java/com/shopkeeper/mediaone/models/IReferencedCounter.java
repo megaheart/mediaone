@@ -9,5 +9,5 @@ public interface IReferencedCounter {
     void increaseTimesToBeReferenced();
     //Decrease countTimesToBeReferenced() by one when a object that referenced to this object has removed this reference
     //This object cannot do it automatically, please call this method when you make any object reference to this object
-    void decreaseTimesToBeReferenced();
+    void decreaseTimesToBeReferenced() throws Exception;
 }
