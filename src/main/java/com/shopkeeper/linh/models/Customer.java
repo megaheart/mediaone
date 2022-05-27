@@ -1,5 +1,6 @@
 package com.shopkeeper.linh.models;
 
+import com.shopkeeper.mediaone.models.IReferencedCounter;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,7 +11,7 @@ import java.util.*;
 import java.time.*;
 
 
-public class Customer {
+public class Customer implements IReferencedCounter {
     public String getName() {
         return name.get();
     }
@@ -81,5 +82,20 @@ public class Customer {
         sb.append("    phoneNumber: \""); sb.append(getPhoneNumber());sb.append("\"\n");
         sb.append('}');
         return sb.toString();
+    }
+    private int timesToBeReferenced;
+    @Override
+    public int countTimesToBeReferenced() {
+        return timesToBeReferenced;
+    }
+
+    @Override
+    public void increaseTimesToBeReferenced() {
+        timesToBeReferenced++;
+    }
+
+    @Override
+    public void decreaseTimesToBeReferenced() {
+        timesToBeReferenced--;
     }
 }

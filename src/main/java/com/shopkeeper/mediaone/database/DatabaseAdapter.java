@@ -1,9 +1,12 @@
 package com.shopkeeper.mediaone.database;
 
+import com.shopkeeper.lam.models.Product;
 import com.shopkeeper.linh.database.DbWorker2;
 import com.shopkeeper.linh.models.Customer;
+import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.models.Settings;
 import com.shopkeeper.linh.models.Staff;
+import com.shopkeeper.minh.models.ImportBill;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -12,6 +15,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 public class DatabaseAdapter {
     private static DatabaseAdapter _adapter;
@@ -30,7 +34,6 @@ public class DatabaseAdapter {
         if(dbFile.exists() && !dbFile.isDirectory()) {
             Connection conn = DriverManager.getConnection("jdbc:sqlite:mediaone.db");
             worker2 = new DbWorker2(conn/*, cache*/);
-
         }
         else{
             //Create new database
@@ -63,8 +66,13 @@ public class DatabaseAdapter {
         throw new Exception("staff is not in DbAdapter's cache");
     }
     public boolean deleteStaff(Staff staff) throws Exception{
-        if(cache.getStaffs().remove(staff)){
-            return worker2.deleteStaff(staff);
+        int index = cache.getStaffs().indexOf(staff);
+        if(index > -1){
+            if(worker2.deleteStaff(staff)){
+                cache.getStaffs().remove(index, index + 1);
+                return true;
+            }
+            return false;
         }
         throw new Exception("staff is not in DbAdapter's cache");
 
@@ -105,8 +113,13 @@ public class DatabaseAdapter {
         throw new Exception("customer is not in DbAdapter's cache");
     }
     public boolean deleteCustomer(Customer customer) throws Exception{
-        if(cache.getCustomers().remove(customer)){
-            return worker2.deleteCustomer(customer);
+        int index = cache.getCustomers().indexOf(customer);
+        if(index > -1){
+            if(worker2.deleteCustomer(customer)){
+                cache.getCustomers().remove(index, index + 1);
+                return true;
+            }
+            return false;
         }
         throw new Exception("customer is not in DbAdapter's cache");
 
@@ -122,9 +135,57 @@ public class DatabaseAdapter {
     }
     //endregion
     //region SaleBill
+    public ObservableList<SaleBill> getAllSaleBills(){
+        return FXCollections.unmodifiableObservableList(cache.getSaleBills());
+    }
+    public boolean insertSaleBill(SaleBill bill) throws Exception{
+        if(!cache.getCustomers().contains(bill.getCustomer())){
+            throw new Exception("Customer which is output of bill.getCustomer() is not in DbAdapter's cache");
+        }
+        if(worker2.insertSaleBill(bill)){
+            cache.getSaleBills().add(bill);
+            return true;
+        }
+        return false;
+    }
+    public boolean updateSaleBill(SaleBill bill) throws Exception{
+        if(!cache.getCustomers().contains(bill.getCustomer())){
+            throw new Exception("Customer which is output of bill.getCustomer() is not in DbAdapter's cache");
+        }
+        if(cache.getSaleBills().contains(bill))
+            return worker2.updateSaleBill(bill);
+        throw new Exception("bill:SaleBill is not in DbAdapter's cache");
+    }
+    public boolean deleteSaleBill(SaleBill bill) throws Exception{
+        int index = cache.getSaleBills().indexOf(bill);
+        if(index > -1){
+            if(worker2.deleteSaleBill(bill)){
+                cache.getSaleBills().remove(index, index + 1);
+                return true;
+            }
+            return false;
+        }
+        throw new Exception("bill:SaleBill is not in DbAdapter's cache");
 
+    }
+    public ArrayList<Product> getItems(SaleBill bill){
+        ArrayList<Product> products = new ArrayList<>();
+        cache.getProducts().forEach(product -> {
+            if(product.getSaleBill() == bill) products.add(product);
+        });
+        return products;
+    }
     //endregion
     //region Feedback
 
+    //endregion
+    //region ImportBill
+    public ArrayList<Product> getItems(ImportBill bill){
+        ArrayList<Product> products = new ArrayList<>();
+        cache.getProducts().forEach(product -> {
+            if(product.getImportBill() == bill) products.add(product);
+        });
+        return products;
+    }
     //endregion
 }
