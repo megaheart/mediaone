@@ -13,11 +13,11 @@ public class Person implements IReferencedCounter {
     public String name;
     public LocalDate dateOfBirth;
     public String description;
-    public long personId;
+    public int personId;
     public JobOfPerson job;
     public Person(){personId=0; }
 
-    public Person(String name, LocalDate dateOfBirth, String description, long personId, JobOfPerson job) {
+    public Person(String name, LocalDate dateOfBirth, String description, int personId, JobOfPerson job) {
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.description = description;
@@ -33,12 +33,12 @@ public class Person implements IReferencedCounter {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public void setPersonId(long personId) throws InvalidParameterException {
+    public void setPersonId(int personId) throws InvalidParameterException {
         if(personId > 0) throw new InvalidParameterException("personId is able to be set only one time.");
         this.personId = personId;
     }
 
-    public long getPersonId() {
+    public int getPersonId() {
         return personId;
     }
 

@@ -12,7 +12,7 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
 public class Product implements IReferencedCounter {
-    public long productId;
+    public int productId;
     public ProductInfo productInfo;
     public ProductType productType;
     public ProductState state;
@@ -24,7 +24,7 @@ public class Product implements IReferencedCounter {
     public String placement;
     public Product(){productId = 0;}
 
-    public Product(long productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
+    public Product(int productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
         this.productId = productId;
         this.productInfo = productInfo;
         this.productType = productType;
@@ -78,11 +78,11 @@ public class Product implements IReferencedCounter {
     public void setPlacement(String placement) {
         this.placement = placement;
     }
-    public long getProductId() {
+    public int getProductId() {
         return productId;
     }
 
-    public void setProductId(long productId) throws InvalidParameterException {
+    public void setProductId(int productId) throws InvalidParameterException {
         if(productId > 0) throw new InvalidParameterException("productId is able to be set only one time.");
         this.productId = productId;
     }

@@ -12,13 +12,13 @@ import java.security.InvalidParameterException;
 
 public class Category implements IReferencedCounter {
     public String name;
-    public long categoryId;
+    public int categoryId;
     public ProductType productType;
     public String description;
     public Category(){
         categoryId = 0;
     }
-    public Category(String name, String description, long categoryId, ProductType productType) {
+    public Category(String name, String description, int categoryId, ProductType productType) {
         this.name = name;
         this.description = description;
         this.categoryId = categoryId;
@@ -41,11 +41,11 @@ public class Category implements IReferencedCounter {
         this.description = description;
     }
 
-    public long getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(long categoryId) throws InvalidParameterException {
+    public void setCategoryId(int categoryId) throws InvalidParameterException {
         if(categoryId > 0) throw new InvalidParameterException("categoryId is able to be set only one time.");
         this.categoryId = categoryId;
     }

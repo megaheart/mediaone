@@ -10,7 +10,7 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
 public abstract class ProductInfo implements IReferencedCounter {
-    public long productInfoId;
+    public int productInfoId;
     public String title;
     public String description;
     public Category category;
@@ -23,7 +23,7 @@ public abstract class ProductInfo implements IReferencedCounter {
     public ArrayList<String> award;
     public ProductInfo(){productInfoId=0;}
 
-    public ProductInfo(String title, long productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
+    public ProductInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
         this.productInfoId = productInfoId;
         this.title = title;
         this.description = description;
@@ -48,7 +48,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         return productInfoId;
     }
 
-    public void setProductInfoId(long productInfoId) throws InvalidParameterException {
+    public void setProductInfoId(int productInfoId) throws InvalidParameterException {
         if(productInfoId > 0) throw new InvalidParameterException("productInfoId is able to be set only one time.");
         this.productInfoId = productInfoId;
     }

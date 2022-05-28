@@ -44,7 +44,7 @@ public class DbWorker1 {
 
     public boolean createCategoriesTable() {
         String sql = "CREATE TABLE categories ("
-                + "categoryId     LONG PRIMARY KEY AUTOINCREMENT,"
+                + "categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "name           TEXT      NOT NULL,"
                 + "description    TEXT      NOT NULL,"
                 + "productType    TEXT  NOT NULL,"
@@ -68,7 +68,7 @@ public class DbWorker1 {
         Category category;
         while (rs.next()) {
             category = new Category();
-            category.setCategoryId(rs.getLong("categoryId"));
+            category.setCategoryId(rs.getInt("categoryId"));
             category.setName(rs.getString("name"));
             category.setDescription(rs.getString("description"));
             category.setProductType(ProductType.valueOf(rs.getString("productType")));
@@ -93,7 +93,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                category.setCategoryId(generatedKeys.getLong(4));
+                category.setCategoryId(generatedKeys.getInt(4));
             } else throw new Exception("Creating category failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -142,11 +142,11 @@ public class DbWorker1 {
 
     public boolean createPeopleTable() {
         String sql = "CREATE TABLE people ("
-                + "personId      LONG  PRIMARY KEY NOT NULL,"
-                + "name          TEXT PRIMARY KEY AUTOINCREMENT,"
-                + "dateOfBirth   TEXT      NOT NULL,"
-                + "description   TEXT      NOT NULL,"
-                + "job           TEXT      NOT NULL,"
+                + "personId      INTEGER  PRIMARY KEY NOT NULL,"
+                + "name          TEXT     NOT NULL,"
+                + "dateOfBirth   TEXT     NOT NULL,"
+                + "description   TEXT     NOT NULL,"
+                + "job           TEXT     NOT NULL,"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -168,7 +168,7 @@ public class DbWorker1 {
 
         while (rs.next()) {
             person = new Person();
-            person.setPersonId(rs.getLong("personId"));
+            person.setPersonId(rs.getInt("personId"));
             person.setName(rs.getString("name"));
             person.setDateOfBirth(LocalDate.parse(rs.getString("dateOfBirth")));
             person.setDescription(rs.getString("description"));
@@ -195,7 +195,7 @@ public class DbWorker1 {
                 //Auto set ID
                 ResultSet generatedKeys = pstmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    person.setPersonId(generatedKeys.getLong(5));
+                    person.setPersonId(generatedKeys.getInt(5));
                 } else throw new Exception("Creating staff failed, no ID obtained.");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -242,8 +242,8 @@ public class DbWorker1 {
 
     public boolean createProductsTable() {
         String sql = "CREATE TABLE products ("
-                +  "productId      LONG PRIMARY KEY AUTOINCREMENT,"
-                +  "productInfoId  LONG    NOT NULL,"
+                +  "productId      INTEGER PRIMARY KEY AUTOINCREMENT,"
+                +  "productInfoId  INTEGER NOT NULL,"
                 +  "productType    TEXT    NOT NULL,"
                 +  "state          TEXT    NOT NULL,"
                 +  "importBillId   TEXT    NOT NULL,"
@@ -271,8 +271,8 @@ public class DbWorker1 {
         Product product;
         while (rs.next()) {
             product = new Product();
-            product.setProductId(rs.getLong("productId"));
-            product.getProductInfo().setProductInfoId(rs.getLong("productInfoId"));
+            product.setProductId(rs.getInt("productId"));
+            product.getProductInfo().setProductInfoId(rs.getInt("productInfoId"));
             product.setProductType(ProductType.valueOf(rs.getString("productType")));
             product.setState(ProductState.valueOf(rs.getString("productState")));
             product.getImportBill().setBillId(rs.getInt("importBillId"));
@@ -308,7 +308,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setProductId(generatedKeys.getLong(10));
+                product.setProductId(generatedKeys.getInt(10));
             }
             else throw new Exception("Creating product failed, no ID obtained.");
         } catch (Exception e) {
@@ -358,7 +358,7 @@ public class DbWorker1 {
     //PUBLISHER
     public boolean createPublishersTable() {
         String sql = "CREATE TABLE publishers ("
-                +  "publisherId    LONG PRIMARY KEY AUTOINCREMENT,"
+                +  "publisherId    INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +  "name           TEXT    NOT NULL,"
                 +  "address        TEXT    NOT NULL,"
                 +  "description    TEXT    NOT NULL,"
@@ -381,7 +381,7 @@ public class DbWorker1 {
         Publisher publisher;
         while (rs.next()) {
             publisher = new Publisher();
-            publisher.setPublisherId(rs.getLong("publisherId"));
+            publisher.setPublisherId(rs.getInt("publisherId"));
             publisher.setName(rs.getString("name"));
             publisher.setAddress(rs.getString("address"));
             publisher.setDescription(rs.getString("description"));
@@ -406,7 +406,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                publisher.setPublisherId(generatedKeys.getLong(4));
+                publisher.setPublisherId(generatedKeys.getInt(4));
             }
             else throw new Exception("Creating publisher failed, no ID obtained.");
         } catch (Exception e) {
@@ -452,17 +452,17 @@ public class DbWorker1 {
 
     public boolean createProductInfosTable() {
         String sql = "CREATE TABLE productInfos ("
-                +  "productInfoId     LONG PRIMARY KEY AUTOINCREMENT,"
-                +  "title             TEXT    NOT NULL,"
-                +  "description       TEXT    NOT NULL,"
-                +  "categoryId        LONG    NOT NULL,"
-                +  "productType       TEXT    NOT NULL,"
-                +  "releaseDate       TEXT    NOT NULL,"
-                +  "currentSalePrice  DOUBLE    NOT NULL,"
-                +  "publisherId       LONG    NOT NULL,"
-                +  "contributors      TEXT    NOT NULL,"
-                +  "rating            DOUBLE    NOT NULL,"
-                +  "award             TEXT    NOT NULL,"
+                +  "productInfoId     INTEGER  PRIMARY KEY AUTOINCREMENT,"
+                +  "title             TEXT     NOT NULL,"
+                +  "description       TEXT     NOT NULL,"
+                +  "categoryId        INTEGER  NOT NULL,"
+                +  "productType       TEXT     NOT NULL,"
+                +  "releaseDate       TEXT     NOT NULL,"
+                +  "currentSalePrice  DOUBLE   NOT NULL,"
+                +  "publisherId       INTEGER  NOT NULL,"
+                +  "contributors      TEXT     NOT NULL,"
+                +  "rating            DOUBLE   NOT NULL,"
+                +  "award             TEXT     NOT NULL,"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -497,14 +497,14 @@ public class DbWorker1 {
                 productInfo = new FilmInfo();
             }
 
-            productInfo.setProductInfoId(rs.getLong("productInfoId"));
+            productInfo.setProductInfoId(rs.getInt("productInfoId"));
             productInfo.setTitle(rs.getString("name"));
             productInfo.setDescription(rs.getString("description"));
-            productInfo.getCategory().setCategoryId(rs.getLong("categoryId"));
+            productInfo.getCategory().setCategoryId(rs.getInt("categoryId"));
             productInfo.setProductType(ProductType.valueOf(rs.getString("productType")));
             productInfo.setReleaseDate(LocalDate.parse(rs.getString("releaseDate")));
             productInfo.setCurrentSalePrice(rs.getDouble("currentSalePrice"));
-            productInfo.getPublisher().setPublisherId(rs.getLong("publisherId"));
+            productInfo.getPublisher().setPublisherId(rs.getInt("publisherId"));
             productInfo.setRating(rs.getDouble("rating"));
             contributorsId = rs.getString("contributorsId").split("_");
             //gan cho contributors
@@ -560,7 +560,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                productInfo.setProductInfoId(generatedKeys.getLong(11));
+                productInfo.setProductInfoId(generatedKeys.getInt(11));
             }
             else throw new Exception("Creating productInfo failed, no ID obtained.");
         } catch (Exception e) {

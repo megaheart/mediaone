@@ -13,14 +13,14 @@ import java.time.*;
 public class Publisher implements IReferencedCounter {
     public String name;
     public String address;
-    public long publisherId;
+    public int publisherId;
     public String description;
 
     public Publisher() {
         publisherId=0;
     }
 
-    public Publisher(String name, String address, long publisherId, String description) {
+    public Publisher(String name, String address, int publisherId, String description) {
         this.name = name;
         this.address = address;
         this.publisherId = publisherId;
@@ -43,11 +43,11 @@ public class Publisher implements IReferencedCounter {
         this.address = address;
     }
 
-    public long getPublisherId() {
+    public int getPublisherId() {
         return publisherId;
     }
 
-    public void setPublisherId(long publisherId) throws InvalidParameterException {
+    public void setPublisherId(int publisherId) throws InvalidParameterException {
         if(publisherId > 0) throw new InvalidParameterException("publisherId is able to be set only one time.");
         this.publisherId = publisherId;
     }
