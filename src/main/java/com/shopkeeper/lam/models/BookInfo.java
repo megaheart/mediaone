@@ -1,13 +1,15 @@
 package com.shopkeeper.lam.models;
 
-public final class BookInfo extends ProductInfo{
-    public ProductInfo productInfo;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
-    public ProductInfo getProductInfo() {
-        return productInfo;
+public final class BookInfo extends ProductInfo{
+    public BookInfo(){
+        productType=ProductType.BOOK;
     }
 
-    public void setProductInfo(ProductInfo productInfo) {
-        this.productInfo = productInfo;
+    public BookInfo(String title, long productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
+        super(title, productInfoId, description, category, releaseDate, currentSalePrice, publisher, contributors, rating, award);
+        this.productType=ProductType.BOOK;
     }
 }

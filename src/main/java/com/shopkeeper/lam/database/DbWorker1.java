@@ -4,11 +4,12 @@ import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
+import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import java.util.*;
 public class DbWorker1 {
     private Connection conn;
 
@@ -17,20 +18,33 @@ public class DbWorker1 {
         //this.cache = cache;
     }
 
+
     public void initializeTables() throws Exception {
         if (createCategoriesTable()) throw new Exception("DatabaseWorker1 created Category tables false");
-        if (createPersonTable()) throw new Exception("DatabaseWorker1 created Person tables false");
-
+        if (createPeopleTable()) throw new Exception("DatabaseWorker1 created People tables false");
+        if(createProductsTable()) throw new Exception("DatabaseWorker1 created Products tables false");
+        if(createPublishersTable()) throw new Exception("DatabaseWorker1 created Publishers tables false");
+        if(createProductInfosTable()) throw new Exception("DatabaseWorker1 created ProductInfos tables false");
     }
 
-
-
+    //LOAD
+    public void load1(DbAdapterCache cache) throws Exception{
+        loadCategories(cache);
+        loadPeople(cache);
+        loadPublishers(cache);
+    }
+    public void load2(DbAdapterCache cache) throws Exception{
+        loadProductInfos(cache);
+    }
+    public void load3(DbAdapterCache cache) throws Exception{
+        loadProducts(cache);
+    }
 
     //CATEGORY
 
     public boolean createCategoriesTable() {
         String sql = "CREATE TABLE categories ("
-                + "categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "categoryId     LONG PRIMARY KEY AUTOINCREMENT,"
                 + "name           TEXT      NOT NULL,"
                 + "description    TEXT      NOT NULL,"
                 + "productType    DATETIME  NOT NULL,"
@@ -79,7 +93,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                category.setCategoryId(generatedKeys.getLong(1));
+                category.setCategoryId(generatedKeys.getLong(4));
             } else throw new Exception("Creating category failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -94,9 +108,9 @@ public class DbWorker1 {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, category.getName());
-            pstmt.setString(6, category.getDescription());
-            pstmt.setString(7, category.getProductType().toString());
-            pstmt.setLong(8, category.getCategoryId());
+            pstmt.setString(2, category.getDescription());
+            pstmt.setString(3, category.getProductType().toString());
+            pstmt.setLong(4, category.getCategoryId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
@@ -126,9 +140,9 @@ public class DbWorker1 {
 
     //PERSON
 
-    public boolean createPersonTable() {
+    public boolean createPeopleTable() {
         String sql = "CREATE TABLE people ("
-                + "personId      INTEGER  PRIMARY KEY NOT NULL,"
+                + "personId      LONG  PRIMARY KEY NOT NULL,"
                 + "name          TEXT PRIMARY KEY AUTOINCREMENT,"
                 + "dateOfBirth   TEXT      NOT NULL,"
                 + "description   TEXT      NOT NULL,"
@@ -181,7 +195,7 @@ public class DbWorker1 {
                 //Auto set ID
                 ResultSet generatedKeys = pstmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    person.setPersonId(generatedKeys.getLong(1));
+                    person.setPersonId(generatedKeys.getLong(5));
                 } else throw new Exception("Creating staff failed, no ID obtained.");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -228,8 +242,8 @@ public class DbWorker1 {
 
     public boolean createProductsTable() {
         String sql = "CREATE TABLE products ("
-                +  "productId      INTEGER PRIMARY KEY AUTOINCREMENT,"
-                +  "productInfoId  TEXT    NOT NULL,"
+                +  "productId      LONG PRIMARY KEY AUTOINCREMENT,"
+                +  "productInfoId  LONG    NOT NULL,"
                 +  "productType    TEXT    NOT NULL,"
                 +  "state          TEXT    NOT NULL,"
                 +  "importBillId   TEXT    NOT NULL,"
@@ -292,7 +306,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setProductId(generatedKeys.getLong(1));
+                product.setProductId(generatedKeys.getLong(9));
             }
             else throw new Exception("Creating product failed, no ID obtained.");
         } catch (Exception e) {
@@ -389,7 +403,7 @@ public class DbWorker1 {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                publisher.setPublisherId(generatedKeys.getLong(1));
+                publisher.setPublisherId(generatedKeys.getLong(4));
             }
             else throw new Exception("Creating publisher failed, no ID obtained.");
         } catch (Exception e) {
@@ -424,6 +438,175 @@ public class DbWorker1 {
             pstmt.setLong(1, publisher.getPublisherId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    //ProductInfo
+
+    public boolean createProductInfosTable() {
+        String sql = "CREATE TABLE productInfos ("
+                +  "productInfoId     LONG PRIMARY KEY AUTOINCREMENT,"
+                +  "title             TEXT    NOT NULL,"
+                +  "description       TEXT    NOT NULL,"
+                +  "categoryId        LONG    NOT NULL,"
+                +  "productType       TEXT    NOT NULL,"
+                +  "releaseDate       TEXT    NOT NULL,"
+                +  "currentSalePrice  DOUBLE    NOT NULL,"
+                +  "publisherId       LONG    NOT NULL,"
+                +  "contributors      TEXT    NOT NULL,"
+                +  "rating            DOUBLE    NOT NULL,"
+                +  "award             TEXT    NOT NULL,"
+                +  ");";
+        try (Statement stmt = conn.createStatement()) {
+            // create a new table
+            stmt.execute(sql);
+            //Indexes
+            stmt.execute("CREATE UNIQUE INDEX idx_productInfos_productInfoId ON productInfos(productInfoId );");
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    public void loadProductInfos(DbAdapterCache cache) throws Exception{
+        String sql = "SELECT productInfoId, title, description, categoryId, productType, releaseDate, currentSalePrice, publisherId, contributorsId, rating, award  FROM productInfos";
+        Statement stmt  = conn.createStatement();
+        ResultSet rs    = stmt.executeQuery(sql);
+        ProductInfo productInfo = null;
+        String[] contributorsId;
+        String[] award;
+        ArrayList<String> awards = new ArrayList<>();
+        ArrayList<Person> contributors = new ArrayList<>();
+        ObservableList<Person> peopleList = cache.getPeople();
+
+        while (rs.next()) {
+            if(rs.getString("productType").equals("BOOK")){
+                productInfo = new BookInfo();
+            }
+            if(rs.getString("productType").equals("SONG")){
+                productInfo = new SongInfo();
+            }
+            if(rs.getString("productType").equals("FILM")){
+                productInfo = new FilmInfo();
+            }
+
+            productInfo.setProductInfoId(rs.getLong("productInfoId"));
+            productInfo.setTitle(rs.getString("name"));
+            productInfo.setDescription(rs.getString("description"));
+            productInfo.getCategory().setCategoryId(rs.getLong("categoryId"));
+            productInfo.setProductType(ProductType.valueOf(rs.getString("productType")));
+            productInfo.setReleaseDate(LocalDate.parse(rs.getString("releaseDate")));
+            productInfo.setCurrentSalePrice(rs.getDouble("currentSalePrice"));
+            productInfo.getPublisher().setPublisherId(rs.getLong("publisherId"));
+            productInfo.setRating(rs.getDouble("rating"));
+            contributorsId = rs.getString("contributorsId").split("_");
+            //gan cho contributors
+            for (String contributorIdString: contributorsId){
+                for (Person person: peopleList){
+                    if (person.getPersonId() == Long.parseLong(contributorIdString)){
+                        contributors.add(person);
+                        break;
+                    }
+                }
+            }
+            productInfo.setContributors(contributors);
+            //gan cho awards
+            award=rs.getString("awards").split("_");
+            for(String i : award){
+                awards.add(i);
+            }
+            productInfo.setAward(awards);
+
+            cache.getProductInfos().add(productInfo);
+        }
+
+        rs.close();
+        stmt.close();
+    }
+    //Auto set id for staff after it was inserted
+    //Return true if success, otherwise return false
+    public boolean insertProductInfo(ProductInfo productInfo) {
+        if(productInfo.getProductInfoId() != 0) return false;
+        String sql = "INSERT INTO productInfos(title, description, categoryId, productType, releaseDate, currentSalePrice, publisherId, contributorsId, rating, award) VALUES(?,?,?,?,?,?,?,?,?,?)";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            pstmt.setString(1, productInfo.getTitle());
+            pstmt.setString(2, productInfo.getDescription());
+            pstmt.setLong(3, productInfo.getCategory().getCategoryId());
+            pstmt.setString(4, productInfo.getProductType().toString());
+            pstmt.setString(5, productInfo.getReleaseDate().toString());
+            pstmt.setDouble(6, productInfo.getCurrentSalePrice());
+            pstmt.setLong(7, productInfo.getPublisher().getPublisherId());
+            String contributorsId="";
+            for(Person person : productInfo.getContributors()){
+                contributorsId+=(person.getPersonId()+"_");
+            }
+            pstmt.setString(8, contributorsId);//1 String cac contributorId,ngan cach boi dau _
+            pstmt.setDouble(9, productInfo.getRating());
+            String award="";
+            for(String a : productInfo.getAward()){
+                award+=(a+"_");
+            }
+            pstmt.setString(10, award);//1 String cac ten award,ngan cach boi dau _
+
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("Creating productInfo failed, no rows affected.");
+            //Auto set ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                productInfo.setProductInfoId(generatedKeys.getLong(11));
+            }
+            else throw new Exception("Creating productInfo failed, no ID obtained.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean updateProductInfo(ProductInfo productInfo) {
+        String sql = "UPDATE productInfos SET title=?, description=?, categoryId=?, productType=?, releaseDate=?, currentSalePrice=?, publisherId=?, contributorsId=?, rating=?, award=? WHERE productInfoId=?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, productInfo.getTitle());
+            pstmt.setString(2, productInfo.getDescription());
+            pstmt.setLong(3, productInfo.getCategory().getCategoryId());
+            pstmt.setString(4, productInfo.getProductType().toString());
+            pstmt.setString(5, productInfo.getReleaseDate().toString());
+            pstmt.setDouble(6, productInfo.getCurrentSalePrice());
+            pstmt.setLong(7, productInfo.getPublisher().getPublisherId());
+            String contributorsId="";
+            for(Person person : productInfo.getContributors()){
+                contributorsId+=(person.getPersonId()+"_");
+            }
+            pstmt.setString(8, contributorsId);//1 String cac contributorId,ngan cach boi dau _
+            pstmt.setDouble(9, productInfo.getRating());
+            String award="";
+            for(String a : productInfo.getAward()){
+                award+=(a+"_");
+            }
+            pstmt.setString(10, award);//1 String cac ten award,ngan cach boi dau _
+            pstmt.setLong(4, productInfo.getProductInfoId());
+
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("ProductInfo (ID = " + productInfo.getProductInfoId() + ") does not exist in \"productInfos\" table.");
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+    //Return true if success, otherwise return false
+    public boolean deleteProductInfo(ProductInfo productInfo) {
+        String sql = "DELETE FROM productInfos WHERE productInfoId = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, productInfo.getProductInfoId());
+            int affected = pstmt.executeUpdate();
+            if(affected == 0) throw new Exception("ProductInfo (ID = " + productInfo.getProductInfoId() + ") does not exist in \"productInfos\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;

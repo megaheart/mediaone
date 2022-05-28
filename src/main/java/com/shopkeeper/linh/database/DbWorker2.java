@@ -612,12 +612,12 @@ public class DbWorker2 {
                     break;
                 case ProductInfo:
                     pstmt.setInt(5, 0);//productTarget
-                    pstmt.setString(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
+                    pstmt.setLong(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
                     pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
                     break;
                 case  Product:
-                    pstmt.setInt(5, feedback.getProductTarget().getProductId());//productTarget
+                    pstmt.setLong(5, feedback.getProductTarget().getProductId());//productTarget
                     pstmt.setString(6, "");//productInfoTarget
                     pstmt.setInt(7, 0);//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
@@ -660,12 +660,12 @@ public class DbWorker2 {
                     break;
                 case ProductInfo:
                     pstmt.setInt(5, 0);//productTarget
-                    pstmt.setString(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
+                    pstmt.setLong(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
                     pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
                     break;
                 case  Product:
-                    pstmt.setInt(5, feedback.getProductTarget().getProductId());//productTarget
+                    pstmt.setLong(5, feedback.getProductTarget().getProductId());//productTarget
                     pstmt.setString(6, "");//productInfoTarget
                     pstmt.setInt(7, 0);//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
