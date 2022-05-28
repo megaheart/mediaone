@@ -592,7 +592,7 @@ public class DbWorker1 {
                 award+=(a+"_");
             }
             pstmt.setString(10, award);//1 String cac ten award,ngan cach boi dau _
-            pstmt.setLong(4, productInfo.getProductInfoId());
+            pstmt.setLong(11, productInfo.getProductInfoId());
 
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("ProductInfo (ID = " + productInfo.getProductInfoId() + ") does not exist in \"productInfos\" table.");
