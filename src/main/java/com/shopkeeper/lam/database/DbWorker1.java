@@ -265,7 +265,7 @@ public class DbWorker1 {
         return true;
     }
     public void loadProducts(DbAdapterCache cache) throws Exception{
-        String sql = "SELECT productId, name, isMale, dateOfBirth, email, phoneNumber, description, state FROM products";
+        String sql = "SELECT productId, productInfoId, productType, state, importBillId, saleBillId, importCost, saleValue,trialFilename,placement FROM products";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
         Product product;
@@ -277,6 +277,7 @@ public class DbWorker1 {
             product.setState(ProductState.valueOf(rs.getString("productState")));
             product.getImportBill().setBillId(rs.getInt("importBillId"));
             product.getSaleBill().setBillId(rs.getInt("saleBillId"));
+            product.setSaleValue(rs.getDouble("saleValue"));
             product.setImportCost(rs.getDouble("importCost"));
             product.setTrialFilename(rs.getString("trialFilename"));
             product.setPlacement(rs.getString("placement"));
@@ -290,7 +291,7 @@ public class DbWorker1 {
     //Return true if success, otherwise return false
     public boolean insertProduct(Product product) {
         if(product.getProductId() != 0) return false;
-        String sql = "INSERT INTO products(productInfoId, productType, productState, importBillId, saleBillId, importCost, trialFilename,placement) VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO products(productInfoId, productType, productState, importBillId, saleBillId, importCost,saleValue, trialFilename,placement) VALUES(?,?,?,?,?,?,?,?,?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setLong(1, product.getProductInfo().getProductInfoId());
@@ -299,14 +300,15 @@ public class DbWorker1 {
             pstmt.setInt(4, product.getImportBill().getBillId());
             pstmt.setInt(5, product.getSaleBill().getBillId());
             pstmt.setDouble(6, product.getImportCost());
-            pstmt.setString(7, product.getTrialFilename());
-            pstmt.setString(8, product.getPlacement());
+            pstmt.setDouble(7, product.getSaleValue());
+            pstmt.setString(8, product.getTrialFilename());
+            pstmt.setString(9, product.getPlacement());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Creating product failed, no rows affected.");
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setProductId(generatedKeys.getLong(9));
+                product.setProductId(generatedKeys.getLong(10));
             }
             else throw new Exception("Creating product failed, no ID obtained.");
         } catch (Exception e) {
@@ -317,7 +319,7 @@ public class DbWorker1 {
     }
     //Return true if success, otherwise return false
     public boolean updateProduct(Product product) {
-        String sql = "UPDATE products SET productInfoId=?,productType=?,productState=?,importBillId=?,saleBillId=?,importCost=?,trialFilename=?,placement=? WHERE productId=?";
+        String sql = "UPDATE products SET productInfoId=?,productType=?,productState=?,importBillId=?,saleBillId=?,importCost=?,saleValue,trialFilename=?,placement=? WHERE productId=?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, product.getProductInfo().getProductInfoId());
@@ -326,9 +328,10 @@ public class DbWorker1 {
             pstmt.setInt(4, product.getImportBill().getBillId());
             pstmt.setInt(5, product.getSaleBill().getBillId());
             pstmt.setDouble(6, product.getImportCost());
-            pstmt.setString(7, product.getTrialFilename());
-            pstmt.setString(8, product.getPlacement());
-            pstmt.setLong(9, product.getProductId());
+            pstmt.setDouble(7, product.getSaleValue());
+            pstmt.setString(8, product.getTrialFilename());
+            pstmt.setString(9, product.getPlacement());
+            pstmt.setLong(10, product.getProductId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Product (ID = " + product.getProductId() + ") does not exist in \"products\" table.");
         } catch (Exception e) {
