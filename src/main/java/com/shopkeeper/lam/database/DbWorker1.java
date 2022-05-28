@@ -47,7 +47,7 @@ public class DbWorker1 {
                 + "categoryId     LONG PRIMARY KEY AUTOINCREMENT,"
                 + "name           TEXT      NOT NULL,"
                 + "description    TEXT      NOT NULL,"
-                + "productType    DATETIME  NOT NULL,"
+                + "productType    TEXT  NOT NULL,"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -146,7 +146,7 @@ public class DbWorker1 {
                 + "name          TEXT PRIMARY KEY AUTOINCREMENT,"
                 + "dateOfBirth   TEXT      NOT NULL,"
                 + "description   TEXT      NOT NULL,"
-                + "jobs          TEXT      NOT NULL,"
+                + "job           TEXT      NOT NULL,"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -172,7 +172,7 @@ public class DbWorker1 {
             person.setName(rs.getString("name"));
             person.setDateOfBirth(LocalDate.parse(rs.getString("dateOfBirth")));
             person.setDescription(rs.getString("description"));
-            person.setJob(JobOfPerson.valueOf(rs.getString("jobs")));
+            person.setJob(JobOfPerson.valueOf(rs.getString("job")));
 
             cache.getPeople().add(person);
         }
@@ -183,7 +183,7 @@ public class DbWorker1 {
         //Return true if success, otherwise return false
         public boolean insertPerson(Person person){
             if (person.getPersonId() != 0) return false;
-            String sql = "INSERT INTO person(name, dateOfBirth, description, jobs) VALUES(?,DATE(?),?)";
+            String sql = "INSERT INTO person(name, dateOfBirth, description, job) VALUES(?,DATE(?),?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, person.getName());
@@ -205,7 +205,7 @@ public class DbWorker1 {
         }
         //Return true if success, otherwise return false
         public boolean updatePeople (Person person){
-            String sql = "UPDATE people SET name=?,dateOfBirth=DATE(?),description=?,jobs=? WHERE personId=?";
+            String sql = "UPDATE people SET name=?,dateOfBirth=DATE(?),description=?,job=? WHERE personId=?";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, person.getName());
