@@ -83,6 +83,7 @@ public class DbWorker3 {
     }
 
     public boolean insertOtherBill(OtherBill bill) {
+        if(bill.getBillId() != 0) return false;
         String sql = "INSERT INTO otherbills(name, price, time, effected, note) VALUES(?,?,DATE(?),?,?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -185,6 +186,7 @@ public class DbWorker3 {
     }
 
     public boolean insertImportBill(ImportBill bill) {
+        if(bill.getBillId() != 0) return false;
         String sql = "INSERT INTO importbills(name, distributor, price, time, effected, note) VALUES(?,?,?,DATE(?),?,?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -304,6 +306,7 @@ public class DbWorker3 {
     }
 
     public boolean insertStaffBill(StaffBill bill) {
+        if(bill.getBillId() != 0) return false;
         String sql = "INSERT INTO staffbills(name, price, time, effected, note, from_d, staffId, standardSalaryPerHour, workHours) VALUES(?,?,DATE(?),?,?, DATE(?), ?, ?, ?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -440,7 +443,6 @@ public class DbWorker3 {
 
     public boolean insertTimeKeeping(TimeKeeping timeKeeping) {
 
-
         String sql = "INSERT INTO timekeepings(time, duration, staffsWork, staffsAbsentee) VALUES(DATETIME(?),?,?,?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -568,7 +570,6 @@ public class DbWorker3 {
     }
 
     public boolean insertShift(Shift shift) {
-
 
         String sql = "INSERT INTO shifts(startTime, endTime, staffs, dateOfWeek) VALUES(TIME(?),TIME(?),?,?);";
 
