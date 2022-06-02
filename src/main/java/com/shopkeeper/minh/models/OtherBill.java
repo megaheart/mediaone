@@ -18,6 +18,15 @@ public final class OtherBill implements IBill {
         billType = BillType.Other;
     }
 
+    public OtherBill(String name, double price, LocalDate time, boolean isEffected, String note){
+        this.billType = BillType.Other;
+        this.name = name;
+        this.price = price;
+        this.time = time;
+        this.isEffected = isEffected;
+        this.note = note;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
