@@ -38,4 +38,8 @@ public class Shift {
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
+    public void setStaffs(ArrayList<Staff> staffs) {
+        this.staffs = staffs;
+    }
 }

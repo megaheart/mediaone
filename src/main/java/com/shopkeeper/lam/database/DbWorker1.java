@@ -122,7 +122,7 @@ public class DbWorker1 {
     }
 
     //Return true if success, otherwise return false
-    public boolean deleteCategories(Category category) {
+    public boolean deleteCategory(Category category) {
         String sql = "DELETE FROM categories WHERE categoryId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -204,7 +204,7 @@ public class DbWorker1 {
             return true;
         }
         //Return true if success, otherwise return false
-        public boolean updatePeople (Person person){
+        public boolean updatePerson (Person person){
             String sql = "UPDATE people SET name=?,dateOfBirth=DATE(?),description=?,job=? WHERE personId=?";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
