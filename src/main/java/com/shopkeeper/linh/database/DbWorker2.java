@@ -19,8 +19,8 @@ public class DbWorker2 {
         if(createSettingsTable()) throw new Exception("DatabaseWorker2 created Settings tables false");
         if(createCustomersTable()) throw new Exception("DatabaseWorker2 created Customers tables false");
         if(createTextValuesTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
-        if(createStaffsTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
-        if(createFeedbacksTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
+        if(createSaleBillsTable()) throw new Exception("DatabaseWorker2 created SaleBills tables false");
+        if(createFeedbacksTable()) throw new Exception("DatabaseWorker2 created Feedbacks tables false");
     }
     public void load1(DbAdapterCache cache) throws Exception{
         loadStaffs(cache);
@@ -439,8 +439,10 @@ public class DbWorker2 {
             bill.setLocation(rs.getString("location"));
             customerId = rs.getLong("customerId");
             for(int i = 0; i < customers.size(); i++){
-                if(customers.get(i).getCustomerId() == customerId){
-                    bill.setCustomer(customers.get(i));
+                var customer = customers.get(i);
+                if(customer.getCustomerId() == customerId){
+                    bill.setCustomer(customer);
+                    customer.increaseTimesToBeReferenced();
                 }
             }
             if(bill.getCustomer() == null){
@@ -487,10 +489,22 @@ public class DbWorker2 {
         return true;
     }
     //Return true if success, otherwise return false
-    public boolean updateSaleBill(SaleBill bill) {
+    public boolean updateSaleBill(SaleBill bill, Customer[] customers) {
         String sql = "UPDATE salebills SET name=?, customerId=?, location=?, isPaid=?, price=?, time=DATE(?), effected=?, note=? WHERE billId=?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             Statement stmt = conn.createStatement()) {
+            ResultSet rs = stmt.executeQuery("SELECT customerId FROM salebills WHERE billId=" + bill.getBillId());
+            Customer old = null;
+            if(rs.next()){
+                int billId = rs.getInt(1);
+                for (var x: customers) {
+                    if(x.getCustomerId() == billId){
+                        old = x;
+                        break;
+                    }
+                }
+            }
             pstmt.setString(1, bill.getName());
             pstmt.setLong(2, bill.getCustomer().getCustomerId());
             pstmt.setString(3, bill.getLocation());
@@ -502,6 +516,7 @@ public class DbWorker2 {
             pstmt.setInt(9, bill.getBillId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("SaleBill (ID = " + bill.getBillId() + ") does not exist in \"salebills\" table.");
+            if(old != null) old.decreaseTimesToBeReferenced();
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -516,6 +531,7 @@ public class DbWorker2 {
             pstmt.setLong(1, bill.getBillId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("SaleBill (ID = " + bill.getBillId() + ") does not exist in \"salebills\" table.");
+
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
