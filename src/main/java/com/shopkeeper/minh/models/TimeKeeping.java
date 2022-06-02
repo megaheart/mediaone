@@ -33,6 +33,14 @@ public class TimeKeeping {
         return staffsAbsentee;
     }
 
+    public void setStaffsWork(ArrayList<Staff> staffsWork) {
+        this.staffsWork = staffsWork;
+    }
+
+    public void setStaffsAbsentee(ArrayList<Staff> staffsAbsentee) {
+        this.staffsAbsentee = staffsAbsentee;
+    }
+
     public ArrayList<Staff> getStaffsWork() {
         return staffsWork;
     }
