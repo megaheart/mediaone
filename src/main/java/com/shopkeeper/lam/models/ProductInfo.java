@@ -10,17 +10,17 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
 public abstract class ProductInfo implements IReferencedCounter {
-    public int productInfoId;
-    public String title;
-    public String description;
-    public Category category;
-    public ProductType productType  ;
-    public LocalDate releaseDate;
-    public double currentSalePrice;
-    public Publisher publisher;
-    public ArrayList<Person> contributors;
-    public double rating;
-    public ArrayList<String> award;
+    private int productInfoId;
+    private String title;
+    private String description;
+    private Category category;
+    private ProductType productType  ;
+    private LocalDate releaseDate;
+    private double currentSalePrice;
+    private Publisher publisher;
+    private ArrayList<Person> contributors;
+    private double rating;
+    private ArrayList<String> award;
     public ProductInfo(){productInfoId=0;}
 
     public ProductInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
