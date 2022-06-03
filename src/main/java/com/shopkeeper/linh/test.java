@@ -1,9 +1,13 @@
 package com.shopkeeper.linh;
 
+import com.shopkeeper.linh.models.Customer;
+import com.shopkeeper.linh.models.Settings;
 import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.time.LocalDate;
 
 public class test {
@@ -82,5 +86,92 @@ public class test {
             System.out.println(x);
             //Còn nếu không các ô phải in từng thuộc tính 1 ra
         }
+    }
+    public void insertCustomers() throws Exception{
+        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
+        Customer x1 = new Customer("Trần Thị A", "xã X huyện Y tỉnh Z", "0986562561");
+        Customer x2 = new Customer("Nguyễn Văn B", "xã A huyện B tỉnh C", "0969696969");
+        Customer x3 = new Customer("Hoàng Xuân C", "xã VV huyện CC tỉnh LL", "0988963654");
+        Customer x4 = new Customer("Lê Vũ D", "xã XYZ huyện XXX tỉnh XXX", "0989456258");
+        Customer x5 = new Customer("Trịnh Anh E", "xã FGV huyện VBN tỉnh CSD", "0984568224");
+        
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllCustomers()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        adapter.insertCustomer(x1);
+        adapter.insertCustomer(x2);
+        adapter.insertCustomer(x3);
+        adapter.insertCustomer(x4);
+        adapter.insertCustomer(x5);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllCustomers()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void updateCustomers() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllCustomers()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+
+        var x4 = adapter.getAllCustomers().get(6);
+        //Update toàn bộ các thuộc tính trừ ID
+        x4.setName("XXXXXXXXXX");
+        x4.setDefaultLocation("HHHHHHHHHHH");
+        x4.setPhoneNumber("yyyyyyyyyyy");
+        adapter.updateCustomer(x4);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllCustomers()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void deleteCustomers() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllCustomers()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        var x3 = adapter.getAllCustomers().get(6);
+        adapter.deleteCustomer(x3);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllCustomers()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void updateSettings() throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        var x = adapter.getSettings();
+        System.out.println(x);
+        x.setClearingFeedbackDuration(25);
+        x.setStandardSalaryPerHour(300000);
+        adapter.updateSettings(x);
+        System.out.println("----------<><><><><>----------");
+        System.out.println(x);
+    }
+    public void resetSettings()  throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        var x = adapter.getSettings();
+        System.out.println(x);
+        adapter.resetSettings(x);
+        System.out.println("----------<><><><><>----------");
+        System.out.println(x);
     }
 }

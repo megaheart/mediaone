@@ -1,15 +1,12 @@
 package com.shopkeeper.lam.database;
 import com.shopkeeper.lam.models.*;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
-import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.*;
+
 public class DbWorker1 {
     private Connection conn;
 
@@ -183,7 +180,7 @@ public class DbWorker1 {
         //Return true if success, otherwise return false
         public boolean insertPerson(Person person){
             if (person.getPersonId() != 0) return false;
-            String sql = "INSERT INTO person(name, dateOfBirth, description, job) VALUES(?,DATE(?),?,?)";
+            String sql = "INSERT INTO people(name, dateOfBirth, description, job) VALUES(?,DATE(?),?,?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, person.getName());
@@ -491,7 +488,7 @@ public class DbWorker1 {
                 productInfo = new BookInfo();
             }
             if(rs.getString("productType").equals("SONG")){
-                productInfo = new SongInfo();
+                productInfo = new MusicInfo();
             }
             if(rs.getString("productType").equals("FILM")){
                 productInfo = new FilmInfo();
@@ -524,7 +521,7 @@ public class DbWorker1 {
             }
             productInfo.setAward(awards);
 
-            cache.getProductInfos().add(productInfo);
+            //cache.getProductInfos().add(productInfo);
         }
 
         rs.close();
