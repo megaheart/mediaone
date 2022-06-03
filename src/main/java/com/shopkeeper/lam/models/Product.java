@@ -12,16 +12,16 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
 public class Product implements IReferencedCounter {
-    public int productId;
-    public ProductInfo productInfo;
-    public ProductType productType;
-    public ProductState state;
-    public ImportBill importBill;
-    public SaleBill saleBill;
-    public double importCost;
-    public double saleValue;
-    public String trialFilename;
-    public String placement;
+    private int productId;
+    private ProductInfo productInfo;
+    private ProductType productType;
+    private ProductState state;
+    private ImportBill importBill;
+    private SaleBill saleBill;
+    private double importCost;
+    private double saleValue;
+    private String trialFilename;
+    private String placement;
     public Product(){productId = 0;}
 
     public Product(int productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {

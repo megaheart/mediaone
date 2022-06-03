@@ -10,11 +10,11 @@ import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
 public class Person implements IReferencedCounter {
-    public String name;
-    public LocalDate dateOfBirth;
-    public String description;
-    public int personId;
-    public JobOfPerson job;
+    private String name;
+    private LocalDate dateOfBirth;
+    private String description;
+    private int personId;
+    private JobOfPerson job;
     public Person(){personId=0; }
 
     public Person(String name, LocalDate dateOfBirth, String description, int personId, JobOfPerson job) {
