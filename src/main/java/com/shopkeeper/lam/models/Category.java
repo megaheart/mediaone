@@ -1,10 +1,29 @@
 package com.shopkeeper.lam.models;
+import com.shopkeeper.mediaone.models.IReferencedCounter;
+import javafx.beans.InvalidationListener;
+import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
-public class Category {
-    private String name;
-    private String description;
-    private String categoryId;
-    private ProductType productType;
+import java.security.InvalidParameterException;
+import java.util.*;
+import java.time.*;
+import java.security.InvalidParameterException;
+
+public class Category implements IReferencedCounter {
+    public String name;
+    public int categoryId;
+    public ProductType productType;
+    public String description;
+    public Category(){
+        categoryId = 0;
+    }
+    public Category(String name, String description, int categoryId, ProductType productType) {
+        this.name = name;
+        this.description = description;
+        this.categoryId = categoryId;
+        this.productType = productType;
+    }
 
     public String getName() {
         return name;
@@ -22,11 +41,12 @@ public class Category {
         this.description = description;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) throws InvalidParameterException {
+        if(categoryId > 0) throw new InvalidParameterException("categoryId is able to be set only one time.");
         this.categoryId = categoryId;
     }
 
@@ -36,5 +56,33 @@ public class Category {
 
     public void setProductType(ProductType productType) {
         this.productType = productType;
+    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append('{'); sb.append('\n');
+        sb.append("    categoryId: \""); sb.append(getCategoryId());sb.append("\",\n");
+        sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
+        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
+        sb.append("    description: \""); sb.append(getDescription());sb.append("\",\n");
+
+        sb.append('}');
+        return sb.toString();
+    }
+    private int timesToBeReferenced;
+    @Override
+    public int countTimesToBeReferenced() {
+        return timesToBeReferenced;
+    }
+
+    @Override
+    public void increaseTimesToBeReferenced() {
+        timesToBeReferenced++;
+    }
+
+    @Override
+    public void decreaseTimesToBeReferenced() throws Exception {
+        if(timesToBeReferenced == 0) throw new Exception("cannot decreaseTimesToBeReferenced() when countTimesToBeReferenced() = 0");
+        timesToBeReferenced--;
     }
 }
