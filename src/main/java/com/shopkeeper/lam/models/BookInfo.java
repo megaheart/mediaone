@@ -5,11 +5,10 @@ import java.util.ArrayList;
 
 public final class BookInfo extends ProductInfo{
     public BookInfo(){
-        super.setProductType(ProductType.BOOK);
+        super();
     }
 
     public BookInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
         super(title, productInfoId, description, category, releaseDate, currentSalePrice, publisher, contributors, rating, award);
-        super.setProductType(ProductType.BOOK);
     }
 }

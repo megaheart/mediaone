@@ -14,7 +14,6 @@ public abstract class ProductInfo implements IReferencedCounter {
     private String title;
     private String description;
     private Category category;
-    private ProductType productType  ;
     private LocalDate releaseDate;
     private double currentSalePrice;
     private Publisher publisher;
@@ -69,12 +68,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.category = category;
     }
 
-    public ProductType getProductType() {
-        return productType;
-    }
-    public void setProductType(ProductType productType) {
-        this.productType=productType;
-    }
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
@@ -129,7 +122,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         sb.append("    tittle: \""); sb.append(getTitle());sb.append("\",\n");
         sb.append("    productInfoId: \""); sb.append(getProductInfoId());sb.append("\",\n");
         sb.append("    category: "); sb.append(getCategory());sb.append(",\n");
-        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
         sb.append("    releaseDate: \""); sb.append(getReleaseDate());sb.append("\",\n");
         sb.append("    currentSalePrice: \""); sb.append(getCurrentSalePrice());sb.append("\",\n");
         sb.append("    description: \""); sb.append(getDescription());sb.append("\",\n");
