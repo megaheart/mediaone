@@ -18,6 +18,15 @@ public final class OtherBill implements IBill {
         billType = BillType.Other;
     }
 
+    public OtherBill(String name, double price, LocalDate time, boolean isEffected, String note){
+        this.billType = BillType.Other;
+        this.name = name;
+        this.price = price;
+        this.time = time;
+        this.isEffected = isEffected;
+        this.note = note;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -74,5 +83,19 @@ public final class OtherBill implements IBill {
 
     public void setIsEffected(boolean isEffected) {
         this.isEffected = isEffected;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append('{'); sb.append('\n');
+        sb.append("    billId: \""); sb.append(getBillId());sb.append("\",\n");
+        sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
+        sb.append("    isEffected: "); sb.append(getIsEffected());sb.append(",\n");
+        sb.append("    billType: "); sb.append(getBillType());sb.append(",\n");
+        sb.append("    Time: "); sb.append(getTime());sb.append(",\n");
+        sb.append("    price: \""); sb.append(getPrice());sb.append("\",\n");
+        sb.append("    note: \""); sb.append(getNote());sb.append("\",\n");
+        sb.append('}');
+        return sb.toString();
     }
 }
