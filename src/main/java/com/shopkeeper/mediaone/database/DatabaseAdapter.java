@@ -2,11 +2,10 @@ package com.shopkeeper.mediaone.database;
 
 import com.shopkeeper.lam.database.DbWorker1;
 import com.shopkeeper.lam.models.*;
-import com.shopkeeper.linh.database.DbWorker2;
+import com.shopkeeper.linh.database.*;
 import com.shopkeeper.linh.models.*;
 import com.shopkeeper.minh.database.DbWorker3;
-import com.shopkeeper.minh.models.ImportBill;
-import com.shopkeeper.minh.models.OtherBill;
+import com.shopkeeper.minh.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,170 +26,142 @@ public class DatabaseAdapter {
         return _adapter;
     }
     private DbAdapterCache cache;
+    private ReadOnlyDbAdapterCache readOnlyCache;
     private DbWorker1 worker1;
-    private DbWorker2 worker2;
+    private StaffDbSet staffDbSet;
+    private SettingsDbSet settingsDbSet;
+    private CustomerDbSet customerDbSet;
+    private TextValueDbSet textValueDbSet;
+    private SaleBillDbSet saleBillDbSet;
+    private FeedbackDbSet feedbackDbSet;
     private DbWorker3 worker3;
     private DatabaseAdapter() throws Exception {
         File dbFile = new File("mediaone.db");
         cache = new DbAdapterCache();
+        readOnlyCache = new ReadOnlyDbAdapterCache(cache);
         if(dbFile.exists() && !dbFile.isDirectory()) {
             Connection conn = DriverManager.getConnection("jdbc:sqlite:mediaone.db");
+            //Lam
             worker1 = new DbWorker1(conn/*, cache*/);
-            worker2 = new DbWorker2(conn/*, cache*/);
-            worker3 = new DbWorker3(conn/*, cache*/);
+            //Linh
+            staffDbSet = new StaffDbSet(conn, readOnlyCache, cache.getStaffs());
+            settingsDbSet = new SettingsDbSet(conn, readOnlyCache, cache.getSettings());
+            customerDbSet = new CustomerDbSet(conn, readOnlyCache, cache.getCustomers());
+            textValueDbSet = new TextValueDbSet(conn);
+            saleBillDbSet = new SaleBillDbSet(conn, readOnlyCache, cache.getSaleBills());
+            feedbackDbSet = new FeedbackDbSet(conn, readOnlyCache, cache.getFeedbacks());
 
-            //if(worker1.createProductsTable() == false) System.err.println("DatabaseWorker1 created Products tables false");
+            //Minh
+            worker3 = new DbWorker3(conn/*, cache*/);
         }
         else{
             //Create new database
             Connection conn = DriverManager.getConnection("jdbc:sqlite:mediaone.db");
+            //Lam
             worker1 = new DbWorker1(conn/*, cache*/);
-            worker2 = new DbWorker2(conn/*, cache*/);
+            //Linh
+            staffDbSet = new StaffDbSet(conn, readOnlyCache, cache.getStaffs());
+            settingsDbSet = new SettingsDbSet(conn, readOnlyCache, cache.getSettings());
+            customerDbSet = new CustomerDbSet(conn, readOnlyCache, cache.getCustomers());
+            textValueDbSet = new TextValueDbSet(conn);
+            saleBillDbSet = new SaleBillDbSet(conn, readOnlyCache, cache.getSaleBills());
+            feedbackDbSet = new FeedbackDbSet(conn, readOnlyCache, cache.getFeedbacks());
+
+            //Minh
             worker3 = new DbWorker3(conn/*, cache*/);
             //initialize all tables
+            //Lam
             worker1.initializeTables();
-            worker2.initializeTables();
+            //Linh
+            if(!staffDbSet.createTable()) throw new Exception("DatabaseWorker2 created Staffs tables false");
+            if(!settingsDbSet.createTable()) throw new Exception("DatabaseWorker2 created Settings tables false");
+            if(!customerDbSet.createTable()) throw new Exception("DatabaseWorker2 created Customers tables false");
+            if(!textValueDbSet.createTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
+            if(!saleBillDbSet.createTable()) throw new Exception("DatabaseWorker2 created SaleBills tables false");
+            if(!feedbackDbSet.createTable()) throw new Exception("DatabaseWorker2 created Feedbacks tables false");
+            //Minh
             worker3.initializeTables();
 
         }
     }
     private void load() throws Exception{
+        //Load 1
+        staffDbSet.load();
+        settingsDbSet.load();
+        customerDbSet.load();
+
+        //Load 2
+        saleBillDbSet.load();
+        //Load 3
+
+        //Load 4
         worker1.load1(cache);
-        worker2.load1(cache);
+
         worker3.load1(cache);
 
     }
     //Linh
     //region Staffs Database
     public ObservableList<Staff> getAllStaffs(){
-        return FXCollections.unmodifiableObservableList(cache.getStaffs());
+        return readOnlyCache.getStaffs();
     }
     public boolean insertStaff(Staff staff){
-        if(worker2.insertStaff(staff)){
-            cache.getStaffs().add(staff);
-            return true;
-        }
-        return false;
+        return staffDbSet.insert(staff);
     }
-    public boolean updateStaff(Staff staff) throws Exception{
-        if(cache.getStaffs().contains(staff))
-            return worker2.updateStaff(staff);
-        throw new Exception("staff is not in DbAdapter's cache");
+    public boolean updateStaff(Staff staff){
+        return staffDbSet.update(staff);
     }
-    public boolean deleteStaff(Staff staff) throws Exception{
-        if(staff.countTimesToBeReferenced() != 0)  {
-            System.err.println("Something have referenced to this staff.");
-            return false;
-        }
-        int index = cache.getStaffs().indexOf(staff);
-        if(index > -1){
-            if(worker2.deleteStaff(staff)){
-                cache.getStaffs().remove(index, index + 1);
-                return true;
-            }
-            return false;
-        }
-        throw new Exception("staff is not in DbAdapter's cache");
-
+    public boolean deleteStaff(Staff staff){
+        return staffDbSet.delete(staff);
     }
     //endregion
     //region Settings
     public Settings getSettings(){
-        return cache.getSettings();
+        return readOnlyCache.getSettings();
     }
-    public boolean updateSettings(Settings settings) throws Exception{
-        if(cache.getSettings() == settings){
-            return worker2.updateSettings(settings);
-        }
-        throw new Exception("settings is not in DbAdapter's cache");
+    public boolean updateSettings(Settings settings){
+        return settingsDbSet.update(settings);
     }
-    public boolean resetSettings(Settings settings) throws Exception{
-        if(cache.getSettings() == settings){
-            return worker2.resetSettings(settings);
-        }
-        throw new Exception("settings is not in DbAdapter's cache");
+    public boolean resetSettings(Settings settings){
+        return settingsDbSet.reset(settings);
 
     }
     //endregion
     //region Customers
     public ObservableList<Customer> getAllCustomers(){
-        return FXCollections.unmodifiableObservableList(cache.getCustomers());
+        return readOnlyCache.getCustomers();
     }
     public boolean insertCustomer(Customer customer){
-        if(worker2.insertCustomer(customer)){
-            cache.getCustomers().add(customer);
-            return true;
-        }
-        return false;
+        return customerDbSet.insert(customer);
     }
-    public boolean updateCustomer(Customer customer) throws Exception{
-        if(cache.getCustomers().contains(customer))
-            return worker2.updateCustomer(customer);
-        throw new Exception("customer is not in DbAdapter's cache");
+    public boolean updateCustomer(Customer customer){
+        return  customerDbSet.update(customer);
     }
-    public boolean deleteCustomer(Customer customer) throws Exception{
-        if(customer.countTimesToBeReferenced() != 0) {
-            System.err.println("Something have referenced to this customer.");
-            return false;
-        }
-        int index = cache.getCustomers().indexOf(customer);
-        if(index > -1){
-            if(worker2.deleteCustomer(customer)){
-                cache.getCustomers().remove(index, index + 1);
-                return true;
-            }
-            return false;
-        }
-        throw new Exception("customer is not in DbAdapter's cache");
-
+    public boolean deleteCustomer(Customer customer){
+        return  customerDbSet.deleteCustomer(customer);
     }
     //endregion
     //region TextValue
     //Return true if success, otherwise return false
     public boolean setTextValue(String key, String value) {
-        return worker2.setTextValue(key, value);
+        return textValueDbSet.set(key, value);
     }
     public String getTextValue(String key) {
-        return worker2.getTextValue(key);
+        return textValueDbSet.get(key);
     }
     //endregion
     //region SaleBill
     public ObservableList<SaleBill> getAllSaleBills(){
-        return FXCollections.unmodifiableObservableList(cache.getSaleBills());
+        return readOnlyCache.getSaleBills();
     }
     public boolean insertSaleBill(SaleBill bill) throws Exception{
-        if(!cache.getCustomers().contains(bill.getCustomer())){
-            throw new Exception("Customer which is output of bill.getCustomer() is not in DbAdapter's cache");
-        }
-        if(worker2.insertSaleBill(bill)){
-            bill.getCustomer().increaseTimesToBeReferenced();
-            cache.getSaleBills().add(bill);
-            return true;
-        }
-        return false;
+        return saleBillDbSet.insert(bill);
     }
     public boolean updateSaleBill(SaleBill bill) throws Exception{
-        if(!cache.getCustomers().contains(bill.getCustomer())){
-            throw new Exception("Customer which is output of bill.getCustomer() is not in DbAdapter's cache");
-        }
-        if(cache.getSaleBills().contains(bill)){
-            bill.getCustomer().increaseTimesToBeReferenced();
-            return worker2.updateSaleBill(bill, cache.getCustomers().toArray(new Customer[cache.getCustomers().size()]));
-        }
-        throw new Exception("bill:SaleBill is not in DbAdapter's cache");
+        return saleBillDbSet.update(bill);
     }
     public boolean deleteSaleBill(SaleBill bill) throws Exception{
-        int index = cache.getSaleBills().indexOf(bill);
-        if(index > -1){
-            if(worker2.deleteSaleBill(bill)){
-                bill.getCustomer().decreaseTimesToBeReferenced();
-                cache.getSaleBills().remove(index, index + 1);
-                return true;
-            }
-            return false;
-        }
-        throw new Exception("bill:SaleBill is not in DbAdapter's cache");
-
+        return saleBillDbSet.delete(bill);
     }
     public ArrayList<Product> getItems(SaleBill bill){
         ArrayList<Product> products = new ArrayList<>();
