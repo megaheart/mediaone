@@ -21,11 +21,11 @@ public class DbWorker3 {
     }
 
     public void initializeTables() throws Exception{
-        if(createOtherBillsTable()) throw new Exception("DatabaseWorker3 created OtherBills tables false");
-        if(createImportBillsTable()) throw new Exception("DatabaseWorker3 created ImportBills tables false");
-        if(createStaffBillsTable()) throw new Exception("DatabaseWorker3 created StaffBills tables false");
-        if (createTimeKeepingsTable()) throw new Exception("DatabaseWorker3 created TimeKeepings tables false");
-        if (createShiftsTable()) throw new Exception("DatabaseWorker3 created Shifts tables false");
+        if(!createOtherBillsTable()) throw new Exception("DatabaseWorker3 created OtherBills tables false");
+        if(!createImportBillsTable()) throw new Exception("DatabaseWorker3 created ImportBills tables false");
+        if(!createStaffBillsTable()) throw new Exception("DatabaseWorker3 created StaffBills tables false");
+        if (!createTimeKeepingsTable()) throw new Exception("DatabaseWorker3 created TimeKeepings tables false");
+        if (!createShiftsTable()) throw new Exception("DatabaseWorker3 created Shifts tables false");
     }
 
     public void load1(DbAdapterCache cache) throws Exception{

@@ -20,11 +20,11 @@ public class DbWorker1 {
 
 
     public void initializeTables() throws Exception {
-        if (createCategoriesTable()) throw new Exception("DatabaseWorker1 created Category tables false");
-        if (createPeopleTable()) throw new Exception("DatabaseWorker1 created People tables false");
-        if(createProductsTable()) throw new Exception("DatabaseWorker1 created Products tables false");
-        if(createPublishersTable()) throw new Exception("DatabaseWorker1 created Publishers tables false");
-        if(createProductInfosTable()) throw new Exception("DatabaseWorker1 created ProductInfos tables false");
+        if (!createCategoriesTable()) throw new Exception("DatabaseWorker1 created Category tables false");
+        if (!createPeopleTable()) throw new Exception("DatabaseWorker1 created People tables false");
+        if(!createProductsTable()) throw new Exception("DatabaseWorker1 created Products tables false");
+        if(!createPublishersTable()) throw new Exception("DatabaseWorker1 created Publishers tables false");
+        if(!createProductInfosTable()) throw new Exception("DatabaseWorker1 created ProductInfos tables false");
     }
 
     //LOAD
@@ -47,7 +47,7 @@ public class DbWorker1 {
                 + "categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "name           TEXT      NOT NULL,"
                 + "description    TEXT      NOT NULL,"
-                + "productType    TEXT  NOT NULL,"
+                + "productType    TEXT  NOT NULL"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -146,7 +146,7 @@ public class DbWorker1 {
                 + "name          TEXT     NOT NULL,"
                 + "dateOfBirth   TEXT     NOT NULL,"
                 + "description   TEXT     NOT NULL,"
-                + "job           TEXT     NOT NULL,"
+                + "job           TEXT     NOT NULL"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -251,7 +251,7 @@ public class DbWorker1 {
                 +  "importCost     DOUBLE  NOT NULL,"
                 +  "saleValue      DOUBLE  NOT NULL,"
                 +  "trialFilename  TEXT    NOT NULL,"
-                +  "placement      TEXT    NOT NULL,"
+                +  "placement      TEXT    NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -361,7 +361,7 @@ public class DbWorker1 {
                 +  "publisherId    INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +  "name           TEXT    NOT NULL,"
                 +  "address        TEXT    NOT NULL,"
-                +  "description    TEXT    NOT NULL,"
+                +  "description    TEXT    NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -462,7 +462,7 @@ public class DbWorker1 {
                 +  "publisherId       INTEGER  NOT NULL,"
                 +  "contributors      TEXT     NOT NULL,"
                 +  "rating            DOUBLE   NOT NULL,"
-                +  "award             TEXT     NOT NULL,"
+                +  "award             TEXT     NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
