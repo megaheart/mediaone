@@ -3,9 +3,9 @@ package com.shopkeeper.minh.models;
 import java.time.LocalDate;
 
 import com.shopkeeper.mediaone.models.BillType;
-import com.shopkeeper.mediaone.models.IBill;
+import com.shopkeeper.mediaone.models.Bill;
 
-public final class OtherBill implements IBill {
+public final class OtherBill extends Bill {
     private String name;
     private BillType billType;
     private double price;

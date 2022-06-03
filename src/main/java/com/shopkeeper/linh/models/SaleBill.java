@@ -1,7 +1,7 @@
 package com.shopkeeper.linh.models;
 
 import com.shopkeeper.mediaone.models.BillType;
-import com.shopkeeper.mediaone.models.IBill;
+import com.shopkeeper.mediaone.models.Bill;
 import javafx.beans.property.*;
 
 import java.security.InvalidParameterException;
@@ -9,7 +9,7 @@ import java.time.*;
 
 
 
-public class SaleBill implements IBill {
+public class SaleBill extends Bill {
     @Override
     public String getName() {
         return name.get();
