@@ -183,7 +183,7 @@ public class DbWorker1 {
         //Return true if success, otherwise return false
         public boolean insertPerson(Person person){
             if (person.getPersonId() != 0) return false;
-            String sql = "INSERT INTO person(name, dateOfBirth, description, job) VALUES(?,DATE(?),?,?)";
+            String sql = "INSERT INTO people(name, dateOfBirth, description, job) VALUES(?,DATE(?),?,?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, person.getName());
