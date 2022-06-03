@@ -30,13 +30,13 @@ public class DbWorker3 {
 
     public void load1(DbAdapterCache cache) throws Exception{
         loadOtherBills(cache);
+        loadImportBills(cache);
     }
 
     public void load2(DbAdapterCache cache) throws Exception{
         loadStaffBills(cache);
         loadTimeKeepings(cache);
         loadShifts(cache);
-        loadImportBills(cache);
     }
 
     public boolean createOtherBillsTable(){

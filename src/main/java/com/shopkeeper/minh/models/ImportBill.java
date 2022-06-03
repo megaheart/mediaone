@@ -1,10 +1,10 @@
 package com.shopkeeper.minh.models;
 
 import com.shopkeeper.mediaone.models.BillType;
-import com.shopkeeper.mediaone.models.IBill;
+import com.shopkeeper.mediaone.models.Bill;
 import java.time.LocalDate;
 
-public final class ImportBill implements IBill{
+public final class ImportBill extends Bill{
     private String name;
     private double price;
     private int billId;
@@ -12,11 +12,21 @@ public final class ImportBill implements IBill{
     private boolean isEffected;
     private String note;
     private String distributor;
+    private BillType billType;
 
     public ImportBill(){
-
+        billType = BillType.Import;
     }
 
+    public ImportBill(String name, double price, LocalDate time, boolean isEffected, String note, String distributor){
+        this.billType = BillType.Import;
+        this.name = name;
+        this.price = price;
+        this.time = time;
+        this.isEffected = isEffected;
+        this.note = note;
+        this.distributor = distributor;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -80,5 +90,19 @@ public final class ImportBill implements IBill{
         this.distributor = distributor;
     }
 
+    public String toString(){
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append('{'); sb.append('\n');
+        sb.append("    billId: \""); sb.append(getBillId());sb.append("\",\n");
+        sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
+        sb.append("    isEffected: "); sb.append(getIsEffected());sb.append(",\n");
+        sb.append("    billType: "); sb.append(getBillType());sb.append(",\n");
+        sb.append("    Time: "); sb.append(getTime());sb.append(",\n");
+        sb.append("    price: \""); sb.append(getPrice());sb.append("\",\n");
+        sb.append("    distributor: \""); sb.append(getDistributor());sb.append("\",\n");
+        sb.append("    note: \""); sb.append(getNote());sb.append("\",\n");
+        sb.append('}');
+        return sb.toString();
+    }
 
 }
