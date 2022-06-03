@@ -152,7 +152,7 @@ public class DbWorker1 {
             // create a new table
             stmt.execute(sql);
             //Indexes
-            stmt.execute("CREATE UNIQUE INDEX idx_people_personId ON staffs(personId);");
+            stmt.execute("CREATE UNIQUE INDEX idx_people_personId ON people(personId);");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return false;
@@ -161,7 +161,7 @@ public class DbWorker1 {
     }
 
     public void loadPeople(DbAdapterCache cache) throws Exception {
-        String sql = "SELECT personId, name, dateOfBirth, description FROM people";
+        String sql = "SELECT personId, name, dateOfBirth, description,job FROM people";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Person person;
@@ -183,7 +183,7 @@ public class DbWorker1 {
         //Return true if success, otherwise return false
         public boolean insertPerson(Person person){
             if (person.getPersonId() != 0) return false;
-            String sql = "INSERT INTO person(name, dateOfBirth, description, job) VALUES(?,DATE(?),?)";
+            String sql = "INSERT INTO person(name, dateOfBirth, description, job) VALUES(?,DATE(?),?,?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, person.getName());
