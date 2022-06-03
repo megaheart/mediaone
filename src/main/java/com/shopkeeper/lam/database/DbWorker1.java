@@ -142,7 +142,7 @@ public class DbWorker1 {
 
     public boolean createPeopleTable() {
         String sql = "CREATE TABLE people ("
-                + "personId      INTEGER  PRIMARY KEY NOT NULL,"
+                + "personId      INTEGER  PRIMARY KEY AUTOINCREMENT,"
                 + "name          TEXT     NOT NULL,"
                 + "dateOfBirth   TEXT     NOT NULL,"
                 + "description   TEXT     NOT NULL,"
