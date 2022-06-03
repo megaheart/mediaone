@@ -38,6 +38,8 @@ public class DatabaseAdapter {
             worker1 = new DbWorker1(conn/*, cache*/);
             worker2 = new DbWorker2(conn/*, cache*/);
             worker3 = new DbWorker3(conn/*, cache*/);
+
+            //if(worker1.createProductsTable() == false) System.err.println("DatabaseWorker1 created Products tables false");
         }
         else{
             //Create new database
