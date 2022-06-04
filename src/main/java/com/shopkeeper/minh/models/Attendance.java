@@ -4,10 +4,9 @@ import com.shopkeeper.linh.models.Staff;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class TimeKeeping {
+public class Attendance {
     private LocalDateTime time;
     private Duration duration;
     private ArrayList<Staff> staffsWork;

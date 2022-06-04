@@ -438,6 +438,7 @@ public class DbWorker2 {
             bill.setName(rs.getString("name"));
             bill.setLocation(rs.getString("location"));
             customerId = rs.getLong("customerId");
+
             for(int i = 0; i < customers.size(); i++){
                 var customer = customers.get(i);
                 if(customer.getCustomerId() == customerId){
