@@ -299,6 +299,10 @@ public class DbWorker3 {
                     break;
                 }
             }
+
+            if (bill.getStaff() == null){
+                throw new Exception("Be careful when delete a staff, it can affect to a staffbill whose staff is deleted.");
+            }
             cache.getStaffBills().add(bill);
         }
 
@@ -430,24 +434,36 @@ public class DbWorker3 {
             staffsAbsenteeId = rs.getString("staffsAbsentee").split("_");
 
             for (String staffIdString: staffsWorkId){
+                boolean check = false;
                 staffId = Long.parseLong(staffIdString);
                 for (Staff staff: staffs){
                     if (staff.getStaffId() == staffId){
+                        check = true;
                         staffsWork.add(staff);
                         staff.increaseTimesToBeReferenced();
                         break;
                     }
                 }
+
+                if (!check){
+                    throw new Exception("Be careful when delete a staff, the action can affect to a attendance whose staff is deleted.");
+                }
             }
 
             for (String staffIdString: staffsAbsenteeId){
+                boolean check = false;
                 staffId = Long.parseLong(staffIdString);
                 for (Staff staff: staffs){
                     if (staff.getStaffId() == staffId){
+                        check = true;
                         staffAbsentee.add(staff);
                         staff.increaseTimesToBeReferenced();
                         break;
                     }
+                }
+
+                if (!check){
+                    throw new Exception("Be careful when delete a staff, the action can affect to a attendance whose staff is deleted.");
                 }
             }
 
@@ -489,10 +505,12 @@ public class DbWorker3 {
         return true;
     }
 
-    public boolean updateAttendance(Attendance attendance) {
+    public boolean updateAttendance(Attendance attendance, Staff[] staffs) {
         String sql = "UPDATE attendances SET duration=?, staffsWork=?, staffsAbsentee=? WHERE time=DATETIME(?);";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             Statement stmt = conn.createStatement()) {
+            Staff old = null;
             String staffsWorkId = "";
             String staffsAbsenteeId = "";
             pstmt.setString(4, attendance.getTime().toString());
@@ -572,12 +590,18 @@ public class DbWorker3 {
 
             for (String staffIdString: staffsId){
                 staffId = Long.parseLong(staffIdString);
+                boolean check = false;
                 for (Staff staff: staffsList){
                     if (staff.getStaffId() == staffId){
+                        check = true;
                         staffs.add(staff);
                         staff.increaseTimesToBeReferenced();
                         break;
                     }
+                }
+
+                if (!check){
+                    throw new Exception("Be careful when delete a staff, the action can affect to a shift whose staff is deleted.");
                 }
             }
 

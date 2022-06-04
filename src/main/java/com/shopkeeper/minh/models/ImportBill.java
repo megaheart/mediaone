@@ -2,6 +2,8 @@ package com.shopkeeper.minh.models;
 
 import com.shopkeeper.mediaone.models.BillType;
 import com.shopkeeper.mediaone.models.Bill;
+
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 
 public final class ImportBill extends Bill{
@@ -15,6 +17,7 @@ public final class ImportBill extends Bill{
     private BillType billType;
 
     public ImportBill(){
+        billId = 0;
         billType = BillType.Import;
     }
 
@@ -50,6 +53,9 @@ public final class ImportBill extends Bill{
     }
 
     public void setBillId(int billId) {
+        if (this.billId > 0){
+            throw new InvalidParameterException("billId is able to be set only one time.");
+        }
         this.billId = billId;
     }
 

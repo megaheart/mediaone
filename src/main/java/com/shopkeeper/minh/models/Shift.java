@@ -2,6 +2,7 @@ package com.shopkeeper.minh.models;
 
 import com.shopkeeper.linh.models.Staff;
 
+import java.security.InvalidParameterException;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -10,6 +11,11 @@ public class Shift {
     private int dateOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
+
+    public Shift(){
+        startTime = null;
+        endTime = null;
+    }
 
     public ArrayList<Staff> getStaffs() {
         return staffs;
@@ -28,6 +34,9 @@ public class Shift {
     }
 
     public void setStartTime(LocalTime startTime) {
+        if (this.startTime != null){
+            throw new InvalidParameterException("startTime is able to be set only one time.");
+        }
         this.startTime = startTime;
     }
 
@@ -36,6 +45,9 @@ public class Shift {
     }
 
     public void setEndTime(LocalTime endTime) {
+        if (this.endTime != null){
+            throw new InvalidParameterException("endTime is able to be set only one time.");
+        }
         this.endTime = endTime;
     }
 
