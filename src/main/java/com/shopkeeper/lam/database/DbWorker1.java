@@ -1,15 +1,12 @@
 package com.shopkeeper.lam.database;
 import com.shopkeeper.lam.models.*;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
-import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.*;
+
 public class DbWorker1 {
     private Connection conn;
 
@@ -20,11 +17,11 @@ public class DbWorker1 {
 
 
     public void initializeTables() throws Exception {
-        if (createCategoriesTable()) throw new Exception("DatabaseWorker1 created Category tables false");
-        if (createPeopleTable()) throw new Exception("DatabaseWorker1 created People tables false");
-        if(createProductsTable()) throw new Exception("DatabaseWorker1 created Products tables false");
-        if(createPublishersTable()) throw new Exception("DatabaseWorker1 created Publishers tables false");
-        if(createProductInfosTable()) throw new Exception("DatabaseWorker1 created ProductInfos tables false");
+        if (!createCategoriesTable()) throw new Exception("DatabaseWorker1 created Category tables false");
+        if (!createPeopleTable()) throw new Exception("DatabaseWorker1 created People tables false");
+        if(!createProductsTable()) throw new Exception("DatabaseWorker1 created Products tables false");
+        if(!createPublishersTable()) throw new Exception("DatabaseWorker1 created Publishers tables false");
+        if(!createProductInfosTable()) throw new Exception("DatabaseWorker1 created ProductInfos tables false");
     }
 
     //LOAD
@@ -47,7 +44,7 @@ public class DbWorker1 {
                 + "categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + "name           TEXT      NOT NULL,"
                 + "description    TEXT      NOT NULL,"
-                + "productType    TEXT  NOT NULL,"
+                + "productType    TEXT  NOT NULL"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -142,17 +139,17 @@ public class DbWorker1 {
 
     public boolean createPeopleTable() {
         String sql = "CREATE TABLE people ("
-                + "personId      INTEGER  PRIMARY KEY NOT NULL,"
+                + "personId      INTEGER  PRIMARY KEY AUTOINCREMENT,"
                 + "name          TEXT     NOT NULL,"
                 + "dateOfBirth   TEXT     NOT NULL,"
                 + "description   TEXT     NOT NULL,"
-                + "job           TEXT     NOT NULL,"
+                + "job           TEXT     NOT NULL"
                 + ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
             stmt.execute(sql);
             //Indexes
-            stmt.execute("CREATE UNIQUE INDEX idx_people_personId ON staffs(personId);");
+            stmt.execute("CREATE UNIQUE INDEX idx_people_personId ON people(personId);");
         } catch (SQLException e) {
             System.err.println(e.getMessage());
             return false;
@@ -161,7 +158,7 @@ public class DbWorker1 {
     }
 
     public void loadPeople(DbAdapterCache cache) throws Exception {
-        String sql = "SELECT personId, name, dateOfBirth, description FROM people";
+        String sql = "SELECT personId, name, dateOfBirth, description,job FROM people";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Person person;
@@ -183,7 +180,7 @@ public class DbWorker1 {
         //Return true if success, otherwise return false
         public boolean insertPerson(Person person){
             if (person.getPersonId() != 0) return false;
-            String sql = "INSERT INTO person(name, dateOfBirth, description, job) VALUES(?,DATE(?),?)";
+            String sql = "INSERT INTO people(name, dateOfBirth, description, job) VALUES(?,DATE(?),?,?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 pstmt.setString(1, person.getName());
@@ -251,7 +248,7 @@ public class DbWorker1 {
                 +  "importCost     DOUBLE  NOT NULL,"
                 +  "saleValue      DOUBLE  NOT NULL,"
                 +  "trialFilename  TEXT    NOT NULL,"
-                +  "placement      TEXT    NOT NULL,"
+                +  "placement      TEXT    NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -361,7 +358,7 @@ public class DbWorker1 {
                 +  "publisherId    INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +  "name           TEXT    NOT NULL,"
                 +  "address        TEXT    NOT NULL,"
-                +  "description    TEXT    NOT NULL,"
+                +  "description    TEXT    NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -462,7 +459,7 @@ public class DbWorker1 {
                 +  "publisherId       INTEGER  NOT NULL,"
                 +  "contributors      TEXT     NOT NULL,"
                 +  "rating            DOUBLE   NOT NULL,"
-                +  "award             TEXT     NOT NULL,"
+                +  "award             TEXT     NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -491,7 +488,7 @@ public class DbWorker1 {
                 productInfo = new BookInfo();
             }
             if(rs.getString("productType").equals("SONG")){
-                productInfo = new SongInfo();
+                productInfo = new MusicInfo();
             }
             if(rs.getString("productType").equals("FILM")){
                 productInfo = new FilmInfo();
@@ -524,7 +521,7 @@ public class DbWorker1 {
             }
             productInfo.setAward(awards);
 
-            cache.getProductInfos().add(productInfo);
+            //cache.getProductInfos().add(productInfo);
         }
 
         rs.close();

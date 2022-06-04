@@ -1,10 +1,10 @@
 package com.shopkeeper.minh.models;
 
 import com.shopkeeper.mediaone.models.BillType;
-import com.shopkeeper.mediaone.models.IBill;
+import com.shopkeeper.mediaone.models.Bill;
 import java.time.LocalDate;
 
-public final class ImportBill implements IBill{
+public final class ImportBill extends Bill{
     private String name;
     private double price;
     private int billId;

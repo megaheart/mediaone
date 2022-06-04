@@ -15,12 +15,12 @@ public class DbWorker2 {
         //this.cache = cache;
     }
     public void initializeTables() throws Exception{
-        if(createStaffsTable()) throw new Exception("DatabaseWorker2 created Staffs tables false");
-        if(createSettingsTable()) throw new Exception("DatabaseWorker2 created Settings tables false");
-        if(createCustomersTable()) throw new Exception("DatabaseWorker2 created Customers tables false");
-        if(createTextValuesTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
-        if(createSaleBillsTable()) throw new Exception("DatabaseWorker2 created SaleBills tables false");
-        if(createFeedbacksTable()) throw new Exception("DatabaseWorker2 created Feedbacks tables false");
+        if(!createStaffsTable()) throw new Exception("DatabaseWorker2 created Staffs tables false");
+        if(!createSettingsTable()) throw new Exception("DatabaseWorker2 created Settings tables false");
+        if(!createCustomersTable()) throw new Exception("DatabaseWorker2 created Customers tables false");
+        if(!createTextValuesTable()) throw new Exception("DatabaseWorker2 created TextValues tables false");
+        if(!createSaleBillsTable()) throw new Exception("DatabaseWorker2 created SaleBills tables false");
+        if(!createFeedbacksTable()) throw new Exception("DatabaseWorker2 created Feedbacks tables false");
     }
     public void load1(DbAdapterCache cache) throws Exception{
         loadStaffs(cache);

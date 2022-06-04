@@ -11,10 +11,10 @@ import java.util.*;
 import java.time.*;
 
 public class Publisher implements IReferencedCounter {
-    public String name;
-    public String address;
-    public int publisherId;
-    public String description;
+    private String name;
+    private String address;
+    private int publisherId;
+    private String description;
 
     public Publisher() {
         publisherId=0;

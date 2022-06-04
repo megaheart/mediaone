@@ -11,10 +11,10 @@ import java.time.*;
 import java.security.InvalidParameterException;
 
 public class Category implements IReferencedCounter {
-    public String name;
-    public int categoryId;
-    public ProductType productType;
-    public String description;
+    private String name;
+    private int categoryId;
+    private ProductType productType;
+    private String description;
     public Category(){
         categoryId = 0;
     }

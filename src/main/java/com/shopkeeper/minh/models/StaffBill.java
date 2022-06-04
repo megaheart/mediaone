@@ -4,9 +4,9 @@ import java.time.LocalDate;
 
 import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.mediaone.models.BillType;
-import com.shopkeeper.mediaone.models.IBill;
+import com.shopkeeper.mediaone.models.Bill;
 
-public final class StaffBill implements IBill {
+public final class StaffBill extends Bill {
     private String name;
     private BillType billType;
     private double price;

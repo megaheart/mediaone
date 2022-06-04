@@ -6,7 +6,7 @@ import com.shopkeeper.minh.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-public class DbAdapterCache {
+public class ReadOnlyDbAdapterCache {
     //region linh
     private ObservableList<Staff> staffs;
     private Settings settings;
@@ -95,29 +95,29 @@ public class DbAdapterCache {
         return shifts;
     }
 
-    public DbAdapterCache(){
+    public ReadOnlyDbAdapterCache(DbAdapterCache cache){
         //region linh
-        staffs = FXCollections.observableArrayList();
-        settings = new Settings();
-        customers = FXCollections.observableArrayList();
-        saleBills = FXCollections.observableArrayList();
-        feedbacks = FXCollections.observableArrayList();
+        staffs = FXCollections.unmodifiableObservableList(cache.getStaffs());
+        settings = cache.getSettings();
+        customers = FXCollections.unmodifiableObservableList(cache.getCustomers());
+        saleBills = FXCollections.unmodifiableObservableList(cache.getSaleBills());
+        feedbacks = FXCollections.unmodifiableObservableList(cache.getFeedbacks());
         //endregion
         //region lam
-        publishers = FXCollections.observableArrayList();
-        categories = FXCollections.observableArrayList();
-        people = FXCollections.observableArrayList();
-        musicInfos = FXCollections.observableArrayList();
-        filmInfos = FXCollections.observableArrayList();
-        bookInfos = FXCollections.observableArrayList();
-        products = FXCollections.observableArrayList();
+        publishers = FXCollections.unmodifiableObservableList(cache.getPublishers());
+        categories = FXCollections.unmodifiableObservableList(cache.getCategories());
+        people = FXCollections.unmodifiableObservableList(cache.getPeople());
+        musicInfos = FXCollections.unmodifiableObservableList(cache.getMusicInfos());
+        filmInfos = FXCollections.unmodifiableObservableList(cache.getFilmInfos());
+        bookInfos = FXCollections.unmodifiableObservableList(cache.getBookInfos());
+        products = FXCollections.unmodifiableObservableList(cache.getProducts());
         //endregion
         //region minh
-        importBills = FXCollections.observableArrayList();
-        otherBills = FXCollections.observableArrayList();
-        staffBills = FXCollections.observableArrayList();
-        attendances = FXCollections.observableArrayList();
-        shifts = FXCollections.observableArrayList();
+        importBills = FXCollections.unmodifiableObservableList(cache.getImportBills());
+        otherBills = FXCollections.unmodifiableObservableList(cache.getOtherBills());
+        staffBills = FXCollections.unmodifiableObservableList(cache.getStaffBills());
+        attendances = FXCollections.unmodifiableObservableList(cache.getAttendances());
+        shifts = FXCollections.unmodifiableObservableList(cache.getShifts());
         //endregion
     }
 }
