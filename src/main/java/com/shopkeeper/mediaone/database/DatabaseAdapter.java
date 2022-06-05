@@ -284,10 +284,32 @@ public class DatabaseAdapter {
     }
     //endregion
     //region ProductInfo BOOKINFO
-
+    public ObservableList<BookInfo> getAllBookInfos(){
+        return readOnlyCache.getBookInfos();
+    }
+    public boolean insertBookInfo(BookInfo bookInfo){
+        return bookInfoDbSet.insert(bookInfo);
+    }
+    public boolean updateBookInfo(BookInfo bookInfo){
+        return bookInfoDbSet.update(bookInfo);
+    }
+    public boolean deleteBookInfo(BookInfo bookInfo){
+        return bookInfoDbSet.delete(bookInfo);
+    }
     //endregion
     //region ProductInfo FILMINFO
-
+    public ObservableList<FilmInfo> getAllFilmInfos(){
+        return readOnlyCache.getFilmInfos();
+    }
+    public boolean insertFilmInfo(FilmInfo filmInfo){
+        return filmInfoDbSet.insert(filmInfo);
+    }
+    public boolean updateFilmInfo(FilmInfo filmInfo){
+        return filmInfoDbSet.update(filmInfo);
+    }
+    public boolean deleteFilmInfo(FilmInfo filmInfo){
+        return filmInfoDbSet.delete(filmInfo);
+    }
     //endregion
     //region Product
 
