@@ -44,7 +44,7 @@ public class MusicInfoDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
+    public void load() throws Exception {
         String sql = "SELECT productInfoId, title, description,categoryId,releaseDate,currentSalePrice,publisherId,rating,award,musiciansId,timeLimit FROM musicInfos";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -53,7 +53,7 @@ public class MusicInfoDbSet {
         String[] award;
         ArrayList<String> awards = new ArrayList<>();
         ArrayList<Person> musicians = new ArrayList<>();
-        ObservableList<Person> peopleList = cache.getPeople();
+        ObservableList<Person> peopleList = readOnlyCache.getPeople();
         while (rs.next()) {
             productInfo = new MusicInfo();
             productInfo.setProductInfoId(rs.getInt("productInfoId"));

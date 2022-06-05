@@ -33,7 +33,7 @@ public class PublisherDbSet {
         }
         return true;
     }
-    public void load(DbAdapterCache cache) throws Exception{
+    public void load() throws Exception{
         String sql = "SELECT publisherId, name, address, description  FROM publishers";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);

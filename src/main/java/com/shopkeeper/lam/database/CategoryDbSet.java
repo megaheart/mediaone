@@ -32,7 +32,7 @@ public class CategoryDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
+    public void load() throws Exception {
         String sql = "SELECT categoryId, name, description FROM categories";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);

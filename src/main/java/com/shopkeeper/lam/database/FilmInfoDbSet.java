@@ -45,7 +45,7 @@ public class FilmInfoDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
+    public void load() throws Exception {
         String sql = "SELECT productInfoId, title, description,categoryId,releaseDate,currentSalePrice,publisherId,rating,award,directorId,actorsId,timeLimit FROM filmInfos";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -54,7 +54,7 @@ public class FilmInfoDbSet {
         String[] award;
         ArrayList<String> awards = new ArrayList<>();
         ArrayList<Person> actors = new ArrayList<>();
-        ObservableList<Person> peopleList = cache.getPeople();
+        ObservableList<Person> peopleList = readOnlyCache.getPeople();
         while (rs.next()) {
             productInfo = new FilmInfo();
             productInfo.setProductInfoId(rs.getInt("productInfoId"));

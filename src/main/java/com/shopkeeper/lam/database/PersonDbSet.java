@@ -38,7 +38,7 @@ public class PersonDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
+    public void load() throws Exception {
         String sql = "SELECT personId, name, dateOfBirth, description,job FROM people";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);

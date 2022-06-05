@@ -38,7 +38,7 @@ public class ProductDbSet {
         }
         return true;
     }
-    public void load(DbAdapterCache cache) throws Exception{
+    public void load() throws Exception{
         String sql = "SELECT productId, productInfoId, state, importBillId, saleBillId, importCost, saleValue,trialFilename,placement FROM products";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
