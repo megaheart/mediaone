@@ -133,9 +133,15 @@ public class DatabaseAdapter {
         staffDbSet.load();
         settingsDbSet.load();
         customerDbSet.load();
+        otherBillDbSet.load();
+        importBillDbSet.load();
+        //categoryDbSet.load();
 
         //Load 2
         saleBillDbSet.load();
+        attendanceDbSet.load();
+        staffBillDbSet.load();
+        shiftDbSet.load();
         //Load 3
 
         //Load 4
@@ -196,13 +202,13 @@ public class DatabaseAdapter {
     public ObservableList<SaleBill> getAllSaleBills(){
         return readOnlyCache.getSaleBills();
     }
-    public boolean insertSaleBill(SaleBill bill) throws Exception{
+    public boolean insertSaleBill(SaleBill bill) {
         return saleBillDbSet.insert(bill);
     }
-    public boolean updateSaleBill(SaleBill bill) throws Exception{
+    public boolean updateSaleBill(SaleBill bill) {
         return saleBillDbSet.update(bill);
     }
-    public boolean deleteSaleBill(SaleBill bill) throws Exception{
+    public boolean deleteSaleBill(SaleBill bill) {
         return saleBillDbSet.delete(bill);
     }
     public ArrayList<Product> getItems(SaleBill bill){
@@ -264,20 +270,16 @@ public class DatabaseAdapter {
     //region ProductInfo
 
     //endregion
+    //region ProductInfo
+
+    //endregion
+    //region ProductInfo
+
+    //endregion
     //region Product
 
     //endregion
     //-------------------Minh-------------------
-    //region Feedback
-
-
-    //endregion
-    //region Feedback
-
-    //endregion
-    //region Feedback
-
-    //endregion
     //region ImportBill
     public ObservableList<ImportBill> getAllImportBills(){
         return readOnlyCache.getImportBills();
@@ -307,12 +309,54 @@ public class DatabaseAdapter {
     public boolean insertOtherBill(OtherBill bill){
         return otherBillDbSet.insert(bill);
     }
-    public boolean updateOtherBill(OtherBill bill) throws Exception{
+    public boolean updateOtherBill(OtherBill bill) {
         return otherBillDbSet.update(bill);
     }
-    public boolean deleteOtherBill(OtherBill bill) throws Exception{
+    public boolean deleteOtherBill(OtherBill bill){
         return otherBillDbSet.delete(bill);
 
+    }
+    //endregion
+    //region StaffBill
+    public ObservableList<StaffBill> getAllStaffBills(){
+        return readOnlyCache.getStaffBills();
+    }
+    public boolean insertStaffBill(StaffBill bill) {
+        return staffBillDbSet.insert(bill);
+    }
+    public boolean updateStaffBill(StaffBill bill) {
+        return staffBillDbSet.update(bill);
+    }
+    public boolean deleteStaffBill(StaffBill bill) {
+        return staffBillDbSet.delete(bill);
+    }
+    //endregion
+    //region Attendance
+    public ObservableList<Attendance> getAllAttendances(){
+        return readOnlyCache.getAttendances();
+    }
+    public boolean insertAttendance(Attendance attendance) {
+        return attendanceDbSet.insert(attendance);
+    }
+    public boolean updateAttendance(Attendance attendance) {
+        return attendanceDbSet.update(attendance);
+    }
+    public boolean deleteAttendance(Attendance attendance) {
+        return attendanceDbSet.delete(attendance);
+    }
+    //endregion
+    //region Shift
+    public ObservableList<Shift> getAllShifts(){
+        return readOnlyCache.getShifts();
+    }
+    public boolean insertShift(Shift shift) {
+        return shiftDbSet.insert(shift);
+    }
+    public boolean updateShift(Shift shift) {
+        return shiftDbSet.update(shift);
+    }
+    public boolean deleteShift(Shift shift) {
+        return shiftDbSet.delete(shift);
     }
     //endregion
 }
