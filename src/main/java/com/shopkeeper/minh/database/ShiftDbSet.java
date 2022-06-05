@@ -24,7 +24,7 @@ public class ShiftDbSet {
         String sql = "CREATE TABLE shifts ("
                 +  "startTime       DATETIME NOT NULL,"
                 +  "endTime         DATETIME NOT NULL,"
-                +  "staffs          TEXT     NOT NULL,"
+                +  "staff          TEXT     NOT NULL,"
                 +  "dateOfWeek      INTEGER  NOT NULL"
                 +  ");";
 
@@ -40,7 +40,7 @@ public class ShiftDbSet {
     }
 
     public void load() throws Exception{
-        String sql = "SELECT  startTime, endTime, staffs, dateOfWeek FROM shifts;";
+        String sql = "SELECT  startTime, endTime, staff, dateOfWeek FROM shifts;";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
 
@@ -56,7 +56,7 @@ public class ShiftDbSet {
             shift.setStartTime(LocalTime.parse(rs.getString("startTime")));
             shift.setEndTime(LocalTime.parse(rs.getString("endTime")));
             shift.setDateOfWeek(rs.getInt("dateOfWeek"));
-            staffsId = rs.getString("staffs").split("_");
+            staffsId = rs.getString("staff").split("_");
 
 
             for (String staffIdString: staffsId){
@@ -114,7 +114,7 @@ public class ShiftDbSet {
         }
 
 
-        String sql = "INSERT INTO shifts(startTime, endTime, staffs, dateOfWeek) VALUES(TIME(?),TIME(?),?,?);";
+        String sql = "INSERT INTO shifts(startTime, endTime, staff, dateOfWeek) VALUES(TIME(?),TIME(?),?,?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             String staffsId = "";
@@ -151,8 +151,8 @@ public class ShiftDbSet {
             return false;
         }
 
-        String sql = "UPDATE shifts SET staffs=?, dateOfWeek=? WHERE startTime=TIME(?), endTime=TIME(?); ";
-        String oldSql = "SELECT staffs FROM shifts WHERE startTime=TIME(?), endTime=TIME(?);";
+        String sql = "UPDATE shifts SET staff = ?, dateOfWeek = ? WHERE startTime = TIME(?) AND endTime = TIME(?);";
+        String oldSql = "SELECT staff FROM shifts WHERE startTime = TIME(?) AND endTime = TIME(?);";
 
         String[] oldStaffsId = {};
 
@@ -220,7 +220,7 @@ public class ShiftDbSet {
             return false;
         }
 
-        String sql = "DELETE FROM shifts WHERE startTime=TIME(?), endTime=TIME(?);";
+        String sql = "DELETE FROM shifts WHERE startTime=TIME(?) AND endTime=TIME(?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, shift.getStartTime().toString());

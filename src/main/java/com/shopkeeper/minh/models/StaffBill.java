@@ -23,6 +23,7 @@ public final class StaffBill extends Bill {
     public StaffBill(String name, double price, LocalDate time, boolean isEffected, String note, LocalDate from, Staff staff, double standardSalaryPerHour, double workHours)
     {
         this.billId = 0;
+        this.staff = staff;
         this.billType = BillType.Staff;
         this.name = name;
         this.price = price;

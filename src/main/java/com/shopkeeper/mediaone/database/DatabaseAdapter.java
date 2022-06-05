@@ -135,13 +135,15 @@ public class DatabaseAdapter {
         customerDbSet.load();
         otherBillDbSet.load();
         importBillDbSet.load();
-        //categoryDbSet.load();
+        categoryDbSet.load();
+        publisherDbSet.load();
+        personDbSet.load();
 
         //Load 2
         saleBillDbSet.load();
         attendanceDbSet.load();
         staffBillDbSet.load();
-        shiftDbSet.load();
+        //shiftDbSet.load();
         //Load 3
 
         //Load 4

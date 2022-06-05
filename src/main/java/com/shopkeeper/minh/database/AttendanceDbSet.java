@@ -12,6 +12,7 @@ import java.sql.*;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class AttendanceDbSet {
@@ -56,12 +57,13 @@ public class AttendanceDbSet {
         String[] staffsAbsenteeId;
         long staffId;
         ObservableList<Staff> staffs = readOnlyCache.getStaffs();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
         while (rs.next()) {
             attendance = new Attendance();
             staffsWork = new ArrayList<Staff>();
             staffAbsentee = new ArrayList<Staff>();
-            attendance.setTime(LocalDateTime.parse(rs.getString("time")));
+            attendance.setTime(LocalDateTime.parse(rs.getString("time"), formatter));
             attendance.setDuration(Duration.parse(rs.getString("duration")));
             staffsWorkId = rs.getString("staffsWork").split("_");
             staffsAbsenteeId = rs.getString("staffsAbsentee").split("_");
@@ -132,6 +134,15 @@ public class AttendanceDbSet {
         if (!readOnlyCache.getStaffs().containsAll(attendance.getStaffsAbsentee())){
             System.err.println("One Staff in which output of attendance.getStaffsAbsentee() is not in DbAdapter's cache");
             return false;
+        }
+
+        for (Staff staffWork: attendance.getStaffsWork()){
+            for (Staff staffAbsentee: attendance.getStaffsAbsentee()){
+                if (staffAbsentee == staffWork){
+                    System.err.println("At least one Staff lies in both staffsWork and staffsAbsentee");
+                    return false;
+                }
+            }
         }
 
         String sql = "INSERT INTO attendances(time, duration, staffsWork, staffsAbsentee) VALUES(DATETIME(?),?,?,?);";

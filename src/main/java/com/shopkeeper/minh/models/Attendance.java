@@ -17,6 +17,13 @@ public class Attendance {
         this.time = LocalDateTime.of(1000, 1, 1, 1, 1, 1);
     }
 
+    public Attendance(LocalDateTime time, Duration duration, ArrayList<Staff> staffsWork, ArrayList<Staff> staffsAbsentee){
+        this.time = time;
+        this.duration = duration;
+        this.staffsWork = staffsWork;
+        this.staffsAbsentee = staffsAbsentee;
+    }
+
     public void setTime(LocalDateTime time) {
         if (!this.time.equals(LocalDateTime.of(1000, 1, 1, 1, 1, 1))){
             throw new InvalidParameterException("Time is able to be set only one.");
