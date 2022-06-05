@@ -14,7 +14,7 @@ import java.time.*;
 public class Product implements IReferencedCounter {
     private int productId;
     private ProductInfo productInfo;
-    private ProductType productType;
+
     private ProductState state;
     private ImportBill importBill;
     private SaleBill saleBill;
@@ -24,10 +24,9 @@ public class Product implements IReferencedCounter {
     private String placement;
     public Product(){productId = 0;}
 
-    public Product(int productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
+    public Product(int productId, ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
         this.productId = productId;
         this.productInfo = productInfo;
-        this.productType = productType;
         this.state = state;
         this.importBill = importBill;
         this.saleBill = saleBill;
@@ -94,15 +93,6 @@ public class Product implements IReferencedCounter {
     public void setProductInfo(ProductInfo productInfo) {
         this.productInfo = productInfo;
     }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
     public ProductState getState() {
         return state;
     }
@@ -125,7 +115,6 @@ public class Product implements IReferencedCounter {
         sb.append('{'); sb.append('\n');
         sb.append("    productId: \""); sb.append(getProductId());sb.append("\",\n");
         sb.append("    productInfo: \""); sb.append(getProductInfo());sb.append("\",\n");
-        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
         sb.append("    productState: \""); sb.append(getState());sb.append("\",\n");
         sb.append("    importBill: \""); sb.append(getImportBill());sb.append("\",\n");
         sb.append("    saleBill: \""); sb.append(getSaleBill());sb.append("\",\n");
