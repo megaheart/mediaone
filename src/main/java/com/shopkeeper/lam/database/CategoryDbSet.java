@@ -15,7 +15,7 @@ public class CategoryDbSet {
     }
     public boolean createTable() {
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE categories (");
-        sqlBuilder.append("categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,");
+        sqlBuilder.append("categoryId     INTEGER   PRIMARY KEY AUTOINCREMENT,");
         sqlBuilder.append("name           TEXT      NOT NULL,");
         sqlBuilder.append("description    TEXT      NOT NULL,");
         sqlBuilder.append(");");
@@ -33,7 +33,7 @@ public class CategoryDbSet {
     }
 
     public void load(DbAdapterCache cache) throws Exception {
-        String sql = "SELECT categoryId, name, description,productType FROM categories";
+        String sql = "SELECT categoryId, name, description FROM categories";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Category category;
@@ -53,7 +53,7 @@ public class CategoryDbSet {
 
     public boolean insert(Category category) {
         if(category.getCategoryId() != 0) return false;
-        String sql = "INSERT INTO categories(name, description, productType) VALUES(?,?,?)";
+        String sql = "INSERT INTO categories(name, description) VALUES(?,?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, category.getName());
@@ -81,7 +81,7 @@ public class CategoryDbSet {
             System.err.println("category is not in DbAdapter's cache");
             return false;
         }
-        String sql = "UPDATE categories SET name=?,description=?,productType=? WHERE categoryId=?";
+        String sql = "UPDATE categories SET name=?,description=? WHERE categoryId=?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, category.getName());

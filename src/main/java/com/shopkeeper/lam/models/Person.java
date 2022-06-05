@@ -1,10 +1,11 @@
 package com.shopkeeper.lam.models;
 
 import com.shopkeeper.mediaone.models.IReferencedCounter;
+/*
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.value.ObservableValue;*/
 
 import java.security.InvalidParameterException;
 import java.util.*;
