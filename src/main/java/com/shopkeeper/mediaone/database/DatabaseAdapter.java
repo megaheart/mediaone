@@ -133,6 +133,9 @@ public class DatabaseAdapter {
         staffDbSet.load();
         settingsDbSet.load();
         customerDbSet.load();
+        otherBillDbSet.load();
+        importBillDbSet.load();
+        //categoryDbSet.load();
 
         //Load 2
         saleBillDbSet.load();
@@ -307,10 +310,10 @@ public class DatabaseAdapter {
     public boolean insertOtherBill(OtherBill bill){
         return otherBillDbSet.insert(bill);
     }
-    public boolean updateOtherBill(OtherBill bill) throws Exception{
+    public boolean updateOtherBill(OtherBill bill) {
         return otherBillDbSet.update(bill);
     }
-    public boolean deleteOtherBill(OtherBill bill) throws Exception{
+    public boolean deleteOtherBill(OtherBill bill){
         return otherBillDbSet.delete(bill);
 
     }
