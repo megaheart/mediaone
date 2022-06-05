@@ -183,7 +183,7 @@ public class FilmInfoDbSet {
         String sql = "DELETE FROM filmInfos WHERE productInfoId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(12, filmInfo.getProductInfoId());
+            pstmt.setInt(1, filmInfo.getProductInfoId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("FilmInfo (ID = " + filmInfo.getProductInfoId() + ") does not exist in \"filmInfos\" table.");
         } catch (Exception e) {

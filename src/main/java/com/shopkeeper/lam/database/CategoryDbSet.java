@@ -111,10 +111,9 @@ public class CategoryDbSet {
         String sql = "DELETE FROM categories WHERE categoryId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(4, category.getCategoryId());
+            pstmt.setInt(1, category.getCategoryId());
             int affected = pstmt.executeUpdate();
-            if (affected == 0)
-                throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
+            if (affected == 0) throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;

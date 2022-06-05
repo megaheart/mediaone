@@ -75,11 +75,11 @@ public class Person implements IReferencedCounter {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append('{'); sb.append('\n');
-        sb.append("    personId: \""); sb.append(getPersonId());sb.append("\",\n");
-        sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
-        sb.append("    dateOfBirth: "); sb.append(getDateOfBirth());sb.append(",\n");
-        sb.append("    description: \""); sb.append(getDescription());sb.append("\",\n");
-        sb.append("    jobs: "); sb.append(getJob().toString());sb.append("\n");
+        sb.append("personId: \""); sb.append(getPersonId());sb.append("\",\n");
+        sb.append("name: \""); sb.append(getName());sb.append("\",\n");
+        sb.append("dateOfBirth: "); sb.append(getDateOfBirth().toString());sb.append(",\n");
+        sb.append("description: \""); sb.append(getDescription());sb.append("\",\n");
+        sb.append("job: "); sb.append(getJob().toString());sb.append("\n");
         sb.append('}');
         return sb.toString();
     }

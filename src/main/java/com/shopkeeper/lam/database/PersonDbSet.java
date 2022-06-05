@@ -96,7 +96,7 @@ public class PersonDbSet {
             pstmt.setString(2, person.getDateOfBirth().toString());
             pstmt.setString(3, person.getDescription());
             pstmt.setString(4, person.getJob().toString());
-            pstmt.setLong(5, person.getPersonId());
+            pstmt.setInt(5, person.getPersonId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Person (ID = " + person.getPersonId() + ") does not exist in \"people\" table.");
@@ -121,7 +121,7 @@ public class PersonDbSet {
         String sql = "DELETE FROM people WHERE personId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, person.getPersonId());
+            pstmt.setInt(1, person.getPersonId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Person (ID = " + person.getPersonId() + ") does not exist in \"people\" table.");

@@ -267,13 +267,24 @@ public class DatabaseAdapter {
 
     }
     //endregion
-    //region ProductInfo
+    //region ProductInfo MUSICINFO
+    public ObservableList<MusicInfo> getAllMusicInfos(){
+        return readOnlyCache.getMusicInfos();
+    }
+    public boolean insertMusicInfo(MusicInfo musicInfo){
+        return musicInfoDbSet.insert(musicInfo);
+    }
+    public boolean updateMusicInfo(MusicInfo musicInfo){
+        return musicInfoDbSet.update(musicInfo);
+    }
+    public boolean deleteMusicInfo(MusicInfo musicInfo){
+        return musicInfoDbSet.delete(musicInfo);
+    }
+    //endregion
+    //region ProductInfo BOOKINFO
 
     //endregion
-    //region ProductInfo
-
-    //endregion
-    //region ProductInfo
+    //region ProductInfo FILMINFO
 
     //endregion
     //region Product

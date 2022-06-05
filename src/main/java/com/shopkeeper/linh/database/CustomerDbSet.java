@@ -113,7 +113,6 @@ public class CustomerDbSet {
             System.err.println("customer is not in DbAdapter's cache");
             return false;
         }
-
         String sql = "DELETE FROM customers WHERE customerId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

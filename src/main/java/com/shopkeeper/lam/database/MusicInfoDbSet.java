@@ -178,7 +178,7 @@ public class MusicInfoDbSet {
         String sql = "DELETE FROM musicInfos WHERE productInfoId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(11, musicInfo.getProductInfoId());
+            pstmt.setInt(1, musicInfo.getProductInfoId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("MusicInfo (ID = " + musicInfo.getProductInfoId() + ") does not exist in \"musicInfos\" table.");
         } catch (Exception e) {

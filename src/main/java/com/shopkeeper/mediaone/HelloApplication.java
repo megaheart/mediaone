@@ -1,13 +1,14 @@
 package com.shopkeeper.mediaone;
 
+import com.shopkeeper.lam.models.Category;
+import com.shopkeeper.lam.models.JobOfPerson;
+import com.shopkeeper.lam.models.Person;
+import com.shopkeeper.lam.models.Publisher;
 import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
-import com.shopkeeper.minh.models.ImportBill;
-import com.shopkeeper.minh.models.OtherBill;
-import com.shopkeeper.minh.models.StaffBill;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,55 +21,71 @@ import java.time.LocalDate;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+//        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+//        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+//        stage.setTitle("Hello!");
+//        stage.show();
+
+
+        Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin", JobOfPerson.WRITER);
+        Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",JobOfPerson.ACTOR);
+        Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",JobOfPerson.ACTOR);
+        Person x4=new Person("DOREMON",LocalDate.of(3424,3,4),"meo may den tu tuong lai",JobOfPerson.ACTOR);
         var adapter = DatabaseAdapter.getDbAdapter();
-
-        Staff x1 = new Staff("Linh đẹp trai", true, LocalDate.of(2002, 3,27), "linhdeptrai@mail.com",
-                "0962256452", "cái j cũng như bòi trừ mỗi cái đẹp trai", StaffState.Interviewing);
-        Staff x2 = new Staff("Lâm lão luyện", true, LocalDate.of(2002, 1,24), "lamidol@mail.com",
-                "0956565656", "thông thạo 7 C/C++, chấp mọi loại thuật toán", StaffState.Working);
-        Staff x3 = new Staff("Minh thông", true, LocalDate.of(2002, 11,6), "minhidol@mail.com",
-                "0988888888", "trên thông thiên văn dưới tường địa lý", StaffState.Demited);
-        Staff x4 = new Staff("Lóng thị lánh", false, LocalDate.of(2002, 10,24), "longlanh@mail.com",
-                "0969696969", "đẹp gái, đáng yêu nhưng hơi láo", StaffState.Unreliable);
-        Staff x5 = new Staff("Mỹ Ngọc Kim Chi", false, LocalDate.of(2002, 11,24), "kimchidangyeu@mail.com",
-                "0966996699", "ngôk nghêk nên ko tuyển", StaffState.NotEmployed);
-
-        // Staff x6 = new Staff("Mỹ Ngọc", false, LocalDate.of(2002, 11,24), "kimchidangyeu@mail.com",
-        //       "0966996699", "ngôk nghêk nên ko tuyển", StaffState.NotEmployed);
-
-        for(var x:adapter.getAllStaffs()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
+        for(var x : adapter.getAllPeople()){
             System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
         }
-        adapter.insertStaff(x1);
-        adapter.insertStaff(x2);
-        adapter.insertStaff(x3);
-        adapter.insertStaff(x4);
-        adapter.insertStaff(x5);
+        adapter.insertPerson(x1);
+        adapter.insertPerson(x2);
+        adapter.insertPerson(x3);
+        adapter.insertPerson(x4);
         System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllStaffs()){
+        for(var x :adapter.getAllPeople()){
+            System.out.println(x);
+        }
+        /*Category honor = new Category("Kinh di","phim rat dang so,khong danh cho tre em duoi 18 tuoi");
+        Category comedy = new Category("Phim hai","phim rat buon cuoi");
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x : adapter.getAllCategories()){
+            System.out.println(x);
+        }
+        adapter.insertCategory(honor);
+        adapter.insertCategory(comedy);
+        System.out.println("----------<><><><><>----------");
+        for(var x :adapter.getAllCategories()){
+            System.out.println(x);
+        }*/
+       /* Publisher p1 = new Publisher("Kim Dong","Viet Nam","xuat ban Doremon");
+        Publisher p2 = new Publisher("Hoyoverse","Trung Quoc","genshin,honkai");
+        Publisher p3 = new Publisher("Garena","Trung Quoc","LOL,FIFA 4");
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x : adapter.getAllPublishers()){
+            System.out.println(x);
+        }
+        adapter.insertPublisher(p1);
+        adapter.insertPublisher(p2);
+        adapter.insertPublisher(p3);
+        System.out.println("----------<><><><><>----------");
+        for(var x :adapter.getAllPublishers()){
+            System.out.println(x);
+        }
+*/
+        /*var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllPeople()){
             //Nếu như các ô đã triển khai override thuộc tính toString() cho
             // của ô rồi thì viết thế này
             System.out.println(x);
             //Còn nếu không các ô phải in từng thuộc tính 1 ra
         }
-
-        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
-        StaffBill s1 = new StaffBill("Hoa don 1", 1000, LocalDate.of(2022, 6, 2), true, "day la hoa don 1", LocalDate.of(2022, 6, 3), x1, 1000, 2);
-        StaffBill s2 = new StaffBill("Hoa don 2", 2000, LocalDate.of(2022, 6, 3), false, "day la hoa don 2", LocalDate.of(2022, 6, 4), x2, 2000, 3);
-        StaffBill s3 = new StaffBill("Hoa don 3", 3000, LocalDate.of(2022, 6, 4), true, "day la hoa don 3", LocalDate.of(2022, 6, 5), x3, 3000, 2.5);
-        StaffBill s4 = new StaffBill("Hoa don 4", 4000, LocalDate.of(2022, 6, 5), false, "day la hoa don 4", LocalDate.of(2022, 6, 6), x4, 4000, 4.5);
-        StaffBill s5 = new StaffBill("Hoa don 5", 5000, LocalDate.of(2022, 6, 6), true, "day la hoa don 5", LocalDate.of(2022, 6, 7), x5, 5000, 3.5);
-        // StaffBill s6 = new StaffBill("Hoa don 6", 6000, LocalDate.of(2022, 6, 7), false, "day la hoa don 6", LocalDate.of(2022, 6, 8), x6, 6000, 6);
-
-        adapter.insertStaffBill(s1);
-        adapter.insertStaffBill(s2);
-        adapter.insertStaffBill(s3);
-        adapter.insertStaffBill(s4);
-        adapter.insertStaffBill(s5);
-
+        var y = adapter.getAllPeople().get(5);
+        adapter.deletePerson(y);
+        for(var x:adapter.getAllPeople()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }*/
         javafx.application.Platform.exit();
     }
 
