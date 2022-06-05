@@ -122,7 +122,7 @@ public class DatabaseAdapter {
             //Minh
             if(!otherBillDbSet.createTable()) throw new Exception("DatabaseWorker3 created OtherBills tables false");
             if(!importBillDbSet.createTable()) throw new Exception("DatabaseWorker3 created ImportBills tables false");
-            if(!staffDbSet.createTable()) throw new Exception("DatabaseWorker3 created StaffBills tables false");
+            if(!staffBillDbSet.createTable()) throw new Exception("DatabaseWorker3 created StaffBills tables false");
             if (!attendanceDbSet.createTable()) throw new Exception("DatabaseWorker3 created Attendances tables false");
             if (!shiftDbSet.createTable()) throw new Exception("DatabaseWorker3 created Shifts tables false");
 
