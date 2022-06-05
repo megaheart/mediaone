@@ -54,4 +54,5 @@ public class Shift {
     public void setStaffs(ArrayList<Staff> staffs) {
         this.staffs = staffs;
     }
+
 }
