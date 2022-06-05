@@ -1,5 +1,8 @@
 package com.shopkeeper.mediaone;
 
+import com.shopkeeper.lam.models.Category;
+import com.shopkeeper.lam.models.JobOfPerson;
+import com.shopkeeper.lam.models.Person;
 import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.models.Staff;
@@ -22,10 +25,22 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+        Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin", JobOfPerson.WRITER);
+        Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",JobOfPerson.ACTOR);
+        Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",JobOfPerson.ACTOR);
+        Person x4=new Person("DOREMON",LocalDate.of(3424,23,4),"meo may den tu tuong lai",JobOfPerson.ACTOR);
         var adapter = DatabaseAdapter.getDbAdapter();
-
-        var x3 = adapter.getAllShifts().get(1);
-        adapter.deleteShift(x3);
+        for(var x : adapter.getAllPeople()){
+            System.out.println(x);
+        }
+        adapter.insertPerson(x1);
+        adapter.insertPerson(x2);
+        adapter.insertPerson(x3);
+        adapter.insertPerson(x4);
+        System.out.println("----------<><><><><>----------");
+        for(var x :adapter.getAllPeople()){
+            System.out.println(x);
+        }
 
 
         javafx.application.Platform.exit();
