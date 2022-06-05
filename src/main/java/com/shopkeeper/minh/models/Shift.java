@@ -17,6 +17,13 @@ public class Shift {
         endTime = null;
     }
 
+    public Shift(ArrayList<Staff> staffs, int dateOfWeek, LocalTime startTime, LocalTime endTime){
+        this.staffs = staffs;
+        this.dateOfWeek = dateOfWeek;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
     public ArrayList<Staff> getStaffs() {
         return staffs;
     }
