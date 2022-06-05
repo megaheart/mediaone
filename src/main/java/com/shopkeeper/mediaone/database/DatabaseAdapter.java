@@ -218,103 +218,48 @@ public class DatabaseAdapter {
     //endregion
     //-------------------Lam-------------------
     //region Category
-//    public ObservableList<Category> getAllCategories(){
-//        return FXCollections.unmodifiableObservableList(cache.getCategories());
-//    }
-//    public boolean insertCategory(Category category){
-//        if(worker1.insertCategory(category)){
-//            cache.getCategories().add(category);
-//            return true;
-//        }
-//        return false;
-//    }
-//    public boolean updateCategory(Category category) throws Exception{
-//        if(cache.getCategories().contains(category))
-//            return worker1.updateCategory(category);
-//        throw new Exception("category is not in DbAdapter's cache");
-//    }
-//    public boolean deleteCategory(Category category) throws Exception{
-//        if(category.countTimesToBeReferenced() != 0)  {
-//            System.err.println("Something have referenced to this category.");
-//            return false;
-//        }
-//        int index = cache.getCategories().indexOf(category);
-//        if(index > -1){
-//            if(worker1.deleteCategory(category)){
-//                cache.getCategories().remove(index, index + 1);
-//                return true;
-//            }
-//            return false;
-//        }
-//        throw new Exception("category is not in DbAdapter's cache");
-//
-//    }
+    public ObservableList<Category> getAllCategories(){
+        return readOnlyCache.getCategories();
+    }
+    public boolean insertCategory(Category category){
+        return categoryDbSet.insert(category);
+    }
+    public boolean updateCategory(Category category) {
+        return categoryDbSet.update(category);
+    }
+    public boolean deleteCategory(Category category) {
+        return categoryDbSet.deleteCategory(category);
+
+    }
     //endregion
     //region Publisher
-//    public ObservableList<Publisher> getAllPublishers(){
-//        return FXCollections.unmodifiableObservableList(cache.getPublishers());
-//    }
-//    public boolean insertPublisher(Publisher publisher){
-//        if(worker1.insertPublisher(publisher)){
-//            cache.getPublishers().add(publisher);
-//            return true;
-//        }
-//        return false;
-//    }
-//    public boolean updatePublisher(Publisher publisher) throws Exception{
-//        if(cache.getPublishers().contains(publisher))
-//            return worker1.updatePublisher(publisher);
-//        throw new Exception("publisher is not in DbAdapter's cache");
-//    }
-//    public boolean deletePublisher(Publisher publisher) throws Exception{
-//        if(publisher.countTimesToBeReferenced() != 0)  {
-//            System.err.println("Something have referenced to this publisher.");
-//            return false;
-//        }
-//        int index = cache.getPublishers().indexOf(publisher);
-//        if(index > -1){
-//            if(worker1.deletePublisher(publisher)){
-//                cache.getPublishers().remove(index, index + 1);
-//                return true;
-//            }
-//            return false;
-//        }
-//        throw new Exception("publisher is not in DbAdapter's cache");
-//
-//    }
+    public ObservableList<Publisher> getAllPublishers(){
+        return readOnlyCache.getPublishers();
+    }
+    public boolean insertPublisher(Publisher publisher){
+        return publisherDbSet.insert(publisher);
+    }
+    public boolean updatePublisher(Publisher publisher){
+        return publisherDbSet.update(publisher);
+    }
+    public boolean deletePublisher(Publisher publisher){
+        return publisherDbSet.deletePublisher(publisher);
+    }
     //endregion
     //region Person
-//    public ObservableList<Person> getAllPeople(){
-//        return FXCollections.unmodifiableObservableList(cache.getPeople());
-//    }
-//    public boolean insertPerson(Person person){
-//        if(worker1.insertPerson(person)){
-//            cache.getPeople().add(person);
-//            return true;
-//        }
-//        return false;
-//    }
-//    public boolean updatePerson(Person person) throws Exception{
-//        if(cache.getPeople().contains(person))
-//            return worker1.updatePerson(person);
-//        throw new Exception("person is not in DbAdapter's cache");
-//    }
-//    public boolean deletePerson(Person person) throws Exception{
-//        if(person.countTimesToBeReferenced() != 0)  {
-//            System.err.println("Something have referenced to this person.");
-//            return false;
-//        }
-//        int index = cache.getPeople().indexOf(person);
-//        if(index > -1){
-//            if(worker1.deletePerson(person)){
-//                cache.getPeople().remove(index, index + 1);
-//                return true;
-//            }
-//            return false;
-//        }
-//        throw new Exception("person is not in DbAdapter's cache");
-//
-//    }
+    public ObservableList<Person> getAllPeople(){
+        return readOnlyCache.getPeople();
+    }
+    public boolean insertPerson(Person person){
+        return personDbSet.insert(person);
+    }
+    public boolean updatePerson(Person person){
+        return personDbSet.update(person);
+    }
+    public boolean deletePerson(Person person) {
+        return personDbSet.deletePerson(person);
+
+    }
     //endregion
     //region ProductInfo
 
@@ -334,69 +279,40 @@ public class DatabaseAdapter {
 
     //endregion
     //region ImportBill
-//    public ObservableList<ImportBill> getAllImportBills(){
-//        return FXCollections.unmodifiableObservableList(cache.getImportBills());
-//    }
-//    public boolean insertImportBill(ImportBill bill) throws Exception{
-//        if(worker3.insertImportBill(bill)){
-//            cache.getImportBills().add(bill);
-//            return true;
-//        }
-//        return false;
-//    }
-//    public boolean updateImportBill(ImportBill bill) throws Exception{
-//        if(cache.getImportBills().contains(bill)){
-//            return worker3.updateImportBill(bill);
-//        }
-//        throw new Exception("bill:ImportBill is not in DbAdapter's cache");
-//    }
-//    public boolean deleteImportBill(ImportBill bill) throws Exception{
-//        int index = cache.getImportBills().indexOf(bill);
-//        if(index > -1){
-//            if(worker3.deleteImportBill(bill)){
-//                cache.getImportBills().remove(index, index + 1);
-//                return true;
-//            }
-//            return false;
-//        }
-//        throw new Exception("bill:ImportBill is not in DbAdapter's cache");
-//
-//    }
-//    public ArrayList<Product> getItems(ImportBill bill){
-//        ArrayList<Product> products = new ArrayList<>();
-//        cache.getProducts().forEach(product -> {
-//            if(product.getImportBill() == bill) products.add(product);
-//        });
-//        return products;
-//    }
-//    //endregion
-//    //region OtherBill
-//    public ObservableList<OtherBill> getAllOtherBills(){
-//        return FXCollections.unmodifiableObservableList(cache.getOtherBills());
-//    }
-//    public boolean insertOtherBill(OtherBill bill){
-//        if(worker3.insertOtherBill(bill)){
-//            cache.getOtherBills().add(bill);
-//            return true;
-//        }
-//        return false;
-//    }
-//    public boolean updateOtherBill(OtherBill bill) throws Exception{
-//        if(cache.getOtherBills().contains(bill))
-//            return worker3.updateOtherBill(bill);
-//        throw new Exception("bill is not in DbAdapter's cache");
-//    }
-//    public boolean deleteOtherBill(OtherBill bill) throws Exception{
-//        int index = cache.getOtherBills().indexOf(bill);
-//        if(index > -1){
-//            if(worker3.deleteOtherBill(bill)){
-//                cache.getOtherBills().remove(index, index + 1);
-//                return true;
-//            }
-//            return false;
-//        }
-//        throw new Exception("bill is not in DbAdapter's cache");
-//
-//    }
+    public ObservableList<ImportBill> getAllImportBills(){
+        return readOnlyCache.getImportBills();
+    }
+    public boolean insertImportBill(ImportBill bill){
+        return importBillDbSet.insert(bill);
+    }
+    public boolean updateImportBill(ImportBill bill) {
+        return importBillDbSet.update(bill);
+    }
+    public boolean deleteImportBill(ImportBill bill){
+        return importBillDbSet.delete(bill);
+
+    }
+    public ArrayList<Product> getItems(ImportBill bill){
+        ArrayList<Product> products = new ArrayList<>();
+        cache.getProducts().forEach(product -> {
+            if(product.getImportBill() == bill) products.add(product);
+        });
+        return products;
+    }
+    //endregion
+    //region OtherBill
+    public ObservableList<OtherBill> getAllOtherBills(){
+        return readOnlyCache.getOtherBills();
+    }
+    public boolean insertOtherBill(OtherBill bill){
+        return otherBillDbSet.insert(bill);
+    }
+    public boolean updateOtherBill(OtherBill bill) throws Exception{
+        return otherBillDbSet.update(bill);
+    }
+    public boolean deleteOtherBill(OtherBill bill) throws Exception{
+        return otherBillDbSet.delete(bill);
+
+    }
     //endregion
 }
