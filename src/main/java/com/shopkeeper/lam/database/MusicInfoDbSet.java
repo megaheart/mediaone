@@ -27,7 +27,7 @@ public class MusicInfoDbSet {
         sqlBuilder.append("currentSalePrice  DOUBLE   NOT NULL,");
         sqlBuilder.append("publisherId       INTEGER  NOT NULL,");
         sqlBuilder.append("rating            DOUBLE   NOT NULL,");
-        sqlBuilder.append("award             TEXT     NOT NULL");
+        sqlBuilder.append("award             TEXT     NOT NULL,");
         sqlBuilder.append("musiciansId       TEXT     NOT NULL,");
         sqlBuilder.append("timeLimit         TEXT     NOT NULL");
         sqlBuilder.append(");");

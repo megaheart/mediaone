@@ -27,8 +27,8 @@ public class FilmInfoDbSet {
         sqlBuilder.append("currentSalePrice  DOUBLE   NOT NULL,");
         sqlBuilder.append("publisherId       INTEGER  NOT NULL,");
         sqlBuilder.append("rating            DOUBLE   NOT NULL,");
-        sqlBuilder.append("award             TEXT     NOT NULL");
-        sqlBuilder.append("directorId        TEXT     NOT NULL");
+        sqlBuilder.append("award             TEXT     NOT NULL,");
+        sqlBuilder.append("directorId        TEXT     NOT NULL,");
         sqlBuilder.append("actorsId          TEXT     NOT NULL,");
         sqlBuilder.append("timeLimit         TEXT     NOT NULL");
         sqlBuilder.append(");");

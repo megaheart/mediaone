@@ -17,7 +17,7 @@ public class CategoryDbSet {
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE categories (");
         sqlBuilder.append("categoryId     INTEGER   PRIMARY KEY AUTOINCREMENT,");
         sqlBuilder.append("name           TEXT      NOT NULL,");
-        sqlBuilder.append("description    TEXT      NOT NULL,");
+        sqlBuilder.append("description    TEXT      NOT NULL");
         sqlBuilder.append(");");
         String sql = sqlBuilder.toString();
         try (Statement stmt = conn.createStatement()) {
