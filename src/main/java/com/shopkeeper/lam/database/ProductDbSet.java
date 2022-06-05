@@ -18,7 +18,6 @@ public class ProductDbSet {
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE products (");
                 sqlBuilder.append("productId      INTEGER PRIMARY KEY AUTOINCREMENT,");
                 sqlBuilder.append("productInfoId  INTEGER NOT NULL,");
-                sqlBuilder.append("productType    TEXT    NOT NULL,");
                 sqlBuilder.append("state          TEXT    NOT NULL,");
                 sqlBuilder.append("importBillId   TEXT    NOT NULL,");
                 sqlBuilder.append("saleBillId     TEXT    NOT NULL,");
@@ -40,7 +39,7 @@ public class ProductDbSet {
         return true;
     }
     public void load(DbAdapterCache cache) throws Exception{
-        String sql = "SELECT productId, productInfoId, productType, state, importBillId, saleBillId, importCost, saleValue,trialFilename,placement FROM products";
+        String sql = "SELECT productId, productInfoId, state, importBillId, saleBillId, importCost, saleValue,trialFilename,placement FROM products";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
         Product product;
@@ -48,7 +47,6 @@ public class ProductDbSet {
             product = new Product();
             product.setProductId(rs.getInt("productId"));
             product.getProductInfo().setProductInfoId(rs.getInt("productInfoId"));
-            product.setProductType(ProductType.valueOf(rs.getString("productType")));
             product.setState(ProductState.valueOf(rs.getString("productState")));
             product.getImportBill().setBillId(rs.getInt("importBillId"));
             product.getSaleBill().setBillId(rs.getInt("saleBillId"));
@@ -70,20 +68,19 @@ public class ProductDbSet {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setLong(1, product.getProductInfo().getProductInfoId());
-            pstmt.setString(2, product.getProductType().toString());
-            pstmt.setString(3, product.getState().toString());
-            pstmt.setInt(4, product.getImportBill().getBillId());
-            pstmt.setInt(5, product.getSaleBill().getBillId());
-            pstmt.setDouble(6, product.getImportCost());
-            pstmt.setDouble(7, product.getSaleValue());
-            pstmt.setString(8, product.getTrialFilename());
-            pstmt.setString(9, product.getPlacement());
+            pstmt.setString(2, product.getState().toString());
+            pstmt.setInt(3, product.getImportBill().getBillId());
+            pstmt.setInt(4, product.getSaleBill().getBillId());
+            pstmt.setDouble(5, product.getImportCost());
+            pstmt.setDouble(6, product.getSaleValue());
+            pstmt.setString(7, product.getTrialFilename());
+            pstmt.setString(8, product.getPlacement());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Creating product failed, no rows affected.");
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setProductId(generatedKeys.getInt(10));
+                product.setProductId(generatedKeys.getInt(9));
             }
             else throw new Exception("Creating product failed, no ID obtained.");
         } catch (Exception e) {
@@ -105,15 +102,14 @@ public class ProductDbSet {
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setLong(1, product.getProductInfo().getProductInfoId());
-            pstmt.setString(2, product.getProductType().toString());
-            pstmt.setString(3, product.getState().toString());
-            pstmt.setInt(4, product.getImportBill().getBillId());
-            pstmt.setInt(5, product.getSaleBill().getBillId());
-            pstmt.setDouble(6, product.getImportCost());
-            pstmt.setDouble(7, product.getSaleValue());
-            pstmt.setString(8, product.getTrialFilename());
-            pstmt.setString(9, product.getPlacement());
-            pstmt.setLong(10, product.getProductId());
+            pstmt.setString(2, product.getState().toString());
+            pstmt.setInt(3, product.getImportBill().getBillId());
+            pstmt.setInt(4, product.getSaleBill().getBillId());
+            pstmt.setDouble(5, product.getImportCost());
+            pstmt.setDouble(6, product.getSaleValue());
+            pstmt.setString(7, product.getTrialFilename());
+            pstmt.setString(8, product.getPlacement());
+            pstmt.setInt(9, product.getProductId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Product (ID = " + product.getProductId() + ") does not exist in \"products\" table.");
         } catch (Exception e) {
@@ -136,7 +132,7 @@ public class ProductDbSet {
         String sql = "DELETE FROM products WHERE productId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, product.getProductId());
+            pstmt.setInt(9, product.getProductId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Product (ID = " + product.getProductId() + ") does not exist in \"products\" table.");
         } catch (Exception e) {
