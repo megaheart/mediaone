@@ -43,7 +43,6 @@ public class PersonDbSet {
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Person person;
-
         while (rs.next()) {
             person = new Person();
             person.setPersonId(rs.getInt("personId"));
@@ -74,7 +73,7 @@ public class PersonDbSet {
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
                 person.setPersonId(generatedKeys.getInt(1));
-            } else throw new Exception("Creating staff failed, no ID obtained.");
+            } else throw new Exception("Creating person failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;

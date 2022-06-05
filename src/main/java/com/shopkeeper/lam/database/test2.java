@@ -9,10 +9,10 @@ import java.time.LocalDate;
 
 public class test2 {
     public void insertPerson() throws Exception {
-        Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin",1232,JobOfPerson.WRITER);
-        Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",23124,JobOfPerson.ACTOR);
-        Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",23442,JobOfPerson.ACTOR);
-        Person x4=new Person("DOREMON",LocalDate.of(3424,23,4),"meo may den tu tuong lai",545,JobOfPerson.ACTOR);
+        Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin",JobOfPerson.WRITER);
+        Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",JobOfPerson.ACTOR);
+        Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",JobOfPerson.ACTOR);
+        Person x4=new Person("DOREMON",LocalDate.of(3424,23,4),"meo may den tu tuong lai",JobOfPerson.ACTOR);
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPeople()){
             System.out.println(x);
