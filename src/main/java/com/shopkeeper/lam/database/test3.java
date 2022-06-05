@@ -3,6 +3,10 @@ package com.shopkeeper.lam.database;
 import com.shopkeeper.lam.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
+
+//PUBLISHER
+
+
 public class test3 {
     public void insertPublisher() throws Exception {
         Publisher p1 = new Publisher("Kim Dong","Viet Nam",3434,"xuat ban Doremon");

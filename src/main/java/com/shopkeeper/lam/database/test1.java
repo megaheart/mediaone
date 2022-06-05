@@ -3,6 +3,8 @@ package com.shopkeeper.lam.database;
 import com.shopkeeper.lam.models.Category;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
+//CATEGORY
+
 public class test1 {
     public void insertCategory() throws Exception {
         Category honor = new Category("Kinh di","phim rat dang so,khong danh cho tre em duoi 18 tuoi",1244343);

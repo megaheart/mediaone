@@ -5,6 +5,8 @@ import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 import java.time.LocalDate;
 
+//PERSON
+
 public class test2 {
     public void insertPerson() throws Exception {
         Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin",1232,JobOfPerson.WRITER);
