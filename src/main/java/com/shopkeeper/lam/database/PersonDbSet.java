@@ -73,7 +73,7 @@ public class PersonDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                person.setPersonId(generatedKeys.getInt(5));
+                person.setPersonId(generatedKeys.getInt(1));
             } else throw new Exception("Creating staff failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());

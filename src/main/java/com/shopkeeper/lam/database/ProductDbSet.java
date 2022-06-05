@@ -80,7 +80,7 @@ public class ProductDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                product.setProductId(generatedKeys.getInt(9));
+                product.setProductId(generatedKeys.getInt(1));
             }
             else throw new Exception("Creating product failed, no ID obtained.");
         } catch (Exception e) {

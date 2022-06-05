@@ -60,11 +60,11 @@ public class CategoryDbSet {
             pstmt.setString(2, category.getDescription());
 
             int affected = pstmt.executeUpdate();
-            if (affected == 0) throw new Exception("Creating staff failed, no rows affected.");
+            if (affected == 0) throw new Exception("Creating category failed, no rows affected.");
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                category.setCategoryId(generatedKeys.getInt(3));
+                category.setCategoryId(generatedKeys.getInt(1));
             } else throw new Exception("Creating category failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());

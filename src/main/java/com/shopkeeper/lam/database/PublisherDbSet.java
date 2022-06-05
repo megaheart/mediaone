@@ -64,7 +64,7 @@ public class PublisherDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                publisher.setPublisherId(generatedKeys.getInt(4));
+                publisher.setPublisherId(generatedKeys.getInt(1));
             }
             else throw new Exception("Creating publisher failed, no ID obtained.");
         } catch (Exception e) {

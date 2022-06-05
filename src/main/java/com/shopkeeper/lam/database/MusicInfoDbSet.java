@@ -118,7 +118,7 @@ public class MusicInfoDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                musicInfo.setProductInfoId(generatedKeys.getInt(11));
+                musicInfo.setProductInfoId(generatedKeys.getInt(1));
             } else throw new Exception("Creating musicInfo failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());

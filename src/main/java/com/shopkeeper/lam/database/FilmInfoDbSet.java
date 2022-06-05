@@ -121,7 +121,7 @@ public class FilmInfoDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                filmInfo.setProductInfoId(generatedKeys.getInt(12));
+                filmInfo.setProductInfoId(generatedKeys.getInt(1));
             } else throw new Exception("Creating filmInfo failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());

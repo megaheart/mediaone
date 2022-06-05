@@ -116,7 +116,7 @@ public class BookInfoDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                bookInfo.setProductInfoId(generatedKeys.getInt(11));
+                bookInfo.setProductInfoId(generatedKeys.getInt(1));
             } else throw new Exception("Creating bookInfo failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
