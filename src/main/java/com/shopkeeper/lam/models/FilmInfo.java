@@ -13,7 +13,7 @@ public final class FilmInfo extends ProductInfo{
         super();
     }
 
-    public FilmInfo(String title, int productInfoId,Person director,ArrayList<Person> actors, String description, Category category,LocalTime timeLimit,  LocalDate releaseDate, double currentSalePrice, Publisher publisher,  double rating, ArrayList<String> award) {
+    public FilmInfo(String title, int productInfoId ,String description, Category category,  LocalDate releaseDate, double currentSalePrice, Publisher publisher,  double rating, ArrayList<String> award,Person director,ArrayList<Person> actors,LocalTime timeLimit) {
         super(title, productInfoId, description, category, releaseDate, currentSalePrice, publisher, rating, award);
         this.director=director;
         this.actors=actors;
