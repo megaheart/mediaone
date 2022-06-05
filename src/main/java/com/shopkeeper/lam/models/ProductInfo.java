@@ -17,12 +17,11 @@ public abstract class ProductInfo implements IReferencedCounter {
     private LocalDate releaseDate;
     private double currentSalePrice;
     private Publisher publisher;
-    private ArrayList<Person> contributors;
     private double rating;
     private ArrayList<String> award;
     public ProductInfo(){productInfoId=0;}
 
-    public ProductInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
+    public ProductInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award) {
         this.productInfoId = productInfoId;
         this.title = title;
         this.description = description;
@@ -30,7 +29,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.releaseDate = releaseDate;
         this.currentSalePrice = currentSalePrice;
         this.publisher = publisher;
-        this.contributors = contributors;
         this.rating = rating;
         this.award = award;
     }
@@ -43,7 +41,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.title = title;
     }
 
-    public long getProductInfoId() {
+    public int getProductInfoId() {
         return productInfoId;
     }
 
@@ -92,14 +90,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.publisher = publisher;
     }
 
-    public ArrayList<Person> getContributors() {
-        return contributors;
-    }
-
-    public void setContributors(ArrayList<Person> contributors) {
-        this.contributors = contributors;
-    }
-
     public double getRating() {
         return rating;
     }
@@ -126,7 +116,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         sb.append("    currentSalePrice: \""); sb.append(getCurrentSalePrice());sb.append("\",\n");
         sb.append("    description: \""); sb.append(getDescription());sb.append("\",\n");
         sb.append("    publisher: "); sb.append(getPublisher());sb.append("\n");
-        sb.append("    contributors: "); sb.append(getContributors());sb.append("\n");
         sb.append("    rating: "); sb.append(getRating());sb.append("\n");
         sb.append("    award: "); sb.append(getAward());sb.append("\n");
         sb.append('}');

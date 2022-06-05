@@ -18,7 +18,6 @@ public class CategoryDbSet {
         sqlBuilder.append("categoryId     INTEGER PRIMARY KEY AUTOINCREMENT,");
         sqlBuilder.append("name           TEXT      NOT NULL,");
         sqlBuilder.append("description    TEXT      NOT NULL,");
-        sqlBuilder.append("productType    TEXT  NOT NULL");
         sqlBuilder.append(");");
         String sql = sqlBuilder.toString();
         try (Statement stmt = conn.createStatement()) {
@@ -43,7 +42,7 @@ public class CategoryDbSet {
             category.setCategoryId(rs.getInt("categoryId"));
             category.setName(rs.getString("name"));
             category.setDescription(rs.getString("description"));
-            category.setProductType(ProductType.valueOf(rs.getString("productType")));
+
             list.add(category);
         }
 
@@ -59,13 +58,13 @@ public class CategoryDbSet {
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, category.getName());
             pstmt.setString(2, category.getDescription());
-            pstmt.setString(3, category.getDescription().toString());
+
             int affected = pstmt.executeUpdate();
             if (affected == 0) throw new Exception("Creating staff failed, no rows affected.");
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                category.setCategoryId(generatedKeys.getInt(4));
+                category.setCategoryId(generatedKeys.getInt(3));
             } else throw new Exception("Creating category failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -87,8 +86,7 @@ public class CategoryDbSet {
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, category.getName());
             pstmt.setString(2, category.getDescription());
-            pstmt.setString(3, category.getProductType().toString());
-            pstmt.setLong(4, category.getCategoryId());
+            pstmt.setInt(3, category.getCategoryId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
@@ -113,7 +111,7 @@ public class CategoryDbSet {
         String sql = "DELETE FROM categories WHERE categoryId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, category.getCategoryId());
+            pstmt.setInt(4, category.getCategoryId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
