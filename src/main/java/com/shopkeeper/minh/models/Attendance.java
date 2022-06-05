@@ -2,18 +2,25 @@ package com.shopkeeper.minh.models;
 
 import com.shopkeeper.linh.models.Staff;
 
+import java.security.InvalidParameterException;
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
-public class TimeKeeping {
+public class Attendance {
     private LocalDateTime time;
     private Duration duration;
     private ArrayList<Staff> staffsWork;
     private ArrayList<Staff> staffsAbsentee;
 
+    public Attendance(){
+        this.time = LocalDateTime.of(1000, 1, 1, 1, 1, 1);
+    }
+
     public void setTime(LocalDateTime time) {
+        if (!this.time.equals(LocalDateTime.of(1000, 1, 1, 1, 1, 1))){
+            throw new InvalidParameterException("Time is able to be set only one.");
+        }
         this.time = time;
     }
 

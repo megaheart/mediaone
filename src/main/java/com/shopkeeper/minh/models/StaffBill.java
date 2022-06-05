@@ -1,5 +1,6 @@
 package com.shopkeeper.minh.models;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 
 import com.shopkeeper.linh.models.Staff;
@@ -20,6 +21,7 @@ public final class StaffBill extends Bill {
     public double workHours;
 
     public StaffBill(){
+        billId = 0;
         billType = BillType.Staff;
     }
 
@@ -48,6 +50,9 @@ public final class StaffBill extends Bill {
     }
 
     public void setBillId(int billId) {
+        if (this.billId > 0){
+            throw new InvalidParameterException("billId is able to be set only one time.");
+        }
         this.billId = billId;
     }
 

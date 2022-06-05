@@ -130,6 +130,7 @@ public class test {
         x4.setNote("Updated bill");
         x4.setTime(LocalDate.of(2022, 6, 14));
         x4.setDistributor("Taiwan");
+
         adapter.updateImportBill(x4);
 
         for (var x : adapter.getAllImportBills()) {
