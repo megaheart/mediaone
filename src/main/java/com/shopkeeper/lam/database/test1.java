@@ -7,8 +7,8 @@ import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 public class test1 {
     public void insertCategory() throws Exception {
-        Category honor = new Category("Kinh di","phim rat dang so,khong danh cho tre em duoi 18 tuoi",1244343);
-        Category comedy = new Category("Phim hai","phim rat buon cuoi",213232);
+        Category honor = new Category("Kinh di","phim rat dang so,khong danh cho tre em duoi 18 tuoi");
+        Category comedy = new Category("Phim hai","phim rat buon cuoi");
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllCategories()){
             System.out.println(x);

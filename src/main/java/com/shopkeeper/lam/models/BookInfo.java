@@ -11,8 +11,9 @@ public final class BookInfo extends ProductInfo{
         super();
     }
 
-    public BookInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> authors, double rating, ArrayList<String> award) {
-        super(title, productInfoId, description, category, releaseDate, currentSalePrice, publisher,rating, award);
+    public BookInfo(String title,  String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> authors, double rating, ArrayList<String> award) {
+        super(title,  description, category, releaseDate, currentSalePrice, publisher,rating, award);
+        super.setProductInfoId(0);
         this.authors=authors;
     }
 

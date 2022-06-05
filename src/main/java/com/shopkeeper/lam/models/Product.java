@@ -14,7 +14,6 @@ import java.time.*;
 public class Product implements IReferencedCounter {
     private int productId;
     private ProductInfo productInfo;
-
     private ProductState state;
     private ImportBill importBill;
     private SaleBill saleBill;
@@ -24,8 +23,8 @@ public class Product implements IReferencedCounter {
     private String placement;
     public Product(){productId = 0;}
 
-    public Product(int productId, ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
-        this.productId = productId;
+    public Product( ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
+        productId = 0;
         this.productInfo = productInfo;
         this.state = state;
         this.importBill = importBill;
@@ -82,7 +81,7 @@ public class Product implements IReferencedCounter {
     }
 
     public void setProductId(int productId) throws InvalidParameterException {
-        if(productId > 0) throw new InvalidParameterException("productId is able to be set only one time.");
+        if(this.productId > 0) throw new InvalidParameterException("productId is able to be set only one time.");
         this.productId = productId;
     }
 

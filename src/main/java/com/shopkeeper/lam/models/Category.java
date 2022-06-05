@@ -17,10 +17,10 @@ public class Category implements IReferencedCounter {
     public Category(){
         categoryId = 0;
     }
-    public Category(String name, String description, int categoryId) {
+    public Category(String name, String description) {
         this.name = name;
         this.description = description;
-        this.categoryId = categoryId;
+        categoryId = 0;
 
     }
 
@@ -45,7 +45,7 @@ public class Category implements IReferencedCounter {
     }
 
     public void setCategoryId(int categoryId) throws InvalidParameterException {
-        if(categoryId > 0) throw new InvalidParameterException("categoryId is able to be set only one time.");
+        if(this.categoryId > 0) throw new InvalidParameterException("categoryId is able to be set only one time.");
         this.categoryId = categoryId;
     }
 

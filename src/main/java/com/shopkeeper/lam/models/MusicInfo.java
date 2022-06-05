@@ -11,8 +11,9 @@ public final class MusicInfo extends ProductInfo {
         super();
 
     }
-    public MusicInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award,ArrayList<Person> musicians, LocalTime timeLimit) {
-        super(title, productInfoId, description, category, releaseDate, currentSalePrice, publisher, rating, award);
+    public MusicInfo(String title, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award,ArrayList<Person> musicians, LocalTime timeLimit) {
+        super(title, description, category, releaseDate, currentSalePrice, publisher, rating, award);
+        this.setProductInfoId(0);
         this.musicians=musicians;
         this.timeLimit=timeLimit;
     }

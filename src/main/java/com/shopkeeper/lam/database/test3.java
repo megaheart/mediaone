@@ -9,9 +9,9 @@ import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 public class test3 {
     public void insertPublisher() throws Exception {
-        Publisher p1 = new Publisher("Kim Dong","Viet Nam",3434,"xuat ban Doremon");
-        Publisher p2 = new Publisher("Hoyoverse","Trung Quoc",3343,"genshin,honkai");
-        Publisher p3 = new Publisher("Garena","Trung Quoc",355,"LOL,FIFA 4");
+        Publisher p1 = new Publisher("Kim Dong","Viet Nam","xuat ban Doremon");
+        Publisher p2 = new Publisher("Hoyoverse","Trung Quoc","genshin,honkai");
+        Publisher p3 = new Publisher("Garena","Trung Quoc","LOL,FIFA 4");
 
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPublishers()){
