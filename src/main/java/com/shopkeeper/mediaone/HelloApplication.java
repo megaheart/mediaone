@@ -5,6 +5,8 @@ import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import com.shopkeeper.minh.models.ImportBill;
+import com.shopkeeper.minh.models.OtherBill;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,9 +23,6 @@ public class HelloApplication extends Application {
 //        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
 //        stage.setTitle("Hello!");
 //        stage.show();
-//        Staff x = new Staff("Lionel Ronaldo", true, LocalDate.of(1985,6,12),
-//                "ronaldo@outlook.com", "0952599852", "idol giới trẻ, giáo sư, bậc thầy sát gái", StaffState.Working);
-//        x.setStaffId(2);
         var adapter = DatabaseAdapter.getDbAdapter();
 
         javafx.application.Platform.exit();

@@ -1,9 +1,6 @@
 package com.shopkeeper.linh;
 
-import com.shopkeeper.linh.models.Customer;
-import com.shopkeeper.linh.models.Settings;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
+import com.shopkeeper.linh.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 import java.sql.ResultSet;
@@ -173,5 +170,73 @@ public class test {
         adapter.resetSettings(x);
         System.out.println("----------<><><><><>----------");
         System.out.println(x);
+    }
+    public void insertSaleBills() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        var cus = adapter.getAllCustomers().get(6);
+        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
+        SaleBill x1 = new SaleBill("truyện haiten", cus, "xã XHS huyện YYY", false,
+                20000000, LocalDate.of(2022, 6, 3), false, "Thg này chưa trả tiền này");
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        adapter.insertSaleBill(x1);
+        adapter.deleteCustomer(cus);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        System.out.println("----------<><><><><>----------");
+    }
+    public void updateSaleBills() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+
+        var x3 = adapter.getAllSaleBills().get(2);
+        //Update toàn bộ các thuộc tính trừ ID
+        x3.setName("XXXXXXXXXX");
+        x3.setCustomer(adapter.getAllCustomers().get(4));
+        x3.setLocation("YYYYYYYYYYYY");
+        x3.setIsPaid(true);
+        x3.setPrice(544652);
+        x3.setTime(LocalDate.of(2022, 5, 30));
+        x3.setIsEffected(true);
+        x3.setNote("Updated");
+        adapter.updateSaleBill(x3);
+
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void deleteSaleBills() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        var x3 = adapter.getAllSaleBills().get(2);
+        adapter.deleteSaleBill(x3);
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
     }
 }
