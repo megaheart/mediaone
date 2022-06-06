@@ -132,7 +132,7 @@ public class ProductDbSet {
         String sql = "DELETE FROM products WHERE productId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(9, product.getProductId());
+            pstmt.setInt(1, product.getProductId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Product (ID = " + product.getProductId() + ") does not exist in \"products\" table.");
         } catch (Exception e) {
