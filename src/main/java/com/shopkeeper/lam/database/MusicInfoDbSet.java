@@ -7,6 +7,8 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class MusicInfoDbSet {
     private Connection conn;
@@ -27,7 +29,7 @@ public class MusicInfoDbSet {
         sqlBuilder.append("currentSalePrice  DOUBLE   NOT NULL,");
         sqlBuilder.append("publisherId       INTEGER  NOT NULL,");
         sqlBuilder.append("rating            DOUBLE   NOT NULL,");
-        sqlBuilder.append("award             TEXT     NOT NULL,");
+        sqlBuilder.append("awards             TEXT     NOT NULL,");
         sqlBuilder.append("musiciansId       TEXT     NOT NULL,");
         sqlBuilder.append("timeLimit         TEXT     NOT NULL");
         sqlBuilder.append(");");
@@ -45,44 +47,66 @@ public class MusicInfoDbSet {
     }
 
     public void load() throws Exception {
-        String sql = "SELECT productInfoId, title, description,categoryId,releaseDate,currentSalePrice,publisherId,rating,award,musiciansId,timeLimit FROM musicInfos";
+        String sql = "SELECT productInfoId, title, description,categoryId,releaseDate,currentSalePrice,publisherId,rating,awards,musiciansId,timeLimit FROM musicInfos";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
-        MusicInfo productInfo = null;
-        String[] musiciansId;
-        String[] award;
-        ArrayList<String> awards = new ArrayList<>();
-        ArrayList<Person> musicians = new ArrayList<>();
-        ObservableList<Person> peopleList = readOnlyCache.getPeople();
+        MusicInfo productInfo;
+        ArrayList<Integer> musiciansId = new ArrayList<>();
+        int publisherId,categoryId;
+        Person[] musicians;
+        int index;
         while (rs.next()) {
             productInfo = new MusicInfo();
             productInfo.setProductInfoId(rs.getInt("productInfoId"));
             productInfo.setTitle(rs.getString("title"));
             productInfo.setDescription(rs.getString("description"));
-            productInfo.getCategory().setCategoryId(rs.getInt("categoryId"));
             productInfo.setReleaseDate(LocalDate.parse(rs.getString("releaseDate")));
             productInfo.setCurrentSalePrice(rs.getDouble("currentSalePrice"));
-            productInfo.getPublisher().setPublisherId(rs.getInt("publisherId"));
             productInfo.setRating(rs.getDouble("rating"));
-            musiciansId = rs.getString("musiciansId").split("_");
             productInfo.setTimeLimit(LocalTime.parse(rs.getString("timeLimit")));
+
             //gan cho musicians
-            for (String musiciansIdString: musiciansId){
-                for (Person person: peopleList){
-                    if (person.getPersonId() == Integer.parseInt(musiciansIdString)){
-                        musicians.add(person);
-                        break;
-                    }
+            musiciansId.clear();
+            for (String idString: rs.getString("musiciansId").split("_")){
+                musiciansId.add(Integer.parseInt(idString));
+            }
+            int count = musiciansId.size();
+            musicians = new Person[count];
+
+            for (Person person: readOnlyCache.getPeople()){
+                index = musiciansId.indexOf(person.getPersonId());
+                if (index > -1){
+                    musicians[index] = person;
+                    person.increaseTimesToBeReferenced();
+                    count--;
+                    if(count == 0) break;
                 }
             }
-            productInfo.setMusicians(musicians);
-            //gan cho awards
-            award=rs.getString("awards").split("_");
-            for(String i : award){
-                awards.add(i);
+            productInfo.setMusicians(new ArrayList<>(Arrays.asList(musicians)));
+
+            //gan cho publisher
+            publisherId = rs.getInt("publisherId");
+            for (var p: readOnlyCache.getPublishers()){
+                if (p.getPublisherId() == publisherId){
+                    productInfo.setPublisher(p);
+                    p.increaseTimesToBeReferenced();
+                    break;
+                }
             }
-            productInfo.setAward(awards);
-            list.add((MusicInfo) productInfo);
+
+            //gan cho category
+            categoryId = rs.getInt("categoryId");
+            for (var c: readOnlyCache.getCategories()){
+                if (c.getCategoryId() == categoryId){
+                    productInfo.setCategory(c);
+                    c.increaseTimesToBeReferenced();
+                    break;
+                }
+            }
+
+            //gan cho awards
+            productInfo.setAward(new ArrayList<>(Arrays.asList(rs.getString("awards").split("_"))));
+            list.add(productInfo);
         }
 
         rs.close();
@@ -91,8 +115,8 @@ public class MusicInfoDbSet {
 
     public boolean insert(MusicInfo musicInfo) {
         if(musicInfo.getProductInfoId() != 0) return false;
-        String sql = "INSERT INTO musicInfos(title, description, categoryId,releaseDate,currentSalePrice,publisherId,rating,award,musiciansId,timeLimit ) VALUES(?,?,?,DATE(?),?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO musicInfos(title, description, categoryId,releaseDate,currentSalePrice,publisherId,rating,awards,musiciansId,timeLimit ) VALUES(?,?,?,DATE(?),?,?,?,?,?,?)";
+        StringBuilder stringBuilder = new StringBuilder();
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, musicInfo.getTitle());
             pstmt.setString(2, musicInfo.getDescription());
@@ -101,16 +125,25 @@ public class MusicInfoDbSet {
             pstmt.setDouble(5,musicInfo.getCurrentSalePrice());
             pstmt.setInt(6, musicInfo.getPublisher().getPublisherId());
             pstmt.setDouble(7, musicInfo.getRating());
-            String award="";
+            //award
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
             for(String a : musicInfo.getAward()){
-                award+=(a+"_");
+                stringBuilder.append(a);
+                stringBuilder.append('_');
             }
-            pstmt.setString(8, award);//1 String cac ten award,ngan cach boi dau _
-            String musiciansId="";
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(8, stringBuilder.toString());//1 String cac ten award,ngan cach boi dau _
+
+            //musician
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
             for(Person person : musicInfo.getMusicians()){
-                musiciansId+=(person.getPersonId()+"_");
+                stringBuilder.append(person.getPersonId());
+                stringBuilder.append('_');
             }
-            pstmt.setString(9, musiciansId);//1 String cac contributorId,ngan cach boi dau _
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(9, stringBuilder.toString());//1 String cac contributorId,ngan cach boi dau _
+
+
             pstmt.setString(10, musicInfo.getTimeLimit().toString());
 
             int affected = pstmt.executeUpdate();
@@ -124,18 +157,50 @@ public class MusicInfoDbSet {
             System.err.println(e.getMessage());
             return false;
         }
+        musicInfo.getPublisher().increaseTimesToBeReferenced();
+        for(var m : musicInfo.getMusicians()){
+            m.increaseTimesToBeReferenced();
+        }
+        musicInfo.getCategory().increaseTimesToBeReferenced();
         list.add(musicInfo);
         return true;
     }
     public boolean update(MusicInfo musicInfo) {
+        for (var x : musicInfo.getMusicians()){
+            if(!readOnlyCache.getPeople().contains(x)){
+                System.err.println("One person in musicInfo.getMusicians() is not in DbAdapter's cache");
+                return false;
+            }
+        }
+        if(!readOnlyCache.getCategories().contains(musicInfo.getCategory())){
+            System.err.println("Category which is output of musicInfo.getCategory() is not in DbAdapter's cache");
+            return false;
+        }
+        if(!readOnlyCache.getPublishers().contains(musicInfo.getPublisher())){
+            System.err.println("Publisher which is output of musicInfo.getPublisher() is not in DbAdapter's cache");
+            return false;
+        }
         if(!list.contains(musicInfo))
         {
             System.err.println("musicInfo is not in DbAdapter's cache");
             return false;
         }
-        String sql = "UPDATE musicInfos SET title=?, description=?, categoryId=?,releaseDate=DATE(?),currentSalePrice=?,publisherId=?,rating=?,award=?,musiciansId=?,timeLimit=?  WHERE productInfo=?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "UPDATE musicInfos SET title=?, description=?, categoryId=?,releaseDate=DATE(?),currentSalePrice=?,publisherId=?,rating=?,awards=?,musiciansId=?,timeLimit=?  WHERE productInfoId=?";
+        StringBuilder stringBuilder = new StringBuilder();
+        int oldPublisherId = 0, oldCategoryId = 0;
+        ArrayList<Integer> oldMusiciansId = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+            Statement stmt = conn.createStatement()) {
+            //Get old value
+            ResultSet rs = stmt.executeQuery("SELECT categoryId, publisherId, musiciansId FROM musicInfos WHERE productInfoId=" + musicInfo.getProductInfoId());
+            if(rs.next()){
+                oldCategoryId = rs.getInt(1);
+                oldPublisherId = rs.getInt(2);
+                for (String idString: rs.getString("musiciansId").split("_")){
+                    oldMusiciansId.add(Integer.parseInt(idString));
+                }
+            }
+            //Update
             pstmt.setString(1, musicInfo.getTitle());
             pstmt.setString(2, musicInfo.getDescription());
             pstmt.setInt(3,musicInfo.getCategory().getCategoryId());
@@ -143,16 +208,24 @@ public class MusicInfoDbSet {
             pstmt.setDouble(5,musicInfo.getCurrentSalePrice());
             pstmt.setInt(6, musicInfo.getPublisher().getPublisherId());
             pstmt.setDouble(7, musicInfo.getRating());
-            String award="";
+            //award
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
             for(String a : musicInfo.getAward()){
-                award+=(a+"_");
+                stringBuilder.append(a);
+                stringBuilder.append('_');
             }
-            pstmt.setString(8, award);//1 String cac ten award,ngan cach boi dau _
-            String musiciansId="";
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(8, stringBuilder.toString());//1 String cac ten award,ngan cach boi dau _
+
+            //musician
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
             for(Person person : musicInfo.getMusicians()){
-                musiciansId+=(person.getPersonId()+"_");
+                stringBuilder.append(person.getPersonId());
+                stringBuilder.append('_');
             }
-            pstmt.setString(9, musiciansId);//1 String cac contributorId,ngan cach boi dau _
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(9, stringBuilder.toString());//1 String cac contributorId,ngan cach boi dau _
+
             pstmt.setString(10, musicInfo.getTimeLimit().toString());
             pstmt.setInt(11,musicInfo.getProductInfoId());
             int affected = pstmt.executeUpdate();
@@ -162,6 +235,52 @@ public class MusicInfoDbSet {
             System.err.println(e.getMessage());
             return false;
         }
+        //Success
+        //Decrease reference count
+
+        //musicians
+        int count = oldMusiciansId.size();
+        for (Person person: readOnlyCache.getPeople()){
+            if (oldMusiciansId.contains(person.getPersonId())){
+                try{person.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                count--;
+                if(count == 0) break;
+            }
+        }
+
+        //publisher
+        for (var p: readOnlyCache.getPublishers()){
+            if (p.getPublisherId() == oldPublisherId){
+                try{p.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            }
+        }
+
+        //category
+        for (var c: readOnlyCache.getCategories()){
+            if (c.getCategoryId() == oldCategoryId){
+                try{c.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            }
+        }
+        //Increase reference count
+        musicInfo.getPublisher().increaseTimesToBeReferenced();
+        for(var m : musicInfo.getMusicians()){
+            m.increaseTimesToBeReferenced();
+        }
+        musicInfo.getCategory().increaseTimesToBeReferenced();
         return true;
     }
     public boolean delete(MusicInfo musicInfo) {
@@ -169,6 +288,21 @@ public class MusicInfoDbSet {
             System.err.println("Something have referenced to this musicInfo.");
             return false;
         }
+        for (var x : musicInfo.getMusicians()){
+            if(!readOnlyCache.getPeople().contains(x)){
+                System.err.println("One person in musicInfo.getMusicians() is not in DbAdapter's cache");
+                return false;
+            }
+        }
+        if(!readOnlyCache.getCategories().contains(musicInfo.getCategory())){
+            System.err.println("Category which is output of musicInfo.getCategory() is not in DbAdapter's cache");
+            return false;
+        }
+        if(!readOnlyCache.getPublishers().contains(musicInfo.getPublisher())){
+            System.err.println("Publisher which is output of musicInfo.getPublisher() is not in DbAdapter's cache");
+            return false;
+        }
+
         int index = list.indexOf(musicInfo);
         if(index < 0){
             System.err.println("musicInfo is not in DbAdapter's cache");
@@ -178,7 +312,7 @@ public class MusicInfoDbSet {
         String sql = "DELETE FROM musicInfos WHERE productInfoId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(11, musicInfo.getProductInfoId());
+            pstmt.setInt(1, musicInfo.getProductInfoId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("MusicInfo (ID = " + musicInfo.getProductInfoId() + ") does not exist in \"musicInfos\" table.");
         } catch (Exception e) {
@@ -187,6 +321,16 @@ public class MusicInfoDbSet {
         }
 
         //When Success
+        try {
+            musicInfo.getPublisher().decreaseTimesToBeReferenced();
+            for(var m : musicInfo.getMusicians()){
+                m.decreaseTimesToBeReferenced();
+            }
+            musicInfo.getCategory().decreaseTimesToBeReferenced();
+        }catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
         list.remove(index, index + 1);
         return true;
     }

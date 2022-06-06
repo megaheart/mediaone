@@ -126,7 +126,7 @@ public class SaleBillDbSet {
         String sql = "UPDATE salebills SET name=?, customerId=?, location=?, isPaid=?, price=?, time=DATE(?), effected=?, note=? WHERE billId=?";
         int oldCustomerId = 0;
         try (PreparedStatement pstmt = conn.prepareStatement(sql);
-             Statement stmt = conn.createStatement()) {
+            Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT customerId FROM salebills WHERE billId=" + bill.getBillId());
             if(rs.next()){
                 oldCustomerId = rs.getInt(1);

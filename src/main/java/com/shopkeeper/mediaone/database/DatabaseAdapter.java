@@ -144,6 +144,7 @@ public class DatabaseAdapter {
         attendanceDbSet.load();
         staffBillDbSet.load();
         //shiftDbSet.load();
+        musicInfoDbSet.load();
         //Load 3
 
         //Load 4
@@ -269,14 +270,47 @@ public class DatabaseAdapter {
 
     }
     //endregion
-    //region ProductInfo
-
+    //region MusicInfo
+    public ObservableList<MusicInfo> getAllMusicInfos(){
+        return readOnlyCache.getMusicInfos();
+    }
+    public boolean insertMusicInfo(MusicInfo info) {
+        return musicInfoDbSet.insert(info);
+    }
+    public boolean updateMusicInfo(MusicInfo info) {
+        return musicInfoDbSet.update(info);
+    }
+    public boolean deleteMusicInfo(MusicInfo info) {
+        return musicInfoDbSet.delete(info);
+    }
     //endregion
-    //region ProductInfo
-
+    //region FilmInfo
+    public ObservableList<FilmInfo> getAllFilmInfos(){
+        return readOnlyCache.getFilmInfos();
+    }
+    public boolean insertFilmInfo(FilmInfo info) {
+        return filmInfoDbSet.insert(info);
+    }
+    public boolean updateFilmInfo(FilmInfo info) {
+        return filmInfoDbSet.update(info);
+    }
+    public boolean deleteFilmInfo(FilmInfo info) {
+        return filmInfoDbSet.delete(info);
+    }
     //endregion
-    //region ProductInfo
-
+    //region BookInfo
+    public ObservableList<BookInfo> getAllBookInfos(){
+        return readOnlyCache.getBookInfos();
+    }
+    public boolean insertBookInfo(BookInfo info) {
+        return bookInfoDbSet.insert(info);
+    }
+    public boolean updateBookInfo(BookInfo info) {
+        return bookInfoDbSet.update(info);
+    }
+    public boolean deleteBookInfo(BookInfo info) {
+        return bookInfoDbSet.delete(info);
+    }
     //endregion
     //region Product
 

@@ -12,7 +12,9 @@ public class test2 {
         Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin",JobOfPerson.WRITER);
         Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",JobOfPerson.ACTOR);
         Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",JobOfPerson.ACTOR);
-        Person x4=new Person("DOREMON",LocalDate.of(3424,23,4),"meo may den tu tuong lai",JobOfPerson.ACTOR);
+        Person x4=new Person("DOREMON",LocalDate.of(3424,2,24),"meo may den tu tuong lai",JobOfPerson.ACTOR);
+        Person x5=new Person("Son Tung",LocalDate.of(2323,4,2),"hay nhat viet nam",JobOfPerson.SINGER);
+        Person x6=new Person("Jack",LocalDate.of(3424,2,24),"Jack 5 củ",JobOfPerson.SINGER);
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPeople()){
             System.out.println(x);
@@ -21,6 +23,8 @@ public class test2 {
         adapter.insertPerson(x2);
         adapter.insertPerson(x3);
         adapter.insertPerson(x4);
+        adapter.insertPerson(x5);
+        adapter.insertPerson(x6);
         System.out.println("----------<><><><><>----------");
         for(var x :adapter.getAllPeople()){
             System.out.println(x);
@@ -36,6 +40,7 @@ public class test2 {
         y.setDescription("tuong quan Inazuma");
 
         adapter.updatePerson(y);
+        System.out.println("----------<><><><><>----------");
         for(var x:adapter.getAllPeople() ){
             System.out.println(x);
         }
@@ -50,6 +55,7 @@ public class test2 {
         }
         var y = adapter.getAllPeople().get(3);
         adapter.deletePerson(y);
+        System.out.println("----------<><><><><>----------");
         for(var x:adapter.getAllPeople()){
             //Nếu như các ô đã triển khai override thuộc tính toString() cho
             // của ô rồi thì viết thế này
