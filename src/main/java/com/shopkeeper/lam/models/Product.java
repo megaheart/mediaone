@@ -23,7 +23,7 @@ public class Product implements IReferencedCounter {
     private String placement;
     public Product(){productId = 0;}
 
-    public Product( ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
+    public Product(ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
         productId = 0;
         this.productInfo = productInfo;
         this.state = state;

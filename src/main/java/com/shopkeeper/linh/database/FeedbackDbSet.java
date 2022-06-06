@@ -27,6 +27,7 @@ public class FeedbackDbSet {
         sqlBuilder.append("feedbackAbout         TEXT        NOT NULL,");
         sqlBuilder.append("feedbackType          TEXT        NOT NULL,");
         sqlBuilder.append("productTargetId       TEXT        NOT NULL,");
+        sqlBuilder.append("productInfoType       TEXT        NOT NULL,");
         sqlBuilder.append("productInfoTargetId   TEXT        NOT NULL,");
         sqlBuilder.append("productInfoRating     INTEGER     NOT NULL,");
         sqlBuilder.append("staffTargetId         INTEGER     NOT NULL,");
@@ -45,8 +46,8 @@ public class FeedbackDbSet {
         }
         return true;
     }
-    public void load(DbAdapterCache cache) throws Exception{
-        String sql = "SELECT feedbackId, title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time FROM feedbacks";
+    public void load() throws Exception{
+        String sql = "SELECT feedbackId, title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType FROM feedbacks";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
         Feedback feedback;
@@ -81,7 +82,7 @@ public class FeedbackDbSet {
             }
             feedback.setIsUseful(rs.getBoolean("isUseful"));
             feedback.setTime(LocalDate.parse(rs.getString("time")));
-            cache.getFeedbacks().add(feedback);
+            list.add(feedback);
         }
 
         rs.close();
@@ -91,7 +92,7 @@ public class FeedbackDbSet {
     //Return true if success, otherwise return false
     public boolean insert(Feedback feedback) {
         if(feedback.getFeedbackId() != 0) return false;
-        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time) VALUES(?,?,?,?,?,?,?,?,?,DATE(?))";
+        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType) VALUES(?,?,?,?,?,?,?,?,?,DATE(?))";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, feedback.getTitle());
@@ -104,21 +105,28 @@ public class FeedbackDbSet {
                     pstmt.setString(6, "");//productInfoTarget
                     pstmt.setInt(7, 0);//productInfoRating
                     pstmt.setLong(8, feedback.getStaffTarget().getStaffId());//staffTarget
+                    pstmt.setString(11, "");//productInfoType
                     break;
                 case ProductInfo:
                     pstmt.setInt(5, 0);//productTarget
                     pstmt.setLong(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
                     pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
+                    //pstmt.setString(11, "");//productInfoType
                     break;
                 case  Product:
                     pstmt.setLong(5, feedback.getProductTarget().getProductId());//productTarget
                     pstmt.setString(6, "");//productInfoTarget
                     pstmt.setInt(7, 0);//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
+                    pstmt.setString(11, "");//productInfoType
                     break;
                 case Service:
-                    //Do nothing
+                    pstmt.setLong(5, 0);//productTarget
+                    pstmt.setString(6, "");//productInfoTarget
+                    pstmt.setInt(7, 0);//productInfoRating
+                    pstmt.setLong(8, 0);//staffTarget
+                    pstmt.setString(11, "");//productInfoType
                     break;
             }
             pstmt.setBoolean(9, feedback.getIsUseful());

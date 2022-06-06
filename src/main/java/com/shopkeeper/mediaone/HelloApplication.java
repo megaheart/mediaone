@@ -1,11 +1,8 @@
 package com.shopkeeper.mediaone;
 
-import com.shopkeeper.lam.database.testMusicInfo;
+import com.shopkeeper.lam.database.*;
 import com.shopkeeper.lam.models.*;
-import com.shopkeeper.linh.models.Customer;
-import com.shopkeeper.linh.models.SaleBill;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
+import com.shopkeeper.linh.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.*;
 import javafx.application.Application;
@@ -25,8 +22,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-
-
+        new com.shopkeeper.linh.test().insertSaleBill();
 
         javafx.application.Platform.exit();
     }

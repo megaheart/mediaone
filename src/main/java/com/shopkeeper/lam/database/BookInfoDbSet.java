@@ -114,7 +114,7 @@ public class BookInfoDbSet {
 
     public boolean insert(BookInfo bookInfo) {
         if(bookInfo.getProductInfoId() != 0) return false;
-        String sql = "INSERT INTO categories(title, description, categoryId,releaseDate,currentSalePrice,publisherId,rating,awards,authorsId,numberOfPage ) VALUES(?,?,?,DATE(?),?,?,?,?,?,?)";
+        String sql = "INSERT INTO bookInfos(title, description, categoryId,releaseDate,currentSalePrice,publisherId,rating,awards,authorsId,numberOfPage ) VALUES(?,?,?,DATE(?),?,?,?,?,?,?)";
         StringBuilder stringBuilder = new StringBuilder();
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, bookInfo.getTitle());

@@ -1,9 +1,6 @@
 package com.shopkeeper.linh;
 
-import com.shopkeeper.linh.models.Customer;
-import com.shopkeeper.linh.models.Settings;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
+import com.shopkeeper.linh.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 import java.sql.ResultSet;
@@ -11,7 +8,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 
 public class test {
-    public void insert() throws Exception{
+    public void insertStaff() throws Exception{
         //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
         Staff x1 = new Staff("Linh đẹp trai", true, LocalDate.of(2002, 3,27), "linhdeptrai@mail.com",
                 "0962256452", "cái j cũng như bòi trừ mỗi cái đẹp trai", StaffState.Interviewing);
@@ -173,5 +170,86 @@ public class test {
         adapter.resetSettings(x);
         System.out.println("----------<><><><><>----------");
         System.out.println(x);
+    }
+    public void insertSaleBill() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        var customers = adapter.getAllCustomers();
+        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
+        SaleBill x1 = new SaleBill("Hoa don ban hang 1", customers.get(0), "xã XX huyện YY tỉnh ZZ", false, 500000,
+                LocalDate.of(2022,5,23), false, "Mua ko tra tien");
+        SaleBill x2 = new SaleBill("Hoa don ban hang 2", customers.get(1), "xã A huyện B tỉnh C", false, 400000,
+                LocalDate.of(2021,4,30), true, "Quyt A con");
+        SaleBill x3 = new SaleBill("Hoa don ban hang 3", customers.get(2), "xã C huyện F tỉnh D", true, 690000,
+                LocalDate.of(2020,2,29), false, "Xin loi hoa don ko dc cong nhan");
+        SaleBill x4 = new SaleBill("Hoa don ban hang 4", customers.get(3), "xã M huyện N tỉnh Z", true, 90000,
+                LocalDate.of(2022,5,23), true, "Mua ko tra tien");
+        SaleBill x5 = new SaleBill("Hoa don ban hang 5", customers.get(4), "xã H huyện T tỉnh J", false, 100000,
+                LocalDate.of(2022,5,23), false, "Mua ko tra tien");
+
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        adapter.insertSaleBill(x1);
+        adapter.insertSaleBill(x2);
+        adapter.insertSaleBill(x3);
+        adapter.insertSaleBill(x4);
+        adapter.insertSaleBill(x5);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void updateSaleBills() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+
+        var x4 = adapter.getAllSaleBills().get(3);
+        //Update toàn bộ các thuộc tính trừ ID
+
+//        x4.setName(String name);
+//        x4.setCustomer(Customer customer);
+//        x4.setLocation(String location);
+//        x4.setIsPaid(boolean isPaid);
+//        x4.setPrice(double price);
+//        x4.setTime(LocalDate time);
+//        x4.setIsEffected(boolean effected);
+//        x4.setNote(String note);
+
+        adapter.updateSaleBill(x4);
+
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void deleteSaleBills() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        var x3 = adapter.getAllSaleBills().get(2);
+        adapter.deleteSaleBill(x3);
+        for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
     }
 }

@@ -62,6 +62,7 @@ public class SaleBillDbSet {
                 if(customer.getCustomerId() == customerId){
                     bill.setCustomer(customer);
                     customer.increaseTimesToBeReferenced();
+                    break;
                 }
             }
             if(bill.getCustomer() == null){

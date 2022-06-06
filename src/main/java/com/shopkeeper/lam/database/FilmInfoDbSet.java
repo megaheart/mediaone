@@ -193,7 +193,7 @@ public class FilmInfoDbSet {
             System.err.println("Publisher which is output of filmInfo.getPublisher() is not in DbAdapter's cache");
             return false;
         }
-        if(!readOnlyCache.getPublishers().contains(filmInfo.getDirector())){
+        if(!readOnlyCache.getPeople().contains(filmInfo.getDirector())){
             System.err.println("People which is output of filmInfo.getDirector() is not in DbAdapter's cache");
             return false;
         }
@@ -202,7 +202,7 @@ public class FilmInfoDbSet {
             System.err.println("filmInfo is not in DbAdapter's cache");
             return false;
         }
-        String sql = "UPDATE filmInfos SET title=?, description=?, categoryId=?,releaseDate=DATE(?),currentSalePrice=?,publisherId=?,rating=?,awards=?,dicrectorId=?,actorsId=?,timeLimit=?  WHERE productInfoId=?";
+        String sql = "UPDATE filmInfos SET title=?, description=?, categoryId=?,releaseDate=DATE(?),currentSalePrice=?,publisherId=?,rating=?,awards=?,directorId=?,actorsId=?,timeLimit=?  WHERE productInfoId=?";
         StringBuilder stringBuilder = new StringBuilder();
         int oldPublisherId = 0, oldCategoryId = 0, oldDirectorId = 0;
         ArrayList<Integer> oldActorsId = new ArrayList<>();

@@ -145,6 +145,8 @@ public class DatabaseAdapter {
         staffBillDbSet.load();
         //shiftDbSet.load();
         musicInfoDbSet.load();
+        filmInfoDbSet.load();
+        bookInfoDbSet.load();
         //Load 3
 
         //Load 4
@@ -313,7 +315,18 @@ public class DatabaseAdapter {
     }
     //endregion
     //region Product
-
+    public ObservableList<Product> getAllProducts(){
+        return readOnlyCache.getProducts();
+    }
+    public boolean insertProduct(Product product) {
+        return productDbSet.insert(product);
+    }
+    public boolean updateProduct(Product product) {
+        return productDbSet.update(product);
+    }
+    public boolean deleteProduct(Product product) {
+        return productDbSet.deleteProduct(product);
+    }
     //endregion
     //-------------------Minh-------------------
     //region ImportBill
