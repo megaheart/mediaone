@@ -87,7 +87,7 @@ public class PublisherDbSet {
             pstmt.setString(1, publisher.getName());
             pstmt.setString(2, publisher.getAddress());
             pstmt.setString(3, publisher.getDescription());
-            pstmt.setLong(4, publisher.getPublisherId());
+            pstmt.setInt(4, publisher.getPublisherId());
 
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
@@ -111,7 +111,7 @@ public class PublisherDbSet {
         String sql = "DELETE FROM publishers WHERE publisherId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, publisher.getPublisherId());
+            pstmt.setInt(1, publisher.getPublisherId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
         } catch (Exception e) {

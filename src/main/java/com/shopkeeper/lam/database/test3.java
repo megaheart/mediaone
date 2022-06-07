@@ -12,6 +12,8 @@ public class test3 {
         Publisher p1 = new Publisher("Kim Dong","Viet Nam","xuat ban Doremon");
         Publisher p2 = new Publisher("Hoyoverse","Trung Quoc","genshin,honkai");
         Publisher p3 = new Publisher("Garena","Trung Quoc","LOL,FIFA 4");
+        Publisher p4 = new Publisher("HolyWood","USA",":)))");
+        Publisher p5 = new Publisher("WibuIsYou","Japan","We can make you be wibu.");
 
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPublishers()){
@@ -20,6 +22,8 @@ public class test3 {
         adapter.insertPublisher(p1);
         adapter.insertPublisher(p2);
         adapter.insertPublisher(p3);
+        adapter.insertPublisher(p4);
+        adapter.insertPublisher(p5);
         System.out.println("----------<><><><><>----------");
         for(var x :adapter.getAllPublishers()){
             System.out.println(x);
@@ -34,11 +38,12 @@ public class test3 {
         y.setName("Bo giao duc");
         y.setDescription("ko biet noi gi");
         adapter.updatePublisher(y);
+        System.out.println("----------<><><><><>----------");
         for(var x:adapter.getAllPublishers() ){
             System.out.println(x);
         }
     }
-    public void deleteCategories() throws Exception {
+    public void deletePublisher() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x:adapter.getAllPublishers()){
             //Nếu như các ô đã triển khai override thuộc tính toString() cho
@@ -48,6 +53,7 @@ public class test3 {
         }
         var y = adapter.getAllPublishers().get(2);
         adapter.deletePublisher(y);
+        System.out.println("----------<><><><><>----------");
         for(var x:adapter.getAllPublishers()){
             //Nếu như các ô đã triển khai override thuộc tính toString() cho
             // của ô rồi thì viết thế này

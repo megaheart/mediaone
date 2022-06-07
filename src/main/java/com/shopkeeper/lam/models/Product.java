@@ -23,7 +23,7 @@ public class Product implements IReferencedCounter {
     private String placement;
     public Product(){productId = 0;}
 
-    public Product( ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
+    public Product(ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
         productId = 0;
         this.productInfo = productInfo;
         this.state = state;
@@ -107,7 +107,7 @@ public class Product implements IReferencedCounter {
     public void setImportBill(ImportBill importBill){
         this.importBill=importBill;
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
