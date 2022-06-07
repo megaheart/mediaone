@@ -149,6 +149,47 @@ public class Feedback {
         feedbackAbout = FeedbackAbout.Service;
         feedbackType = FeedbackType.Suggestions;
     }
+    public Feedback(String title, String description, FeedbackType feedbackType, boolean isUseful, LocalDate time){
+        feedbackId = 0;
+        this.title.set(title);
+        this.description.set(description);
+        this.feedbackAbout = FeedbackAbout.Service;
+        this.feedbackType = feedbackType;
+        this.isUseful = isUseful;
+        this.time = time;
+    }
+    public Feedback(String title, String description, FeedbackType feedbackType, Product productTarget, boolean isUseful, LocalDate time){
+        feedbackId = 0;
+        this.title.set(title);
+        this.description.set(description);
+        this.feedbackAbout = FeedbackAbout.Product;
+        this.feedbackType = feedbackType;
+        this.isUseful = isUseful;
+        this.time = time;
+        this.productTarget = productTarget;
+
+    }
+    public Feedback(String title, String description, FeedbackType feedbackType, ProductInfo productInfoTarget, int productInfoRating, boolean isUseful, LocalDate time){
+        feedbackId = 0;
+        this.title.set(title);
+        this.description.set(description);
+        this.feedbackAbout = FeedbackAbout.ProductInfo;
+        this.feedbackType = feedbackType;
+        this.isUseful = isUseful;
+        this.time = time;
+        this.productInfoTarget = productInfoTarget;
+        this.productInfoRating = productInfoRating;
+    }
+    public Feedback(String title, String description, FeedbackType feedbackType, Staff staffTarget, boolean isUseful, LocalDate time){
+        feedbackId = 0;
+        this.title.set(title);
+        this.description.set(description);
+        this.feedbackAbout = FeedbackAbout.Staff;
+        this.feedbackType = feedbackType;
+        this.isUseful = isUseful;
+        this.time = time;
+        this.staffTarget = staffTarget;
+    }
 
     @Override
     public String toString() {

@@ -27,7 +27,7 @@ public class ReadOnlyDbAdapterCache {
     private ObservableList<ImportBill> importBills;
     private ObservableList<OtherBill> otherBills;
     private ObservableList<StaffBill> staffBills;
-    private ObservableList<TimeKeeping> timeKeepings;
+    private ObservableList<Attendance> attendances;
     private ObservableList<Shift> shifts;
     //endregion
     public ObservableList<Staff> getStaffs(){
@@ -87,8 +87,8 @@ public class ReadOnlyDbAdapterCache {
         return staffBills;
     }
 
-    public ObservableList<TimeKeeping> getTimeKeepings() {
-        return timeKeepings;
+    public ObservableList<Attendance> getAttendances() {
+        return attendances;
     }
 
     public ObservableList<Shift> getShifts() {
@@ -116,7 +116,7 @@ public class ReadOnlyDbAdapterCache {
         importBills = FXCollections.unmodifiableObservableList(cache.getImportBills());
         otherBills = FXCollections.unmodifiableObservableList(cache.getOtherBills());
         staffBills = FXCollections.unmodifiableObservableList(cache.getStaffBills());
-        timeKeepings = FXCollections.unmodifiableObservableList(cache.getTimeKeepings());
+        attendances = FXCollections.unmodifiableObservableList(cache.getAttendances());
         shifts = FXCollections.unmodifiableObservableList(cache.getShifts());
         //endregion
     }

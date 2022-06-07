@@ -1,6 +1,5 @@
 package com.shopkeeper.minh.database;
 
-import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
 import com.shopkeeper.minh.models.*;
 import com.shopkeeper.linh.models.*;
@@ -21,11 +20,11 @@ public class DbWorker3 {
     }
 
     public void initializeTables() throws Exception{
-        if(!createOtherBillsTable()) throw new Exception("DatabaseWorker3 created OtherBills tables false");
-        if(!createImportBillsTable()) throw new Exception("DatabaseWorker3 created ImportBills tables false");
-        if(!createStaffBillsTable()) throw new Exception("DatabaseWorker3 created StaffBills tables false");
-        if (!createTimeKeepingsTable()) throw new Exception("DatabaseWorker3 created TimeKeepings tables false");
-        if (!createShiftsTable()) throw new Exception("DatabaseWorker3 created Shifts tables false");
+        if(createOtherBillsTable()) throw new Exception("DatabaseWorker3 created OtherBills tables false");
+        if(createImportBillsTable()) throw new Exception("DatabaseWorker3 created ImportBills tables false");
+        if(createStaffBillsTable()) throw new Exception("DatabaseWorker3 created StaffBills tables false");
+        if (createAttendancesTable()) throw new Exception("DatabaseWorker3 created Attendances tables false");
+        if (createShiftsTable()) throw new Exception("DatabaseWorker3 created Shifts tables false");
     }
 
     public void load1(DbAdapterCache cache) throws Exception{
@@ -35,7 +34,7 @@ public class DbWorker3 {
 
     public void load2(DbAdapterCache cache) throws Exception{
         loadStaffBills(cache);
-        loadTimeKeepings(cache);
+        loadAttendances(cache);
         loadShifts(cache);
     }
 
@@ -275,6 +274,7 @@ public class DbWorker3 {
         String sql = "SELECT billId, name, price, time, effected, note, from_d, staffId, standardSalaryPerHour, workHours FROM staffbills;";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
+
         StaffBill bill;
         long staffId;
         ObservableList<Staff> staffs = cache.getStaffs();
@@ -295,8 +295,13 @@ public class DbWorker3 {
             for (Staff staff: staffs){
                 if (staff.getStaffId() == staffId){
                     bill.setStaff(staff);
+                    staff.increaseTimesToBeReferenced();
                     break;
                 }
+            }
+
+            if (bill.getStaff() == null){
+                throw new Exception("Be careful when delete a staff, it can affect to a staffbill whose staff is deleted.");
             }
             cache.getStaffBills().add(bill);
         }
@@ -335,10 +340,25 @@ public class DbWorker3 {
         return true;
     }
 
-    public boolean updateStaffBill(StaffBill bill) {
+    public boolean updateStaffBill(StaffBill bill, Staff[] staffs) {
         String sql = "UPDATE staffbills SET name=?, price=?, time=DATE(?), effected=?, note=?, from_d=DATE(?), staffId=?, standardSalaryPerHour=?, workHours=? WHERE billId=?;";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             Statement stmt = conn.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery("SELECT staffId FROM staffbills WHERE billId=" + bill.getBillId());
+            Staff old = null;
+
+            if (rs.next()){
+                int billId = rs.getInt(1);
+                for (var x: staffs){
+                    if (x.getStaffId() == billId){
+                        old = x;
+                        break;
+                    }
+                }
+            }
+
             pstmt.setString(1, bill.getName());
             pstmt.setDouble(2, bill.getPrice());
             pstmt.setString(3, bill.getTime().toString());
@@ -351,6 +371,7 @@ public class DbWorker3 {
             pstmt.setInt(10, bill.getBillId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("StaffBill (ID = " + bill.getBillId() + ") does not exist in \"staffbills\" table.");
+            if (old != null) old.decreaseTimesToBeReferenced();
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -372,8 +393,8 @@ public class DbWorker3 {
         return true;
     }
 
-    public boolean createTimeKeepingsTable(){
-        String sql = "CREATE TABLE timekeepings ("
+    public boolean createAttendancesTable(){
+        String sql = "CREATE TABLE attendances ("
                 +  "time            DATETIME  PRIMARY KEY,"
                 +  "duration        TEXT      NOT NULL,"
                 +  "staffsWork      TEXT      NOT NULL,"
@@ -391,11 +412,11 @@ public class DbWorker3 {
         return true;
     }
 
-    public void loadTimeKeepings(DbAdapterCache cache) throws Exception{
-        String sql = "SELECT time, duration, staffsWork, staffsAbsentee FROM timekeepings;";
+    public void loadAttendances(DbAdapterCache cache) throws Exception{
+        String sql = "SELECT time, duration, staffsWork, staffsAbsentee FROM attendances;";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
-        TimeKeeping timeKeeping;
+        Attendance attendance;
         ArrayList<Staff> staffsWork;
         ArrayList<Staff> staffAbsentee;
         String[] staffsWorkId;
@@ -404,65 +425,79 @@ public class DbWorker3 {
         ObservableList<Staff> staffs = cache.getStaffs();
 
         while (rs.next()) {
-            timeKeeping = new TimeKeeping();
+            attendance = new Attendance();
             staffsWork = new ArrayList<Staff>();
             staffAbsentee = new ArrayList<Staff>();
-            timeKeeping.setTime(LocalDateTime.parse(rs.getString("time")));
-            timeKeeping.setDuration(Duration.parse(rs.getString("duration")));
+            attendance.setTime(LocalDateTime.parse(rs.getString("time")));
+            attendance.setDuration(Duration.parse(rs.getString("duration")));
             staffsWorkId = rs.getString("staffsWork").split("_");
             staffsAbsenteeId = rs.getString("staffsAbsentee").split("_");
 
             for (String staffIdString: staffsWorkId){
+                boolean check = false;
                 staffId = Long.parseLong(staffIdString);
                 for (Staff staff: staffs){
                     if (staff.getStaffId() == staffId){
+                        check = true;
                         staffsWork.add(staff);
+                        staff.increaseTimesToBeReferenced();
                         break;
                     }
+                }
+
+                if (!check){
+                    throw new Exception("Be careful when delete a staff, the action can affect to a attendance whose staff is deleted.");
                 }
             }
 
             for (String staffIdString: staffsAbsenteeId){
+                boolean check = false;
                 staffId = Long.parseLong(staffIdString);
                 for (Staff staff: staffs){
                     if (staff.getStaffId() == staffId){
+                        check = true;
                         staffAbsentee.add(staff);
+                        staff.increaseTimesToBeReferenced();
                         break;
                     }
                 }
+
+                if (!check){
+                    throw new Exception("Be careful when delete a staff, the action can affect to a attendance whose staff is deleted.");
+                }
             }
 
-            timeKeeping.setStaffsWork(staffsWork);
-            timeKeeping.setStaffsAbsentee(staffAbsentee);
-            cache.getTimeKeepings().add(timeKeeping);
+            attendance.setStaffsWork(staffsWork);
+            attendance.setStaffsAbsentee(staffAbsentee);
+            cache.getAttendances().add(attendance);
         }
 
         rs.close();
         stmt.close();
     }
 
-    public boolean insertTimeKeeping(TimeKeeping timeKeeping) {
+    public boolean insertAttendance(Attendance attendance) {
 
-        String sql = "INSERT INTO timekeepings(time, duration, staffsWork, staffsAbsentee) VALUES(DATETIME(?),?,?,?);";
+        String sql = "INSERT INTO attendances(time, duration, staffsWork, staffsAbsentee) VALUES(DATETIME(?),?,?,?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             String staffsWorkId = "";
             String staffsAbsenteeId = "";
-            pstmt.setString(1, timeKeeping.getTime().toString());
-            pstmt.setString(2, timeKeeping.getDuration().toString());
+            pstmt.setString(1, attendance.getTime().toString());
+            pstmt.setString(2, attendance.getDuration().toString());
 
-            for (Staff staff: timeKeeping.getStaffsWork()){
+            for (Staff staff: attendance.getStaffsWork()){
                 staffsWorkId += String.valueOf(staff.getStaffId()) + "_";
             }
 
-            for (Staff staff: timeKeeping.getStaffsAbsentee()){
+            for (Staff staff: attendance.getStaffsAbsentee()){
                 staffsAbsenteeId += String.valueOf(staff.getStaffId()) + "_";
             }
 
             pstmt.setString(3, staffsWorkId);
             pstmt.setString(4, staffsAbsenteeId);
             int affected = pstmt.executeUpdate();
-            if(affected == 0) throw new Exception("Creating timekeeping failed, no rows affected.");
+            if(affected == 0) throw new Exception("Creating attendance failed, no rows affected.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -470,20 +505,22 @@ public class DbWorker3 {
         return true;
     }
 
-    public boolean updateTimeKeeping(TimeKeeping timeKeeping) {
-        String sql = "UPDATE timekeepings SET duration=?, staffsWork=?, staffsAbsentee=? WHERE time=DATETIME(?);";
+    public boolean updateAttendance(Attendance attendance, Staff[] staffs) {
+        String sql = "UPDATE attendances SET duration=?, staffsWork=?, staffsAbsentee=? WHERE time=DATETIME(?);";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             Statement stmt = conn.createStatement()) {
+            Staff old = null;
             String staffsWorkId = "";
             String staffsAbsenteeId = "";
-            pstmt.setString(4, timeKeeping.getTime().toString());
-            pstmt.setString(1, timeKeeping.getDuration().toString());
+            pstmt.setString(4, attendance.getTime().toString());
+            pstmt.setString(1, attendance.getDuration().toString());
 
-            for (Staff staff: timeKeeping.getStaffsWork()){
+            for (Staff staff: attendance.getStaffsWork()){
                 staffsWorkId += String.valueOf(staff.getStaffId()) + "_";
             }
 
-            for (Staff staff: timeKeeping.getStaffsAbsentee()){
+            for (Staff staff: attendance.getStaffsAbsentee()){
                 staffsAbsenteeId += String.valueOf(staff.getStaffId()) + "_";
             }
 
@@ -491,7 +528,7 @@ public class DbWorker3 {
             pstmt.setString(3, staffsAbsenteeId);
 
             int affected = pstmt.executeUpdate();
-            if(affected == 0) throw new Exception("TimeKeeping (ID = " + timeKeeping.getTime().toString() + ") does not exist in \"timekeepings\" table.");
+            if(affected == 0) throw new Exception("Attendance (ID = " + attendance.getTime().toString() + ") does not exist in \"attendances\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -499,13 +536,13 @@ public class DbWorker3 {
         return true;
     }
 
-    public boolean deleteTimeKeeping(TimeKeeping timeKeeping) {
-        String sql = "DELETE FROM timekeepings WHERE time=DATETIME(?);";
+    public boolean deleteAttendance(Attendance attendance) {
+        String sql = "DELETE FROM attendances WHERE time=DATETIME(?);";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, timeKeeping.getTime().toString());
+            pstmt.setString(1, attendance.getTime().toString());
             int affected = pstmt.executeUpdate();
-            if(affected == 0) throw new Exception("TimeKeeping (ID = " + timeKeeping.getTime().toString() + ") does not exist in \"timekeepings\" table.");
+            if(affected == 0) throw new Exception("Attendance (ID = " + attendance.getTime().toString() + ") does not exist in \"attendances\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -553,11 +590,18 @@ public class DbWorker3 {
 
             for (String staffIdString: staffsId){
                 staffId = Long.parseLong(staffIdString);
+                boolean check = false;
                 for (Staff staff: staffsList){
                     if (staff.getStaffId() == staffId){
+                        check = true;
                         staffs.add(staff);
+                        staff.increaseTimesToBeReferenced();
                         break;
                     }
+                }
+
+                if (!check){
+                    throw new Exception("Be careful when delete a staff, the action can affect to a shift whose staff is deleted.");
                 }
             }
 

@@ -20,10 +20,10 @@ public class Publisher implements IReferencedCounter {
         publisherId=0;
     }
 
-    public Publisher(String name, String address, int publisherId, String description) {
+    public Publisher(String name, String address, String description) {
         this.name = name;
         this.address = address;
-        this.publisherId = publisherId;
+        publisherId = 0;
         this.description = description;
     }
 
@@ -48,7 +48,7 @@ public class Publisher implements IReferencedCounter {
     }
 
     public void setPublisherId(int publisherId) throws InvalidParameterException {
-        if(publisherId > 0) throw new InvalidParameterException("publisherId is able to be set only one time.");
+        if(this.publisherId > 0) throw new InvalidParameterException("publisherId is able to be set only one time.");
         this.publisherId = publisherId;
     }
 
@@ -70,7 +70,7 @@ public class Publisher implements IReferencedCounter {
         sb.append('}');
         return sb.toString();
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public int countTimesToBeReferenced() {
         return timesToBeReferenced;

@@ -1,5 +1,6 @@
 package com.shopkeeper.minh.models;
 
+import java.security.InvalidParameterException;
 import java.time.LocalDate;
 
 import com.shopkeeper.linh.models.Staff;
@@ -19,7 +20,23 @@ public final class StaffBill extends Bill {
     public double standardSalaryPerHour;
     public double workHours;
 
+    public StaffBill(String name, double price, LocalDate time, boolean isEffected, String note, LocalDate from, Staff staff, double standardSalaryPerHour, double workHours)
+    {
+        this.billId = 0;
+        this.staff = staff;
+        this.billType = BillType.Staff;
+        this.name = name;
+        this.price = price;
+        this.time = time;
+        this.isEffected = isEffected;
+        this.note = note;
+        this.from = from;
+        this.standardSalaryPerHour = standardSalaryPerHour;
+        this.workHours = workHours;
+    }
+
     public StaffBill(){
+        billId = 0;
         billType = BillType.Staff;
     }
 
@@ -48,6 +65,9 @@ public final class StaffBill extends Bill {
     }
 
     public void setBillId(int billId) {
+        if (this.billId > 0){
+            throw new InvalidParameterException("billId is able to be set only one time.");
+        }
         this.billId = billId;
     }
 
@@ -114,5 +134,23 @@ public final class StaffBill extends Bill {
 
     public double calculateSalary(){
         return standardSalaryPerHour * workHours;
+    }
+
+    public String toString(){
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append('{'); sb.append('\n');
+        sb.append("    billId: \""); sb.append(getBillId());sb.append("\",\n");
+        sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
+        sb.append("    isEffected: "); sb.append(getIsEffected());sb.append(",\n");
+        sb.append("    billType: "); sb.append(getBillType());sb.append(",\n");
+        sb.append("    Time: "); sb.append(getTime());sb.append(",\n");
+        sb.append("    price: \""); sb.append(getPrice());sb.append("\",\n");
+        sb.append("    note: \""); sb.append(getNote());sb.append("\",\n");
+        sb.append("    from: \""); sb.append(getFrom().toString());sb.append("\",\n");
+        sb.append("    standardSalary: \""); sb.append(getStandardSalaryPerHour());sb.append("\",\n");
+        sb.append("    working hours: \""); sb.append(getWorkHours());sb.append("\",\n");
+        sb.append("    staffId: \""); sb.append(getStaff().getStaffId());sb.append("\",\n");
+        sb.append('}');
+        return sb.toString();
     }
 }

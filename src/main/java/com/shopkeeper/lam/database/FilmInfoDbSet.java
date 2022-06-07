@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FilmInfoDbSet {
     private Connection conn;
@@ -27,8 +28,8 @@ public class FilmInfoDbSet {
         sqlBuilder.append("currentSalePrice  DOUBLE   NOT NULL,");
         sqlBuilder.append("publisherId       INTEGER  NOT NULL,");
         sqlBuilder.append("rating            DOUBLE   NOT NULL,");
-        sqlBuilder.append("award             TEXT     NOT NULL");
-        sqlBuilder.append("directorId        TEXT     NOT NULL");
+        sqlBuilder.append("awards             TEXT     NOT NULL,");
+        sqlBuilder.append("directorId        TEXT     NOT NULL,");
         sqlBuilder.append("actorsId          TEXT     NOT NULL,");
         sqlBuilder.append("timeLimit         TEXT     NOT NULL");
         sqlBuilder.append(");");
@@ -45,46 +46,74 @@ public class FilmInfoDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
-        String sql = "SELECT productInfoId, title, description,categoryId,releaseDate,currentSalePrice,publisherId,rating,award,directorId,actorsId,timeLimit FROM filmInfos";
+    public void load() throws Exception {
+        String sql = "SELECT productInfoId, title, description,categoryId,releaseDate,currentSalePrice,publisherId,rating,awards,directorId,actorsId,timeLimit FROM filmInfos";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         FilmInfo productInfo = null;
-        String[] actorsId;
-        String[] award;
-        ArrayList<String> awards = new ArrayList<>();
-        ArrayList<Person> actors = new ArrayList<>();
-        ObservableList<Person> peopleList = cache.getPeople();
+        ArrayList<Integer> actorsId = new ArrayList<>();
+        int publisherId,categoryId,directorId;
+        Person[] actors;
+        int index;
         while (rs.next()) {
             productInfo = new FilmInfo();
             productInfo.setProductInfoId(rs.getInt("productInfoId"));
             productInfo.setTitle(rs.getString("title"));
             productInfo.setDescription(rs.getString("description"));
-            productInfo.getCategory().setCategoryId(rs.getInt("categoryId"));
             productInfo.setReleaseDate(LocalDate.parse(rs.getString("releaseDate")));
             productInfo.setCurrentSalePrice(rs.getDouble("currentSalePrice"));
-            productInfo.getPublisher().setPublisherId(rs.getInt("publisherId"));
             productInfo.setRating(rs.getDouble("rating"));
-            actorsId = rs.getString("actorsId").split("_");
             productInfo.setTimeLimit(LocalTime.parse(rs.getString("timeLimit")));
-            productInfo.getDirector().setPersonId(rs.getInt("directorId"));
             //gan cho actors
-            for (String actorsIdString: actorsId){
-                for (Person person: peopleList){
-                    if (person.getPersonId() == Integer.parseInt(actorsIdString)){
-                        actors.add(person);
-                        break;
-                    }
+            actorsId.clear();
+            for (String idString: rs.getString("actorsId").split("_")){
+                actorsId.add(Integer.parseInt(idString));
+            }
+            int count = actorsId.size();
+            actors = new Person[count];
+
+            for (Person person: readOnlyCache.getPeople()){
+                index = actorsId.indexOf(person.getPersonId());
+                if (index > -1){
+                    actors[index] = person;
+                    person.increaseTimesToBeReferenced();
+                    count--;
+                    if(count == 0) break;
                 }
             }
-            productInfo.setActors(actors);
-            //gan cho awards
-            award=rs.getString("awards").split("_");
-            for(String i : award){
-                awards.add(i);
+            productInfo.setActors(new ArrayList<>(Arrays.asList(actors)));
+            //gan cho publisher
+            publisherId = rs.getInt("publisherId");
+            for (var p: readOnlyCache.getPublishers()){
+                if (p.getPublisherId() == publisherId){
+                    productInfo.setPublisher(p);
+                    p.increaseTimesToBeReferenced();
+                    break;
+                }
             }
-            productInfo.setAward(awards);
-            list.add((FilmInfo) productInfo);
+
+            //gan cho category
+            categoryId = rs.getInt("categoryId");
+            for (var c: readOnlyCache.getCategories()){
+                if (c.getCategoryId() == categoryId){
+                    productInfo.setCategory(c);
+                    c.increaseTimesToBeReferenced();
+                    break;
+                }
+            }
+            //gan cho director
+            directorId = rs.getInt("directorId");
+            for (var p: readOnlyCache.getPeople()){
+                if (p.getPersonId() == directorId){
+                    productInfo.setDirector(p);
+                    p.increaseTimesToBeReferenced();
+                    break;
+                }
+            }
+            
+            //gan cho awards
+            productInfo.setAward(new ArrayList<>(Arrays.asList(rs.getString("awards").split("_"))));
+            list.add(productInfo);
         }
 
         rs.close();
@@ -93,8 +122,8 @@ public class FilmInfoDbSet {
 
     public boolean insert(FilmInfo filmInfo) {
         if(filmInfo.getProductInfoId() != 0) return false;
-        String sql = "INSERT INTO filmInfos(title, description, categoryId,releaseDate,currentSalePrice,publisherId,rating,award,directorId,actorsId,timeLimit ) VALUES(?,?,?,DATE(?),?,?,?,?,?,?,?)";
-
+        String sql = "INSERT INTO filmInfos(title, description, categoryId,releaseDate,currentSalePrice,publisherId,rating,awards,directorId,actorsId,timeLimit ) VALUES(?,?,?,DATE(?),?,?,?,?,?,?,?)";
+        StringBuilder stringBuilder = new StringBuilder();
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, filmInfo.getTitle());
             pstmt.setString(2, filmInfo.getDescription());
@@ -103,17 +132,29 @@ public class FilmInfoDbSet {
             pstmt.setDouble(5,filmInfo.getCurrentSalePrice());
             pstmt.setInt(6, filmInfo.getPublisher().getPublisherId());
             pstmt.setDouble(7, filmInfo.getRating());
-            String award="";
-            for(String a : filmInfo.getAward()){
-                award+=(a+"_");
-            }
-            pstmt.setString(8, award);//1 String cac ten award,ngan cach boi dau _
+            
             pstmt.setInt(9, filmInfo.getDirector().getPersonId());
-            String actorsId="";
-            for(Person person : filmInfo.getActors()){
-                actorsId+=(person.getPersonId()+"_");
+            
+            //award
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
+            for(String a : filmInfo.getAward()){
+                stringBuilder.append(a);
+                stringBuilder.append('_');
             }
-            pstmt.setString(10, actorsId);//1 String cac contributorId,ngan cach boi dau _
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(8, stringBuilder.toString());//1 String cac ten award,ngan cach boi dau _
+
+            //actors
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
+            for(Person person : filmInfo.getActors()){
+                stringBuilder.append(person.getPersonId());
+                stringBuilder.append('_');
+            }
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(10, stringBuilder.toString());//1 String cac contributorId,ngan cach boi dau _
+            
+            
+            
             pstmt.setString(11, filmInfo.getTimeLimit().toString());
 
             int affected = pstmt.executeUpdate();
@@ -121,24 +162,63 @@ public class FilmInfoDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                filmInfo.setProductInfoId(generatedKeys.getInt(12));
+                filmInfo.setProductInfoId(generatedKeys.getInt(1));
             } else throw new Exception("Creating filmInfo failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
         }
+        //Success
+        filmInfo.getPublisher().increaseTimesToBeReferenced();
+        for(var m : filmInfo.getActors()){
+            m.increaseTimesToBeReferenced();
+        }
+        filmInfo.getCategory().increaseTimesToBeReferenced();
+        filmInfo.getDirector().increaseTimesToBeReferenced();
         list.add(filmInfo);
         return true;
     }
     public boolean update(FilmInfo filmInfo) {
+        for (var x : filmInfo.getActors()){
+            if(!readOnlyCache.getPeople().contains(x)){
+                System.err.println("One person in filmInfo.getActors() is not in DbAdapter's cache");
+                return false;
+            }
+        }
+        if(!readOnlyCache.getCategories().contains(filmInfo.getCategory())){
+            System.err.println("Category which is output of filmInfo.getCategory() is not in DbAdapter's cache");
+            return false;
+        }
+        if(!readOnlyCache.getPublishers().contains(filmInfo.getPublisher())){
+            System.err.println("Publisher which is output of filmInfo.getPublisher() is not in DbAdapter's cache");
+            return false;
+        }
+        if(!readOnlyCache.getPeople().contains(filmInfo.getDirector())){
+            System.err.println("People which is output of filmInfo.getDirector() is not in DbAdapter's cache");
+            return false;
+        }
         if(!list.contains(filmInfo))
         {
             System.err.println("filmInfo is not in DbAdapter's cache");
             return false;
         }
-        String sql = "UPDATE filmInfos SET title=?, description=?, categoryId=?,releaseDate=DATE(?),currentSalePrice=?,publisherId=?,rating=?,award=?,dicrectorId=?,actorsId=?,timeLimit=?  WHERE productInfo=?";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        String sql = "UPDATE filmInfos SET title=?, description=?, categoryId=?,releaseDate=DATE(?),currentSalePrice=?,publisherId=?,rating=?,awards=?,directorId=?,actorsId=?,timeLimit=?  WHERE productInfoId=?";
+        StringBuilder stringBuilder = new StringBuilder();
+        int oldPublisherId = 0, oldCategoryId = 0, oldDirectorId = 0;
+        ArrayList<Integer> oldActorsId = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             Statement stmt = conn.createStatement()) {
+            //Get old value
+            ResultSet rs = stmt.executeQuery("SELECT categoryId, publisherId, directorId, actorsId FROM filmInfos WHERE productInfoId=" + filmInfo.getProductInfoId());
+            if(rs.next()){
+                oldCategoryId = rs.getInt(1);
+                oldPublisherId = rs.getInt(2);
+                oldDirectorId = rs.getInt(3);
+                for (String idString: rs.getString(4).split("_")){
+                    oldActorsId.add(Integer.parseInt(idString));
+                }
+            }
+            //Update
             pstmt.setString(1, filmInfo.getTitle());
             pstmt.setString(2, filmInfo.getDescription());
             pstmt.setInt(3,filmInfo.getCategory().getCategoryId());
@@ -146,18 +226,26 @@ public class FilmInfoDbSet {
             pstmt.setDouble(5,filmInfo.getCurrentSalePrice());
             pstmt.setInt(6, filmInfo.getPublisher().getPublisherId());
             pstmt.setDouble(7, filmInfo.getRating());
-            String award="";
-            for(String a : filmInfo.getAward()){
-                award+=(a+"_");
-            }
-            pstmt.setString(8, award);//1 String cac ten award,ngan cach boi dau _
             pstmt.setInt(9, filmInfo.getDirector().getPersonId());
 
-            String actorsId="";
-            for(Person person : filmInfo.getActors()){
-                actorsId+=(person.getPersonId()+"_");
+            //award
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
+            for(String a : filmInfo.getAward()){
+                stringBuilder.append(a);
+                stringBuilder.append('_');
             }
-            pstmt.setString(10, actorsId);//1 String cac contributorId,ngan cach boi dau _
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(8, stringBuilder.toString());//1 String cac ten award,ngan cach boi dau _
+
+            //actors
+            stringBuilder.delete(0, stringBuilder.length());//clear stringBuilder
+            for(Person person : filmInfo.getActors()){
+                stringBuilder.append(person.getPersonId());
+                stringBuilder.append('_');
+            }
+            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());//xoá dấu _ ở cuối
+            pstmt.setString(10, stringBuilder.toString());//1 String cac contributorId,ngan cach boi dau _
+            
             pstmt.setString(11, filmInfo.getTimeLimit().toString());
             pstmt.setInt(12,filmInfo.getProductInfoId());
             int affected = pstmt.executeUpdate();
@@ -167,6 +255,66 @@ public class FilmInfoDbSet {
             System.err.println(e.getMessage());
             return false;
         }
+        //Success
+        //Decrease reference count
+
+        //actors
+        int count = oldActorsId.size();
+        for (Person person: readOnlyCache.getPeople()){
+            if (oldActorsId.contains(person.getPersonId())){
+                try{person.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                count--;
+                if(count == 0) break;
+            }
+        }
+
+        //publisher
+        for (var p: readOnlyCache.getPublishers()){
+            if (p.getPublisherId() == oldPublisherId){
+                try{p.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            }
+        }
+
+        //category
+        for (var c: readOnlyCache.getCategories()){
+            if (c.getCategoryId() == oldCategoryId){
+                try{c.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            }
+        }
+        
+        //director
+        for (var p: readOnlyCache.getPeople()){
+            if (p.getPersonId() == oldDirectorId){
+                try{p.decreaseTimesToBeReferenced();}
+                catch (Exception e){
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            }
+        }
+        
+        //Increase reference count
+        filmInfo.getPublisher().increaseTimesToBeReferenced();
+        for(var m : filmInfo.getActors()){
+            m.increaseTimesToBeReferenced();
+        }
+        filmInfo.getCategory().increaseTimesToBeReferenced();
+        filmInfo.getDirector().increaseTimesToBeReferenced();
         return true;
     }
     public boolean delete(FilmInfo filmInfo) {
@@ -174,6 +322,25 @@ public class FilmInfoDbSet {
             System.err.println("Something have referenced to this filmInfo.");
             return false;
         }
+        for (var x : filmInfo.getActors()){
+            if(!readOnlyCache.getPeople().contains(x)){
+                System.err.println("One person in filmInfo.getMusicians() is not in DbAdapter's cache");
+                return false;
+            }
+        }
+        if(!readOnlyCache.getCategories().contains(filmInfo.getCategory())){
+            System.err.println("Category which is output of filmInfo.getCategory() is not in DbAdapter's cache");
+            return false;
+        }
+        if(!readOnlyCache.getPublishers().contains(filmInfo.getPublisher())){
+            System.err.println("Publisher which is output of filmInfo.getPublisher() is not in DbAdapter's cache");
+            return false;
+        }
+        if(!readOnlyCache.getPeople().contains(filmInfo.getDirector())){
+            System.err.println("Person which is output of filmInfo.getDirector() is not in DbAdapter's cache");
+            return false;
+        }
+        
         int index = list.indexOf(filmInfo);
         if(index < 0){
             System.err.println("filmInfo is not in DbAdapter's cache");
@@ -183,7 +350,7 @@ public class FilmInfoDbSet {
         String sql = "DELETE FROM filmInfos WHERE productInfoId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(12, filmInfo.getProductInfoId());
+            pstmt.setInt(1, filmInfo.getProductInfoId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("FilmInfo (ID = " + filmInfo.getProductInfoId() + ") does not exist in \"filmInfos\" table.");
         } catch (Exception e) {
@@ -192,6 +359,17 @@ public class FilmInfoDbSet {
         }
 
         //When Success
+        try {
+            filmInfo.getPublisher().decreaseTimesToBeReferenced();
+            for(var m : filmInfo.getActors()){
+                m.decreaseTimesToBeReferenced();
+            }
+            filmInfo.getCategory().decreaseTimesToBeReferenced();
+            filmInfo.getDirector().decreaseTimesToBeReferenced();
+        }catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
         list.remove(index, index + 1);
         return true;
     }

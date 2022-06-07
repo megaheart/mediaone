@@ -21,8 +21,8 @@ public abstract class ProductInfo implements IReferencedCounter {
     private ArrayList<String> award;
     public ProductInfo(){productInfoId=0;}
 
-    public ProductInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award) {
-        this.productInfoId = productInfoId;
+    public ProductInfo(String title, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award) {
+        productInfoId=0;
         this.title = title;
         this.description = description;
         this.category = category;
@@ -46,7 +46,7 @@ public abstract class ProductInfo implements IReferencedCounter {
     }
 
     public void setProductInfoId(int productInfoId) throws InvalidParameterException {
-        if(productInfoId > 0) throw new InvalidParameterException("productInfoId is able to be set only one time.");
+        if(this.productInfoId > 0) throw new InvalidParameterException("productInfoId is able to be set only one time.");
         this.productInfoId = productInfoId;
     }
 
@@ -121,7 +121,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         sb.append('}');
         return sb.toString();
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public int countTimesToBeReferenced() {
         return timesToBeReferenced;

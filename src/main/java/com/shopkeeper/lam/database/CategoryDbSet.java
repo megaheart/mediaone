@@ -17,7 +17,7 @@ public class CategoryDbSet {
         StringBuilder sqlBuilder = new StringBuilder("CREATE TABLE categories (");
         sqlBuilder.append("categoryId     INTEGER   PRIMARY KEY AUTOINCREMENT,");
         sqlBuilder.append("name           TEXT      NOT NULL,");
-        sqlBuilder.append("description    TEXT      NOT NULL,");
+        sqlBuilder.append("description    TEXT      NOT NULL");
         sqlBuilder.append(");");
         String sql = sqlBuilder.toString();
         try (Statement stmt = conn.createStatement()) {
@@ -32,7 +32,7 @@ public class CategoryDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
+    public void load() throws Exception {
         String sql = "SELECT categoryId, name, description FROM categories";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -60,11 +60,11 @@ public class CategoryDbSet {
             pstmt.setString(2, category.getDescription());
 
             int affected = pstmt.executeUpdate();
-            if (affected == 0) throw new Exception("Creating staff failed, no rows affected.");
+            if (affected == 0) throw new Exception("Creating category failed, no rows affected.");
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                category.setCategoryId(generatedKeys.getInt(3));
+                category.setCategoryId(generatedKeys.getInt(1));
             } else throw new Exception("Creating category failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -111,10 +111,9 @@ public class CategoryDbSet {
         String sql = "DELETE FROM categories WHERE categoryId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(4, category.getCategoryId());
+            pstmt.setInt(1, category.getCategoryId());
             int affected = pstmt.executeUpdate();
-            if (affected == 0)
-                throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
+            if (affected == 0) throw new Exception("Category (ID = " + category.getCategoryId() + ") does not exist in \"categories\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;

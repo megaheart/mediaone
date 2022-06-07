@@ -1,5 +1,5 @@
 package com.shopkeeper.mediaone.windowfactories;
 
-public interface ICanNavigates<T> {
+public interface CanNavigates<T> {
     void navigateTo(T item);
 }

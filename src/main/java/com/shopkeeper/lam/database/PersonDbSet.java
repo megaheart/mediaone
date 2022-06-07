@@ -38,12 +38,11 @@ public class PersonDbSet {
         return true;
     }
 
-    public void load(DbAdapterCache cache) throws Exception {
+    public void load() throws Exception {
         String sql = "SELECT personId, name, dateOfBirth, description,job FROM people";
         Statement stmt = conn.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
         Person person;
-
         while (rs.next()) {
             person = new Person();
             person.setPersonId(rs.getInt("personId"));
@@ -73,8 +72,8 @@ public class PersonDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                person.setPersonId(generatedKeys.getInt(5));
-            } else throw new Exception("Creating staff failed, no ID obtained.");
+                person.setPersonId(generatedKeys.getInt(1));
+            } else throw new Exception("Creating person failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -97,7 +96,7 @@ public class PersonDbSet {
             pstmt.setString(2, person.getDateOfBirth().toString());
             pstmt.setString(3, person.getDescription());
             pstmt.setString(4, person.getJob().toString());
-            pstmt.setLong(5, person.getPersonId());
+            pstmt.setInt(5, person.getPersonId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Person (ID = " + person.getPersonId() + ") does not exist in \"people\" table.");
@@ -122,7 +121,7 @@ public class PersonDbSet {
         String sql = "DELETE FROM people WHERE personId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, person.getPersonId());
+            pstmt.setInt(1, person.getPersonId());
             int affected = pstmt.executeUpdate();
             if (affected == 0)
                 throw new Exception("Person (ID = " + person.getPersonId() + ") does not exist in \"people\" table.");

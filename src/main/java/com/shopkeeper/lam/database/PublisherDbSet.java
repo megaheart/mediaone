@@ -33,7 +33,7 @@ public class PublisherDbSet {
         }
         return true;
     }
-    public void load(DbAdapterCache cache) throws Exception{
+    public void load() throws Exception{
         String sql = "SELECT publisherId, name, address, description  FROM publishers";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
@@ -64,7 +64,7 @@ public class PublisherDbSet {
             //Auto set ID
             ResultSet generatedKeys = pstmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                publisher.setPublisherId(generatedKeys.getInt(4));
+                publisher.setPublisherId(generatedKeys.getInt(1));
             }
             else throw new Exception("Creating publisher failed, no ID obtained.");
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class PublisherDbSet {
             pstmt.setString(1, publisher.getName());
             pstmt.setString(2, publisher.getAddress());
             pstmt.setString(3, publisher.getDescription());
-            pstmt.setLong(4, publisher.getPublisherId());
+            pstmt.setInt(4, publisher.getPublisherId());
 
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
@@ -111,7 +111,7 @@ public class PublisherDbSet {
         String sql = "DELETE FROM publishers WHERE publisherId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setLong(1, publisher.getPublisherId());
+            pstmt.setInt(1, publisher.getPublisherId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Publisher (ID = " + publisher.getPublisherId() + ") does not exist in \"publishers\" table.");
         } catch (Exception e) {
