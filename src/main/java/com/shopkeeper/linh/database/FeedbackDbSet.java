@@ -1,8 +1,10 @@
 package com.shopkeeper.linh.database;
 
+import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.Feedback;
 import com.shopkeeper.linh.models.FeedbackAbout;
 import com.shopkeeper.linh.models.FeedbackType;
+import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
 import com.shopkeeper.mediaone.database.ReadOnlyDbAdapterCache;
 import javafx.collections.ObservableList;
@@ -61,19 +63,58 @@ public class FeedbackDbSet {
             feedback.setFeedbackType(FeedbackType.valueOf(rs.getString("feedbackType")));
             switch (feedback.getFeedbackAbout()){
                 case Staff:
-
-                    //feedback.setStaffTarget();
+                    id = rs.getLong("staffTargetId");
+                    for(var x : readOnlyCache.getStaffs()){
+                        if(id == x.getStaffId()){
+                            feedback.setStaffTarget(x);
+                            x.increaseTimesToBeReferenced();
+                            break;
+                        }
+                    }
 
                     break;
                 case ProductInfo:
-
-                    //feedback.setProductInfoTarget();
-
+                    id = rs.getLong("productInfoTargetId");
+                    switch (rs.getString("productInfoType")){
+                        case "Music":
+                            for(var x : readOnlyCache.getMusicInfos()){
+                                if(x.getProductInfoId() == id){
+                                    feedback.setProductInfoTarget(x);
+                                    x.increaseTimesToBeReferenced();
+                                    break;
+                                }
+                            }
+                            break;
+                        case "Book":
+                            for(var x : readOnlyCache.getBookInfos()){
+                                if(x.getProductInfoId() == id){
+                                    feedback.setProductInfoTarget(x);
+                                    x.increaseTimesToBeReferenced();
+                                    break;
+                                }
+                            }
+                            break;
+                        case "Film":
+                            for(var x : readOnlyCache.getFilmInfos()){
+                                if(x.getProductInfoId() == id){
+                                    feedback.setProductInfoTarget(x);
+                                    x.increaseTimesToBeReferenced();
+                                    break;
+                                }
+                            }
+                            break;
+                    }
                     feedback.setProductInfoRating(rs.getInt("productInfoRating"));
                     break;
                 case  Product:
-
-                    //feedback.setProductTarget();
+                    id = rs.getLong("productTargetId");
+                    for(var x : readOnlyCache.getProducts()){
+                        if(id == x.getProductId()){
+                            feedback.setProductTarget(x);
+                            x.increaseTimesToBeReferenced();
+                            break;
+                        }
+                    }
 
                     break;
                 case Service:
@@ -92,7 +133,65 @@ public class FeedbackDbSet {
     //Return true if success, otherwise return false
     public boolean insert(Feedback feedback) {
         if(feedback.getFeedbackId() != 0) return false;
-        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType) VALUES(?,?,?,?,?,?,?,?,?,DATE(?))";
+        switch (feedback.getFeedbackAbout()){
+            case Staff:
+                Staff staff;
+                try {
+                    staff = feedback.getStaffTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(!readOnlyCache.getStaffs().contains(staff)){
+                    System.err.println("Staff which is output of feedback.getStaffTarget() is not in DbAdapter's cache");
+                    return false;
+                }
+                break;
+            case ProductInfo:
+                ProductInfo p;
+                try {
+                    p = feedback.getProductInfoTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(p instanceof MusicInfo){
+                    if(!readOnlyCache.getMusicInfos().contains(p)){
+                        System.err.println("MusicInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                else if(p instanceof FilmInfo){
+                    if(!readOnlyCache.getFilmInfos().contains(p)){
+                        System.err.println("FilmInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                else if(p instanceof BookInfo){
+                    if(!readOnlyCache.getBookInfos().contains(p)){
+                        System.err.println("BookInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                break;
+            case  Product:
+                Product product;
+                try {
+                    product = feedback.getProductTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(!readOnlyCache.getProducts().contains(product)){
+                    System.err.println("Product which is output of feedback.getProductTarget() is not in DbAdapter's cache");
+                    return false;
+                }
+                break;
+            case Service:
+                //Do nothing
+                break;
+        }
+        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType) VALUES(?,?,?,?,?,?,?,?,?,DATE(?),?)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, feedback.getTitle());
@@ -112,7 +211,16 @@ public class FeedbackDbSet {
                     pstmt.setLong(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
                     pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
-                    //pstmt.setString(11, "");//productInfoType
+                    //productInfoType
+                    if(feedback.getProductInfoTarget() instanceof  MusicInfo){
+                        pstmt.setString(11, "Music");
+                    }
+                    else if(feedback.getProductInfoTarget() instanceof  FilmInfo){
+                        pstmt.setString(11, "Film");
+                    }
+                    else if(feedback.getProductInfoTarget() instanceof  BookInfo){
+                        pstmt.setString(11, "Book");
+                    }
                     break;
                 case  Product:
                     pstmt.setLong(5, feedback.getProductTarget().getProductId());//productTarget
@@ -143,13 +251,138 @@ public class FeedbackDbSet {
             System.err.println(e.getMessage());
             return false;
         }
+        //Success
+        switch (feedback.getFeedbackAbout()){
+            case Staff:
+                try {
+                    feedback.getStaffTarget().increaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case ProductInfo:
+                try {
+                    feedback.getProductInfoTarget().increaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case  Product:
+                try {
+                    feedback.getProductTarget().increaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case Service:
+                //Do nothing
+                break;
+        }
+        list.add(feedback);
         return true;
     }
     //Return true if success, otherwise return false
     public boolean update(Feedback feedback) {
-        String sql = "UPDATE feedbacks SET title=?, description=?, feedbackAbout=?, feedbackType=?, productTargetId=?, productInfoTargetId=?, productInfoRating=?, staffTargetId=?, isUseful=?, time=? WHERE feedbackId=?";
+        switch (feedback.getFeedbackAbout()){
+            case Staff:
+                Staff staff;
+                try {
+                    staff = feedback.getStaffTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(!readOnlyCache.getStaffs().contains(staff)){
+                    System.err.println("Staff which is output of feedback.getStaffTarget() is not in DbAdapter's cache");
+                    return false;
+                }
+                break;
+            case ProductInfo:
+                ProductInfo p;
+                try {
+                    p = feedback.getProductInfoTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(p instanceof MusicInfo){
+                    if(!readOnlyCache.getMusicInfos().contains(p)){
+                        System.err.println("MusicInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                else if(p instanceof FilmInfo){
+                    if(!readOnlyCache.getFilmInfos().contains(p)){
+                        System.err.println("FilmInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                else if(p instanceof BookInfo){
+                    if(!readOnlyCache.getBookInfos().contains(p)){
+                        System.err.println("BookInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                break;
+            case  Product:
+                Product product;
+                try {
+                    product = feedback.getProductTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(!readOnlyCache.getProducts().contains(product)){
+                    System.err.println("Product which is output of feedback.getProductTarget() is not in DbAdapter's cache");
+                    return false;
+                }
+                break;
+            case Service:
+                //Do nothing
+                break;
+        }
+        if(!list.contains(feedback))
+        {
+            System.err.println("feedback is not in DbAdapter's cache");
+            return false;
+        }
+        String sql = "UPDATE feedbacks SET title=?, description=?, feedbackAbout=?, feedbackType=?, productTargetId=?, productInfoTargetId=?, productInfoRating=?, staffTargetId=?, isUseful=?, time=?, productInfoType=? WHERE feedbackId=?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        long id = 0;
+        String productInfoType = "";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql);
+             Statement stmt = conn.createStatement()) {
+            //Get old
+            ResultSet rs;
+            switch (feedback.getFeedbackAbout()){
+                case Staff:
+                    rs = stmt.executeQuery("SELECT staffTargetId FROM feedbacks WHERE feedbackId=" + feedback.getFeedbackId());
+                    if(rs.next()){
+                        id = rs.getLong("staffTargetId");
+                    }
+                    break;
+                case ProductInfo:
+                    rs = stmt.executeQuery("SELECT productInfoTargetId,productInfoType FROM feedbacks WHERE feedbackId=" + feedback.getFeedbackId());
+
+                    if(rs.next()){
+                        id = rs.getLong("productInfoTargetId");
+                        productInfoType = rs.getString("productInfoType");
+                    }
+                    break;
+                case  Product:
+                    rs = stmt.executeQuery("SELECT productTargetId FROM feedbacks WHERE feedbackId=" + feedback.getFeedbackId());
+                    if(rs.next()){
+                        id = rs.getLong("productTargetId");
+                    }
+                    break;
+                case Service:
+                    //Do nothing
+                    break;
+            }
+            //Update
             pstmt.setString(1, feedback.getTitle());
             pstmt.setString(2, feedback.getDescription());
             pstmt.setString(3, feedback.getFeedbackAbout().toString());
@@ -160,36 +393,204 @@ public class FeedbackDbSet {
                     pstmt.setString(6, "");//productInfoTarget
                     pstmt.setInt(7, 0);//productInfoRating
                     pstmt.setLong(8, feedback.getStaffTarget().getStaffId());//staffTarget
+                    pstmt.setString(11, "");//productInfoType
                     break;
                 case ProductInfo:
                     pstmt.setInt(5, 0);//productTarget
                     pstmt.setLong(6, feedback.getProductInfoTarget().getProductInfoId());//productInfoTarget
                     pstmt.setInt(7, feedback.getProductInfoRating());//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
+                    //productInfoType
+                    if(feedback.getProductInfoTarget() instanceof  MusicInfo){
+                        pstmt.setString(11, "Music");
+                    }
+                    else if(feedback.getProductInfoTarget() instanceof  FilmInfo){
+                        pstmt.setString(11, "Film");
+                    }
+                    else if(feedback.getProductInfoTarget() instanceof  BookInfo){
+                        pstmt.setString(11, "Book");
+                    }
                     break;
                 case  Product:
                     pstmt.setLong(5, feedback.getProductTarget().getProductId());//productTarget
                     pstmt.setString(6, "");//productInfoTarget
                     pstmt.setInt(7, 0);//productInfoRating
                     pstmt.setLong(8, 0);//staffTarget
+                    pstmt.setString(11, "");//productInfoType
                     break;
                 case Service:
-                    //Do nothing
+                    pstmt.setLong(5, 0);//productTarget
+                    pstmt.setString(6, "");//productInfoTarget
+                    pstmt.setInt(7, 0);//productInfoRating
+                    pstmt.setLong(8, 0);//staffTarget
+                    pstmt.setString(11, "");//productInfoType
                     break;
             }
             pstmt.setBoolean(9, feedback.getIsUseful());
             pstmt.setString(10, feedback.getTime().toString());
-            pstmt.setLong(11, feedback.getFeedbackId());
+            pstmt.setLong(12, feedback.getFeedbackId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Feedback (ID = " + feedback.getFeedbackId() + ") does not exist in \"feedbacks\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
         }
+        //When Success
+        //Decrease reference count
+        try {
+            switch (feedback.getFeedbackAbout()){
+                case Staff:
+                    for(var x : readOnlyCache.getStaffs()){
+                        if(id == x.getStaffId()){
+                            x.decreaseTimesToBeReferenced();
+                            break;
+                        }
+                    }
+                    break;
+                case ProductInfo:
+                    switch (productInfoType){
+                        case "Music":
+                            for(var x : readOnlyCache.getMusicInfos()){
+                                if(x.getProductInfoId() == id){
+                                    x.decreaseTimesToBeReferenced();
+                                    break;
+                                }
+                            }
+                            break;
+                        case "Book":
+                            for(var x : readOnlyCache.getBookInfos()){
+                                if(x.getProductInfoId() == id){
+                                    x.decreaseTimesToBeReferenced();
+                                    break;
+                                }
+                            }
+                            break;
+                        case "Film":
+                            for(var x : readOnlyCache.getFilmInfos()){
+                                if(x.getProductInfoId() == id){
+                                    x.decreaseTimesToBeReferenced();
+                                    break;
+                                }
+                            }
+                            break;
+                        default:
+                            throw new Exception("productInfoType is invalid or EMPTY.");
+                    }
+                    break;
+                case  Product:
+                    for(var x : readOnlyCache.getProducts()){
+                        if(id == x.getProductId()){
+                            x.decreaseTimesToBeReferenced();
+                            break;
+                        }
+                    }
+
+                    break;
+                case Service:
+                    //Do nothing
+                    break;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        //Increase reference count
+        switch (feedback.getFeedbackAbout()){
+            case Staff:
+                try {
+                    feedback.getStaffTarget().increaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case ProductInfo:
+                try {
+                    feedback.getProductInfoTarget().increaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case  Product:
+                try {
+                    feedback.getProductTarget().increaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case Service:
+                //Do nothing
+                break;
+        }
         return true;
     }
     //Return true if success, otherwise return false
     public boolean delete(Feedback feedback) {
+        switch (feedback.getFeedbackAbout()){
+            case Staff:
+                Staff staff;
+                try {
+                    staff = feedback.getStaffTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(!readOnlyCache.getStaffs().contains(staff)){
+                    System.err.println("Staff which is output of feedback.getStaffTarget() is not in DbAdapter's cache");
+                    return false;
+                }
+                break;
+            case ProductInfo:
+                ProductInfo p;
+                try {
+                    p = feedback.getProductInfoTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(p instanceof MusicInfo){
+                    if(!readOnlyCache.getMusicInfos().contains(p)){
+                        System.err.println("MusicInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                else if(p instanceof FilmInfo){
+                    if(!readOnlyCache.getFilmInfos().contains(p)){
+                        System.err.println("FilmInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                else if(p instanceof BookInfo){
+                    if(!readOnlyCache.getBookInfos().contains(p)){
+                        System.err.println("BookInfo which is output of feedback.getProductInfoTarget() is not in DbAdapter's cache");
+                        return false;
+                    }
+                }
+                break;
+            case  Product:
+                Product product;
+                try {
+                    product = feedback.getProductTarget();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                if(!readOnlyCache.getProducts().contains(product)){
+                    System.err.println("Product which is output of feedback.getProductTarget() is not in DbAdapter's cache");
+                    return false;
+                }
+                break;
+            case Service:
+                //Do nothing
+                break;
+        }
+        int index = list.indexOf(feedback);
+        if(index < 0){
+            System.err.println("feedback is not in DbAdapter's cache");
+            return false;
+        }
         String sql = "DELETE FROM feedbacks WHERE feedbackId = ?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -200,6 +601,37 @@ public class FeedbackDbSet {
             System.err.println(e.getMessage());
             return false;
         }
+        //When Success
+        switch (feedback.getFeedbackAbout()){
+            case Staff:
+                try {
+                    feedback.getStaffTarget().decreaseTimesToBeReferenced();
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case ProductInfo:
+                try {
+                    feedback.getProductInfoTarget().decreaseTimesToBeReferenced();;
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case  Product:
+                try {
+                    feedback.getProductTarget().decreaseTimesToBeReferenced();;
+                }catch (Exception e) {
+                    System.err.println(e.getMessage());
+                    return false;
+                }
+                break;
+            case Service:
+                //Do nothing
+                break;
+        }
+        list.remove(index, index + 1);
         return true;
     }
 }

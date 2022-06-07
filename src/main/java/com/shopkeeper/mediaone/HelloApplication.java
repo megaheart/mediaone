@@ -22,7 +22,7 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        new com.shopkeeper.linh.test().insertSaleBill();
+
 
         javafx.application.Platform.exit();
     }

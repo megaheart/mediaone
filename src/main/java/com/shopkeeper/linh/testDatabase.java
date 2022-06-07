@@ -1,13 +1,13 @@
 package com.shopkeeper.linh;
 
+import com.shopkeeper.lam.models.Product;
+import com.shopkeeper.lam.models.ProductInfo;
 import com.shopkeeper.linh.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.time.LocalDate;
 
-public class test {
+public class testDatabase {
     public void insertStaff() throws Exception{
         //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
         Staff x1 = new Staff("Linh đẹp trai", true, LocalDate.of(2002, 3,27), "linhdeptrai@mail.com",
@@ -246,6 +246,104 @@ public class test {
         var x3 = adapter.getAllSaleBills().get(2);
         adapter.deleteSaleBill(x3);
         for(var x:adapter.getAllSaleBills()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void insertFeedback() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        var products = adapter.getAllProducts();
+        var musics = adapter.getAllMusicInfos();
+        var films = adapter.getAllFilmInfos();
+        var books = adapter.getAllBookInfos();
+        var staffs = adapter.getAllStaffs();
+
+        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
+        Feedback x1 = new Feedback("Dịch vụ perfect", "Quá chuẩn chỉnh nuôn", FeedbackType.Satisfied,
+                true, LocalDate.of(2022,3,25));
+        Feedback x2 = new Feedback("Sản phẩm như cc", "Haizz chán đ*o chịu đc", FeedbackType.Unsatisfied,
+                products.get(3), false, LocalDate.of(2021, 3, 18));
+        Feedback x3 = new Feedback("Nên bổ sung thêm miêu tả", "Thiếu miêu tả về sếp", FeedbackType.Suggestions,
+                musics.get(0), 5, true, LocalDate.of(2019, 10, 15));
+        Feedback x4 = new Feedback("Nhân viên cư tê", "Anh có info ko cho em xin", FeedbackType.Satisfied,
+                staffs.get(0), false, LocalDate.of(2020, 1, 3));
+        Feedback x5 = new Feedback("Nên bổ sung thêm đĩa nhạc MV Cơn Mưa Ngang Qua", "Sếp No.1", FeedbackType.Suggestions,
+                true, LocalDate.of(2016,12,13));
+        Feedback x6 = new Feedback("Rách Nhãn", "Làm ăn như này sao bán được hàng", FeedbackType.Unsatisfied,
+                products.get(3), false, LocalDate.of(2021, 3, 18));
+        Feedback x7 = new Feedback("Sách hàng fake", "Sai chính tả tùm lum", FeedbackType.Unsatisfied,
+                books.get(0), 5, true, LocalDate.of(2018, 11, 14));
+        Feedback x8 = new Feedback("Nhân viên đấm khách", "Nó đấm tôi khâu năm mũi, yêu cầu bồi thường", FeedbackType.Unsatisfied,
+                staffs.get(2), true, LocalDate.of(2022, 6, 7));
+        for(var x:adapter.getAllFeedbacks()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        adapter.insertFeedback(x1);
+        adapter.insertFeedback(x2);
+        adapter.insertFeedback(x3);
+        adapter.insertFeedback(x4);
+        adapter.insertFeedback(x5);
+        adapter.insertFeedback(x6);
+        adapter.insertFeedback(x7);
+        adapter.insertFeedback(x8);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllFeedbacks()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void updateFeedbacks() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        var products = adapter.getAllProducts();
+        var musics = adapter.getAllMusicInfos();
+        var films = adapter.getAllFilmInfos();
+        var books = adapter.getAllBookInfos();
+        var staffs = adapter.getAllStaffs();
+        for(var x:adapter.getAllFeedbacks()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+
+        var x7 = adapter.getAllFeedbacks().get(6);
+        //Update toàn bộ các thuộc tính trừ ID
+        x7.setTitle("Phim hàng real");
+        x7.setDescription("Quyss tộcss và đẳng cấp");
+        //x7.setFeedbackType(FeedbackType.Suggestions);
+        x7.setIsUseful(true);
+        x7.setTime(LocalDate.of(1969, 6 , 9));
+        x7.setProductInfoRating(1);
+        x7.setProductInfoTarget(films.get(0));
+
+
+        adapter.updateFeedback(x7);
+
+        for(var x:adapter.getAllFeedbacks()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+    }
+    public void deleteFeedbacks() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllFeedbacks()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
+            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
+        }
+        var x3 = adapter.getAllFeedbacks().get(6);
+        adapter.deleteFeedback(x3);
+        for(var x:adapter.getAllFeedbacks()){
             //Nếu như các ô đã triển khai override thuộc tính toString() cho
             // của ô rồi thì viết thế này
             System.out.println(x);

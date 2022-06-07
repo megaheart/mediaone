@@ -83,7 +83,7 @@ public class Person implements IReferencedCounter {
         sb.append('}');
         return sb.toString();
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public int countTimesToBeReferenced() {
         return timesToBeReferenced;

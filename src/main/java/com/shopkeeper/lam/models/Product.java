@@ -107,7 +107,7 @@ public class Product implements IReferencedCounter {
     public void setImportBill(ImportBill importBill){
         this.importBill=importBill;
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());

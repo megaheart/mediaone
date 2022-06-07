@@ -47,9 +47,9 @@ public class ProductDbSet {
         while (rs.next()) {
             product = new Product();
             product.setProductId(rs.getInt("productId"));
-            product.setState(ProductState.valueOf(rs.getString("productState")));
+            product.setState(ProductState.valueOf(rs.getString("state")));
             //ProductInfo
-            int productInfoId = rs.getInt(rs.getInt("productInfoId"));
+            int productInfoId = rs.getInt("productInfoId");
             switch (rs.getString("productInfoType")){
                 case "Music":
                     for(var x : readOnlyCache.getMusicInfos()){
@@ -202,7 +202,7 @@ public class ProductDbSet {
         }
         if(!list.contains(product))
         {
-            System.err.println("customer is not in DbAdapter's cache");
+            System.err.println("product is not in DbAdapter's cache");
             return false;
         }
         String sql = "UPDATE products SET productInfoId=?,state=?,importBillId=?,saleBillId=?,importCost=?,saleValue=?,trialFilename=?,placement=?,productInfoType=? WHERE productId=?";

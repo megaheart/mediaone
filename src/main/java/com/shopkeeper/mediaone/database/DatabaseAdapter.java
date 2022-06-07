@@ -143,14 +143,14 @@ public class DatabaseAdapter {
         saleBillDbSet.load();
         attendanceDbSet.load();
         staffBillDbSet.load();
-        //shiftDbSet.load();
+        shiftDbSet.load();
         musicInfoDbSet.load();
         filmInfoDbSet.load();
         bookInfoDbSet.load();
         //Load 3
-
+        productDbSet.load();
         //Load 4
-
+        feedbackDbSet.load();
 
     }
     //-------------------Linh-------------------
@@ -225,7 +225,18 @@ public class DatabaseAdapter {
     }
     //endregion
     //region Feedback
-
+    public ObservableList<Feedback> getAllFeedbacks(){
+        return readOnlyCache.getFeedbacks();
+    }
+    public boolean insertFeedback(Feedback feedback){
+        return feedbackDbSet.insert(feedback);
+    }
+    public boolean updateFeedback(Feedback feedback) {
+        return feedbackDbSet.update(feedback);
+    }
+    public boolean deleteFeedback(Feedback feedback) {
+        return feedbackDbSet.delete(feedback);
+    }
     //endregion
     //-------------------Lam-------------------
     //region Category
