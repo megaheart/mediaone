@@ -14,24 +14,21 @@ public abstract class ProductInfo implements IReferencedCounter {
     private String title;
     private String description;
     private Category category;
-    private ProductType productType  ;
     private LocalDate releaseDate;
     private double currentSalePrice;
     private Publisher publisher;
-    private ArrayList<Person> contributors;
     private double rating;
     private ArrayList<String> award;
     public ProductInfo(){productInfoId=0;}
 
-    public ProductInfo(String title, int productInfoId, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, ArrayList<Person> contributors, double rating, ArrayList<String> award) {
-        this.productInfoId = productInfoId;
+    public ProductInfo(String title, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award) {
+        productInfoId=0;
         this.title = title;
         this.description = description;
         this.category = category;
         this.releaseDate = releaseDate;
         this.currentSalePrice = currentSalePrice;
         this.publisher = publisher;
-        this.contributors = contributors;
         this.rating = rating;
         this.award = award;
     }
@@ -44,12 +41,12 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.title = title;
     }
 
-    public long getProductInfoId() {
+    public int getProductInfoId() {
         return productInfoId;
     }
 
     public void setProductInfoId(int productInfoId) throws InvalidParameterException {
-        if(productInfoId > 0) throw new InvalidParameterException("productInfoId is able to be set only one time.");
+        if(this.productInfoId > 0) throw new InvalidParameterException("productInfoId is able to be set only one time.");
         this.productInfoId = productInfoId;
     }
 
@@ -69,12 +66,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.category = category;
     }
 
-    public ProductType getProductType() {
-        return productType;
-    }
-    public void setProductType(ProductType productType) {
-        this.productType=productType;
-    }
     public LocalDate getReleaseDate() {
         return releaseDate;
     }
@@ -99,14 +90,6 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.publisher = publisher;
     }
 
-    public ArrayList<Person> getContributors() {
-        return contributors;
-    }
-
-    public void setContributors(ArrayList<Person> contributors) {
-        this.contributors = contributors;
-    }
-
     public double getRating() {
         return rating;
     }
@@ -129,18 +112,16 @@ public abstract class ProductInfo implements IReferencedCounter {
         sb.append("    tittle: \""); sb.append(getTitle());sb.append("\",\n");
         sb.append("    productInfoId: \""); sb.append(getProductInfoId());sb.append("\",\n");
         sb.append("    category: "); sb.append(getCategory());sb.append(",\n");
-        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
         sb.append("    releaseDate: \""); sb.append(getReleaseDate());sb.append("\",\n");
         sb.append("    currentSalePrice: \""); sb.append(getCurrentSalePrice());sb.append("\",\n");
         sb.append("    description: \""); sb.append(getDescription());sb.append("\",\n");
         sb.append("    publisher: "); sb.append(getPublisher());sb.append("\n");
-        sb.append("    contributors: "); sb.append(getContributors());sb.append("\n");
         sb.append("    rating: "); sb.append(getRating());sb.append("\n");
         sb.append("    award: "); sb.append(getAward());sb.append("\n");
         sb.append('}');
         return sb.toString();
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public int countTimesToBeReferenced() {
         return timesToBeReferenced;

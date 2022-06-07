@@ -27,7 +27,7 @@ public class StaffDbSet {
                 +  "dateOfBirth DATETIME  NOT NULL,"
                 +  "email       TEXT      NOT NULL,"
                 +  "phoneNumber TEXT      NOT NULL,"
-                +  "description TEXT,"
+                +  "description TEXT      NOT NULL,"
                 +  "state       TEXT (40) NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {

@@ -14,7 +14,6 @@ import java.time.*;
 public class Product implements IReferencedCounter {
     private int productId;
     private ProductInfo productInfo;
-    private ProductType productType;
     private ProductState state;
     private ImportBill importBill;
     private SaleBill saleBill;
@@ -24,10 +23,9 @@ public class Product implements IReferencedCounter {
     private String placement;
     public Product(){productId = 0;}
 
-    public Product(int productId, ProductInfo productInfo, ProductType productType, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
-        this.productId = productId;
+    public Product(ProductInfo productInfo, ProductState state, ImportBill importBill, SaleBill saleBill, double importCost, double saleValue, String trialFilename, String placement) {
+        productId = 0;
         this.productInfo = productInfo;
-        this.productType = productType;
         this.state = state;
         this.importBill = importBill;
         this.saleBill = saleBill;
@@ -83,7 +81,7 @@ public class Product implements IReferencedCounter {
     }
 
     public void setProductId(int productId) throws InvalidParameterException {
-        if(productId > 0) throw new InvalidParameterException("productId is able to be set only one time.");
+        if(this.productId > 0) throw new InvalidParameterException("productId is able to be set only one time.");
         this.productId = productId;
     }
 
@@ -94,15 +92,6 @@ public class Product implements IReferencedCounter {
     public void setProductInfo(ProductInfo productInfo) {
         this.productInfo = productInfo;
     }
-
-    public ProductType getProductType() {
-        return productType;
-    }
-
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
-
     public ProductState getState() {
         return state;
     }
@@ -118,14 +107,13 @@ public class Product implements IReferencedCounter {
     public void setImportBill(ImportBill importBill){
         this.importBill=importBill;
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append('{'); sb.append('\n');
         sb.append("    productId: \""); sb.append(getProductId());sb.append("\",\n");
         sb.append("    productInfo: \""); sb.append(getProductInfo());sb.append("\",\n");
-        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
         sb.append("    productState: \""); sb.append(getState());sb.append("\",\n");
         sb.append("    importBill: \""); sb.append(getImportBill());sb.append("\",\n");
         sb.append("    saleBill: \""); sb.append(getSaleBill());sb.append("\",\n");

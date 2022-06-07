@@ -13,16 +13,15 @@ import java.security.InvalidParameterException;
 public class Category implements IReferencedCounter {
     private String name;
     private int categoryId;
-    private ProductType productType;
     private String description;
     public Category(){
         categoryId = 0;
     }
-    public Category(String name, String description, int categoryId, ProductType productType) {
+    public Category(String name, String description) {
         this.name = name;
         this.description = description;
-        this.categoryId = categoryId;
-        this.productType = productType;
+        categoryId = 0;
+
     }
 
     public String getName() {
@@ -46,30 +45,23 @@ public class Category implements IReferencedCounter {
     }
 
     public void setCategoryId(int categoryId) throws InvalidParameterException {
-        if(categoryId > 0) throw new InvalidParameterException("categoryId is able to be set only one time.");
+        if(this.categoryId > 0) throw new InvalidParameterException("categoryId is able to be set only one time.");
         this.categoryId = categoryId;
     }
 
-    public ProductType getProductType() {
-        return productType;
-    }
 
-    public void setProductType(ProductType productType) {
-        this.productType = productType;
-    }
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append('{'); sb.append('\n');
         sb.append("    categoryId: \""); sb.append(getCategoryId());sb.append("\",\n");
         sb.append("    name: \""); sb.append(getName());sb.append("\",\n");
-        sb.append("    productType: "); sb.append(getProductType());sb.append(",\n");
         sb.append("    description: \""); sb.append(getDescription());sb.append("\",\n");
 
         sb.append('}');
         return sb.toString();
     }
-    private int timesToBeReferenced;
+    private int timesToBeReferenced = 0;
     @Override
     public int countTimesToBeReferenced() {
         return timesToBeReferenced;

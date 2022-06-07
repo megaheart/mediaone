@@ -1,71 +1,66 @@
 package com.shopkeeper.lam.database;
 
-import com.shopkeeper.lam.models.Category;
-import com.shopkeeper.lam.models.ProductType;
-import com.shopkeeper.linh.models.Staff;
-import com.shopkeeper.linh.models.StaffState;
+import com.shopkeeper.lam.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 import java.time.LocalDate;
 
+//PERSON
+
 public class test2 {
-
-    //CATEGORY
-    public void insertCategories() throws Exception{
-        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
-        Category x1 = new Category("Harry Potter", "hello", 123, ProductType.BOOK);
-        Category x2 = new Category("Sakura", "hello", 223, ProductType.SONG);
-        Category x3 = new Category("How to watch Youtube", "hello", 323, ProductType.BOOK);
-        Category x4 = new Category("Attack on titan", "hello", 423, ProductType.FILM);
-
+    public void insertPerson() throws Exception {
+        Person x1=new Person("Lam", LocalDate.of(2002,1,24),"thich choi genshin",JobOfPerson.WRITER);
+        Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",JobOfPerson.ACTOR);
+        Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",JobOfPerson.ACTOR);
+        Person x4=new Person("DOREMON",LocalDate.of(3424,2,24),"meo may den tu tuong lai",JobOfPerson.ACTOR);
+        Person x5=new Person("Son Tung",LocalDate.of(2323,4,2),"hay nhat viet nam",JobOfPerson.SINGER);
+        Person x6=new Person("Jack",LocalDate.of(3424,2,24),"Jack 5 củ",JobOfPerson.SINGER);
         var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllCategories()){
+        for(var x : adapter.getAllPeople()){
+            System.out.println(x);
+        }
+        adapter.insertPerson(x1);
+        adapter.insertPerson(x2);
+        adapter.insertPerson(x3);
+        adapter.insertPerson(x4);
+        adapter.insertPerson(x5);
+        adapter.insertPerson(x6);
+        System.out.println("----------<><><><><>----------");
+        for(var x :adapter.getAllPeople()){
+            System.out.println(x);
+        }
+    }
+    public void updatePerson() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllPeople()){
+            System.out.println(x);
+        }
+        var y=adapter.getAllPeople().get(3);
+        y.setName("Kujou Sara");
+        y.setDescription("tuong quan Inazuma");
+
+        adapter.updatePerson(y);
+        System.out.println("----------<><><><><>----------");
+        for(var x:adapter.getAllPeople() ){
+            System.out.println(x);
+        }
+    }
+    public void deletePeople() throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var x:adapter.getAllPeople()){
             //Nếu như các ô đã triển khai override thuộc tính toString() cho
             // của ô rồi thì viết thế này
             System.out.println(x);
             //Còn nếu không các ô phải in từng thuộc tính 1 ra
         }
-        adapter.insertCategory(x1);
-        adapter.insertCategory(x2);
-
-        adapter.insertCategory(x3);
-
-        adapter.insertCategory(x4);
-
-
+        var y = adapter.getAllPeople().get(3);
+        adapter.deletePerson(y);
         System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllCategories()){
+        for(var x:adapter.getAllPeople()){
+            //Nếu như các ô đã triển khai override thuộc tính toString() cho
+            // của ô rồi thì viết thế này
             System.out.println(x);
-        }
-    }
-    public void updateCategories() throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllCategories()){
-            System.out.println(x);
-        }
-        var x4 = adapter.getAllCategories().get(3);
-        //Update toàn bộ các thuộc tính trừ ID
-        x4.setName("XXXXXXXXXX");
-        x4.setProductType(ProductType.BOOK);
-        x4.setDescription("Cực kì bí ẩn");
-        adapter.updateCategory(x4);
-
-        for(var x:adapter.getAllCategories()){
-            System.out.println(x);
-        }
-    }
-    public void deleteCategories() throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllCategories()){
-            System.out.println(x);
-        }
-        var x3 = adapter.getAllCategories().get(2);
-        adapter.deleteCategory(x3);
-        for(var x:adapter.getAllCategories()){
-            System.out.println(x);
+            //Còn nếu không các ô phải in từng thuộc tính 1 ra
         }
     }
 }
-
-
-

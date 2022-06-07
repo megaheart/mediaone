@@ -1,7 +1,5 @@
 package com.shopkeeper.mediaone.database;
 
-import java.util.ArrayList;
-
 import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.*;
 import com.shopkeeper.minh.models.*;
@@ -29,7 +27,7 @@ public class DbAdapterCache {
     private ObservableList<ImportBill> importBills;
     private ObservableList<OtherBill> otherBills;
     private ObservableList<StaffBill> staffBills;
-    private ObservableList<TimeKeeping> timeKeepings;
+    private ObservableList<Attendance> attendances;
     private ObservableList<Shift> shifts;
     //endregion
     public ObservableList<Staff> getStaffs(){
@@ -89,8 +87,8 @@ public class DbAdapterCache {
         return staffBills;
     }
 
-    public ObservableList<TimeKeeping> getTimeKeepings() {
-        return timeKeepings;
+    public ObservableList<Attendance> getAttendances() {
+        return attendances;
     }
 
     public ObservableList<Shift> getShifts() {
@@ -118,7 +116,7 @@ public class DbAdapterCache {
         importBills = FXCollections.observableArrayList();
         otherBills = FXCollections.observableArrayList();
         staffBills = FXCollections.observableArrayList();
-        timeKeepings = FXCollections.observableArrayList();
+        attendances = FXCollections.observableArrayList();
         shifts = FXCollections.observableArrayList();
         //endregion
     }
