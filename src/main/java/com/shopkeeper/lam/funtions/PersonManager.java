@@ -1,37 +1,53 @@
 package com.shopkeeper.lam.funtions;
+import com.shopkeeper.lam.database.PersonDbSet;
 import com.shopkeeper.lam.models.*;
+import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
 public class PersonManager {
-    private PersonManager manager;
-    public static void initialize(){
+    private static PersonManager manager;
 
+    public static PersonManager getManager() {
+        return manager;
     }
-    public static PersonManager getManager(){
-                return null;
+    public ObservableList<Person> getAll() throws Exception {
+        return DatabaseAdapter.getDbAdapter().getAllPeople();
     }
-    public ObservableList<Person> getAll(){
-              return null;
+    public void add(Person person) throws Exception {
+        DatabaseAdapter.getDbAdapter().insertPerson(person);
     }
-    public void add(Person person){
-
+    public void remove(Person person) throws Exception {
+        DatabaseAdapter.getDbAdapter().deletePerson(person);
     }
-    public void remove(Person person){
-
+    public void update(Person person) throws Exception {
+        DatabaseAdapter.getDbAdapter().updatePerson(person);
     }
-    public void update(Person person){
-
-    }
-    public Person findById(String personId){
+    public Person findById(int id) throws Exception {
+        for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()){
+            if(person.getPersonId()==id){
+                return person;
+            }
+        }
         return null;
     }
-    public Person findByName(String s){
-        return null;
+    public ArrayList<Person> findByName(String name) throws Exception {
+        ArrayList<Person> people = new ArrayList<>();
+        for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()) {
+            if (person.getName().equals(name)) {
+                people.add(person);
+            }
+        }
+        return people;
     }
-    public ArrayList<Person> getAllByJob(JobOfPerson job){
-        return null;
+    public ArrayList<Person> findByJob(JobOfPerson job) throws Exception {
+        ArrayList<Person> people = new ArrayList<>();
+        for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()) {
+            if (person.getJob().equals(job)) {
+                people.add(person);
+            }
+        }
+        return people;
     }
-
 }
