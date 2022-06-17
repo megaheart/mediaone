@@ -34,7 +34,7 @@ public class PublisherManager {
     public ArrayList<Publisher> findByName(String name) throws Exception {
         ArrayList<Publisher> publishers = new ArrayList<>();
         for(Publisher publisher:DatabaseAdapter.getDbAdapter().getAllPublishers()){
-            if(publisher.getName().equals(name)){
+            if(publisher.getName().equalsIgnoreCase(name)){
                 publishers.add(publisher);
             }
         }
@@ -43,7 +43,7 @@ public class PublisherManager {
     public ArrayList<Publisher> findAdvanceBy(String subName) throws Exception {
         ArrayList<Publisher> publishers=new ArrayList<>();
         for(Publisher publisher:DatabaseAdapter.getDbAdapter().getAllPublishers()){
-            if(publisher.getName().toLowerCase().equals(subName.toLowerCase())){
+            if(publisher.getName().equalsIgnoreCase(subName)){
                 publishers.add(publisher);
             }
         }

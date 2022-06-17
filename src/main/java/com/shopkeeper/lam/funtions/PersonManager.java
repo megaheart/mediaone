@@ -35,7 +35,7 @@ public class PersonManager {
     public ArrayList<Person> findByName(String name) throws Exception {
         ArrayList<Person> people = new ArrayList<>();
         for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()) {
-            if (person.getName().equals(name)) {
+            if (person.getName().equalsIgnoreCase(name)) {
                 people.add(person);
             }
         }

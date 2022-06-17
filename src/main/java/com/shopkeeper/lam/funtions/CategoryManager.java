@@ -34,7 +34,7 @@ public class CategoryManager {
     public ArrayList<Category> findByName(String name) throws Exception {
         ArrayList<Category> categories = new ArrayList<>();
         for(Category category:DatabaseAdapter.getDbAdapter().getAllCategories()){
-            if(category.getName().equals(name)){
+            if(category.getName().equalsIgnoreCase(name)){
                 categories.add(category);
             }
         }
@@ -43,7 +43,7 @@ public class CategoryManager {
     public ArrayList<Category> findAdvanceBy(String subName) throws Exception {
         ArrayList<Category> categories=new ArrayList<>();
         for(Category category:DatabaseAdapter.getDbAdapter().getAllCategories()){
-            if(category.getName().toLowerCase().equals(subName.toLowerCase())){
+            if(category.getName().equalsIgnoreCase(subName)){
                 categories.add(category);
             }
         }
