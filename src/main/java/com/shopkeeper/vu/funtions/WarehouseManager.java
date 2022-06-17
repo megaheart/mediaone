@@ -11,9 +11,7 @@ public class WarehouseManager {
     public WarehouseManager getManager() {
         return manager;
     }
-
     private WarehouseManager manager;
-
     public void initialize() {
 
     }
