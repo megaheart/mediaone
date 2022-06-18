@@ -31,19 +31,23 @@ public class CategoryManager {
         }
         return null;
     }
+
+    //return the list of category by the name,ignore the space at start and end
     public ArrayList<Category> findByName(String name) throws Exception {
         ArrayList<Category> categories = new ArrayList<>();
         for(Category category:DatabaseAdapter.getDbAdapter().getAllCategories()){
-            if(category.getName().equalsIgnoreCase(name)){
+            if(category.getName().equalsIgnoreCase(name.trim())){
                 categories.add(category);
             }
         }
         return categories;
     }
+
+    //return the list of categories by the subName,ignore the space at start and end
     public ArrayList<Category> findAdvanceBy(String subName) throws Exception {
         ArrayList<Category> categories=new ArrayList<>();
         for(Category category:DatabaseAdapter.getDbAdapter().getAllCategories()){
-            if(category.getName().equalsIgnoreCase(subName)){
+            if(category.getName().toLowerCase().contains(subName.trim().toLowerCase())){
                 categories.add(category);
             }
         }
