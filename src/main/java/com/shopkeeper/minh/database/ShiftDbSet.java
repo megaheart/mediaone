@@ -101,8 +101,13 @@ public class ShiftDbSet {
             return false;
         }
 
+        if (shift.getDateOfWeek() == 0){
+            System.err.println("Set the shift's DateOfWeek first before inserting.");
+            return false;
+        }
+
         for (Shift x: readOnlyCache.getShifts()){
-            if (x.getStartTime().equals(shift.getStartTime()) && x.getEndTime().equals(shift.getEndTime())){
+            if (x.getStartTime().equals(shift.getStartTime()) && x.getEndTime().equals(shift.getEndTime()) && x.getDateOfWeek() == shift.getDateOfWeek()){
                 System.err.println("shift has already been in DbAdapter's cache or its time matches another shift");
                 return false;
             }
@@ -151,8 +156,8 @@ public class ShiftDbSet {
             return false;
         }
 
-        String sql = "UPDATE shifts SET staff = ?, dateOfWeek = ? WHERE startTime = TIME(?) AND endTime = TIME(?);";
-        String oldSql = "SELECT staff FROM shifts WHERE startTime = TIME(?) AND endTime = TIME(?);";
+        String sql = "UPDATE shifts SET staff = ? WHERE dateOfWeek = ? AND startTime = TIME(?) AND endTime = TIME(?);";
+        String oldSql = "SELECT staff FROM shifts WHERE startTime = TIME(?) AND endTime = TIME(?) AND dateOfWeek = ?;";
 
         String[] oldStaffsId = {};
 
@@ -161,6 +166,7 @@ public class ShiftDbSet {
 
             oldPstmt.setString(1, shift.getStartTime().toString());
             oldPstmt.setString(2, shift.getEndTime().toString());
+            oldPstmt.setInt(3, shift.getDateOfWeek());
             ResultSet rs = oldPstmt.executeQuery();
 
             if (rs.next()){
@@ -220,11 +226,12 @@ public class ShiftDbSet {
             return false;
         }
 
-        String sql = "DELETE FROM shifts WHERE startTime=TIME(?) AND endTime=TIME(?);";
+        String sql = "DELETE FROM shifts WHERE startTime=TIME(?) AND endTime=TIME(?) AND dateOfWeek = ?;";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, shift.getStartTime().toString());
             pstmt.setString(2, shift.getEndTime().toString());
+            pstmt.setInt(3, shift.getDateOfWeek());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Shift (ID = " + shift.getStartTime().toString() + "-" + shift.getEndTime().toString() + ") does not exist in \"shifts\" table.");
         } catch (Exception e) {

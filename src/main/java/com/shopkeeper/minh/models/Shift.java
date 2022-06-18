@@ -15,6 +15,7 @@ public class Shift {
     public Shift(){
         startTime = null;
         endTime = null;
+        dateOfWeek = 0;
     }
 
     public Shift(ArrayList<Staff> staffs, int dateOfWeek, LocalTime startTime, LocalTime endTime){
