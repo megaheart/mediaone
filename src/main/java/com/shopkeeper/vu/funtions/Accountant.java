@@ -3,14 +3,15 @@ package com.shopkeeper.vu.funtions;
 import com.shopkeeper.lam.models.Product;
 import com.shopkeeper.lam.models.ProductInfo;
 import com.shopkeeper.linh.models.SaleBill;
+import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.models.Bill;
-import com.shopkeeper.minh.functions.BillManager;
 import com.shopkeeper.minh.models.ImportBill;
 import com.shopkeeper.minh.models.OtherBill;
 import com.shopkeeper.minh.models.StaffBill;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 
 import java.time.LocalDate;
@@ -40,8 +41,31 @@ public class Accountant {
     ObservableList<XYChart.Data<String, Double>> listStaffCostsStatisticsQuarter;
 
     ObservableList<XYChart.Data<String, Double>> listStaffCostsStatisticsYear;
+    ObservableList<XYChart.Data<String, Double>> listSpaceCostsStatisticsDay;
+    ObservableList<XYChart.Data<String, Double>> listSpaceCostsStatisticsMonth;
+    ObservableList<XYChart.Data<String, Double>> listSpaceCostsStatisticsQuarter;
+    ObservableList<XYChart.Data<String, Double>> listSpaceCostsStatisticsYear;
+
+    ObservableList<XYChart.Data<String, Double>> listTranspotationCostsStatisticsDay;
+    ObservableList<XYChart.Data<String, Double>> listTranspotationCostsStatisticsMonth;
+    ObservableList<XYChart.Data<String, Double>> listTranspotationCostsStatisticsQuarter;
+    ObservableList<XYChart.Data<String, Double>> listTranspotationCostsStatisticsYear;
+    ObservableList<XYChart.Data<String, Double>> listBillFromDateToDateDay;
+    ObservableList<XYChart.Data<String, Double>> listBillFromDateToDateMonth;
+    ObservableList<XYChart.Data<String, Double>> listBillFromDateToDateYear;
+    ObservableList<XYChart.Data<String, Double>> listBillFromDateToDateQuarter;
+    ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateDay;
+    ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateMonth;
+    ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateQuarter;
+    ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateYear;
+    ObservableList<PieChart.Data> listBill;
+    ObservableList<Bill> listBillFromDateToDate;
+    ObservableList<Bill> listBillCostFromDateToDate;
+    ObservableList<Bill> listBillProfitFromDateToDate;
+
 
     ObservableList<XYChart.Data<String, Double>> test;
+
 
     private int endMonth;
     private int startMonth;
@@ -72,11 +96,11 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitMonth = 0;
                 for (ImportBill a : list) {
-                    if (a.getTime().getMonthValue() == (startMonth % 12) && a.getTime().getYear() == (startYear + countMonth / 12)) {
+                    if (a.getTime().getMonthValue() == ((startMonth-1) % 12+1) && a.getTime().getYear() == (startYear + (startMonth-1)/12)) {
                         profitMonth = profitMonth + a.getPrice();
                     }
                 }
-                int newYear = (startYear + startMonth / 12);
+                int newYear = (startYear + (startMonth-1) / 12);
                 int newMonth = ((startMonth - 1) % 12 + 1);
                 listImportBillMonth.add(new XYChart.Data<>(newMonth + "/" + newYear, profitMonth));
                 countMonth--;
@@ -91,11 +115,11 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitQuarter = 0;
                 for (ImportBill a : list) {
-                    if ((startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= (startMonth + 2) % 12) {
+                    if (a.getTime().getYear()==(startYear+(startMonth-1)/12)&&(startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= ((startMonth + 1) % 12+1)) {
                         profitQuarter = profitQuarter + a.getPrice();
                     }
                 }
-                int newYear = startYear + startMonth / 12;
+                int newYear = startYear + (startMonth-1) / 12;
                 int newQuarter = ((startMonth + 2) / 3 - 1) % 4 + 1;
                 listImportBillQuarter.add(new XYChart.Data<>("Quarter " + newQuarter + "/" + newYear, profitQuarter));
                 startMonth = startMonth + 3;
@@ -144,11 +168,11 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitMonth = 0;
                 for (Product a : list) {
-                    if (productInfo.equals(a.getProductInfo()) && a.getImportBill().getTime().getMonthValue() == (startMonth % 12) && a.getImportBill().getTime().getYear() == (startYear + countMonth / 12)) {
+                    if (a.getImportBill().getTime().getYear()==(startYear+(startMonth-1)/12)&&productInfo.equals(a.getProductInfo()) && a.getImportBill().getTime().getMonthValue() == ((startMonth-1) % 12+1) && a.getImportBill().getTime().getYear() == (startYear + (startMonth-1)/12)) {
                         profitMonth = profitMonth + a.getImportCost();
                     }
                 }
-                int newYear = (startYear + startMonth / 12);
+                int newYear = (startYear + (startMonth-1)/12);
                 int newMonth = ((startMonth - 1) % 12 + 1);
                 listImportProductInfoMonth.add(new XYChart.Data<>(newMonth + "/" + newYear, profitMonth));
                 countMonth--;
@@ -163,11 +187,11 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitQuarter = 0;
                 for (Product a : list) {
-                    if (productInfo.equals(a.getProductInfo()) && (startMonth % 12) <= a.getImportBill().getTime().getMonthValue() && a.getImportBill().getTime().getMonthValue() <= (startMonth + 2) % 12) {
+                    if (a.getImportBill().getTime().getYear()==(startYear+(startMonth-1)/12)&&productInfo.equals(a.getProductInfo()) && ((startMonth - 1) % 12) <= a.getImportBill().getTime().getMonthValue() && a.getImportBill().getTime().getMonthValue() <= ((startMonth + 1) % 12+1)) {
                         profitQuarter = profitQuarter + a.getImportCost();
                     }
                 }
-                int newYear = startYear + startMonth / 12;
+                int newYear = startYear + (startMonth - 1) / 12;
                 int newQuarter = ((startMonth + 2) / 3 - 1) % 4 + 1;
                 listImportProductInfoQuarter.add(new XYChart.Data<>("Quarter " + newQuarter + "/" + newYear, profitQuarter));
                 startMonth = startMonth + 3;
@@ -215,11 +239,11 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitMonth = 0;
                 for (SaleBill a : list) {
-                    if (a.getTime().getMonthValue() == (startMonth % 12) && a.getTime().getYear() == (startYear + countMonth / 12)) {
+                    if (a.getTime().getMonthValue() == ((startMonth - 1) % 12+1) && a.getTime().getYear() == (startYear + (startMonth - 1) / 12)) {
                         profitMonth = profitMonth + a.getPrice();
                     }
                 }
-                int newYear = (startYear + startMonth / 12);
+                int newYear = (startYear + (startMonth - 1) / 12);
                 int newMonth = ((startMonth - 1) % 12 + 1);
                 listSaleBillMonth.add(new XYChart.Data<>(newMonth + "/" + newYear, profitMonth));
                 countMonth--;
@@ -234,11 +258,11 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitQuarter = 0;
                 for (SaleBill a : list) {
-                    if ((startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= (startMonth + 2) % 12) {
+                    if (a.getTime().getYear()==(startYear+(startMonth-1)/12)&&(startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= ((startMonth + 1) % 12+1)) {
                         profitQuarter = profitQuarter + a.getPrice();
                     }
                 }
-                int newYear = startYear + startMonth / 12;
+                int newYear = startYear + (startMonth - 1) / 12;
                 int newQuarter = ((startMonth + 2) / 3 - 1) % 4 + 1;
                 listSaleBillQuarter.add(new XYChart.Data<>("Quarter " + newQuarter + "/" + newYear, profitQuarter));
                 startMonth = startMonth + 3;
@@ -287,7 +311,7 @@ public class Accountant {
             while (countMonth > 0) {
                 double profitMonth = 0;
                 for (Product a : list) {
-                    if (productInfo.equals(a.getProductInfo()) && a.getSaleBill().getTime().getMonthValue() == (startMonth % 12) && a.getSaleBill().getTime().getYear() == (startYear + countMonth / 12)) {
+                    if (productInfo.equals(a.getProductInfo()) && a.getSaleBill().getTime().getMonthValue() == ((startMonth - 1) % 12) && a.getSaleBill().getTime().getYear() == (startYear + countMonth / 12)) {
                         profitMonth = profitMonth + a.getSaleValue();
                     }
                 }
@@ -337,6 +361,7 @@ public class Accountant {
     }
 
     public ObservableList<XYChart.Data<String, Double>> getStaffCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        //chi phi nhan vien
         var adapter = DatabaseAdapter.getDbAdapter();
         ObservableList<StaffBill> list = adapter.getAllStaffBills();
         listStaffCostsStatisticsDay = FXCollections.observableArrayList();
@@ -407,26 +432,348 @@ public class Accountant {
             return null;
         }
     }
-    public ObservableList<XYChart.Data<String, Double>> getSpaceCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity){
-        //chi phi mat ban
-        return null;
+    public ObservableList<XYChart.Data<String, Double>> getSpaceCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        //chi phi mat bang
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<OtherBill> list = adapter.getAllOtherBills();
+        listSpaceCostsStatisticsDay = FXCollections.observableArrayList();
+        if (granularity.equals(StatisticGranularity.Day)) {
+            for (OtherBill a : list) {
+                int b = a.getTime().compareTo(fromDate);
+                int c = toDate.compareTo(a.getTime());
+                if (a.getName().equals("Mặt bằng")&&b >= 0 && c >= 0) {
+                    listSpaceCostsStatisticsDay.add(new XYChart.Data<>(a.getTime() + "", a.getPrice()));
+                }
+            }
+            return listSpaceCostsStatisticsDay;
+        } else if (granularity.equals(StatisticGranularity.Month)) {
+            listSpaceCostsStatisticsMonth = FXCollections.observableArrayList();
+            countMonth = (toDate.getYear() - fromDate.getYear() - 1) * 12 + 13 + toDate.getMonthValue() - fromDate.getMonthValue();
+            startYear = fromDate.getYear();
+            startMonth = fromDate.getMonthValue();
+            endMonth = toDate.getMonthValue();
+            while (countMonth > 0) {
+                double profitMonth = 0;
+                for (OtherBill a : list) {
+                    if (a.getName().equals("Mặt bằng")&&a.getTime().getMonthValue() == (startMonth % 12) && a.getTime().getYear() == (startYear + countMonth / 12)) {
+                        profitMonth = profitMonth + a.getPrice();
+                    }
+                }
+                int newYear = (startYear + startMonth / 12);
+                int newMonth = ((startMonth - 1) % 12 + 1);
+                listSpaceCostsStatisticsDay.add(new XYChart.Data<>(newMonth + "/" + newYear, profitMonth));
+                countMonth--;
+                startMonth++;
+            }
+            return listSpaceCostsStatisticsMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listSpaceCostsStatisticsQuarter = FXCollections.observableArrayList();
+            countMonth = (toDate.getYear() - fromDate.getYear() - 1) * 12 + 13 + toDate.getMonthValue() - fromDate.getMonthValue();
+            startYear = fromDate.getYear();
+            startMonth = fromDate.getMonthValue();
+            while (countMonth > 0) {
+                double profitQuarter = 0;
+                for (OtherBill a : list) {
+                    if (a.getName().equals("Mặt bằng")&&(startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= (startMonth + 2) % 12) {
+                        profitQuarter = profitQuarter + a.getPrice();
+                    }
+                }
+                int newYear = startYear + startMonth / 12;
+                int newQuarter = ((startMonth + 2) / 3 - 1) % 4 + 1;
+                listSpaceCostsStatisticsQuarter.add(new XYChart.Data<>("Quarter " + newQuarter + "/" + newYear, profitQuarter));
+                startMonth = startMonth + 3;
+                countMonth = countMonth - 3;
+            }
+            return listSpaceCostsStatisticsQuarter;
+        } else if (granularity.equals(StatisticGranularity.Year)) {
+            listSpaceCostsStatisticsYear = FXCollections.observableArrayList();
+            startYear = fromDate.getYear();
+            endYear = toDate.getYear();
+            while (endYear >= startYear) {
+                double profitYear = 0;
+                for (OtherBill a : list) {
+                    if (a.getName().equals("Mặt bằng")&&a.getTime().getYear() == startYear) {
+                        profitYear = profitYear + a.getPrice();
+                    }
+                }
+                listSpaceCostsStatisticsYear.add(new XYChart.Data<>(startYear + "", profitYear));
+                startYear++;
+            }
+            return listSpaceCostsStatisticsYear;
+        } else {
+            return null;
+        }
     }
-    public ObservableList<XYChart.Data<String, Double>> getTranspotationCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity){
+    public ObservableList<XYChart.Data<String, Double>> getTranspotationCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
         //chi phi van chuyen
-        return null;
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<OtherBill> list = adapter.getAllOtherBills();
+        listTranspotationCostsStatisticsDay = FXCollections.observableArrayList();
+        if (granularity.equals(StatisticGranularity.Day)) {
+            for (OtherBill a : list) {
+                int b = a.getTime().compareTo(fromDate);
+                int c = toDate.compareTo(a.getTime());
+                if (a.getName().equals("Vận chuyển")&&b >= 0 && c >= 0) {
+                    listTranspotationCostsStatisticsDay.add(new XYChart.Data<>(a.getTime() + "", a.getPrice()));
+                }
+            }
+            return listTranspotationCostsStatisticsDay;
+        } else if (granularity.equals(StatisticGranularity.Month)) {
+            listTranspotationCostsStatisticsMonth = FXCollections.observableArrayList();
+            countMonth = (toDate.getYear() - fromDate.getYear() - 1) * 12 + 13 + toDate.getMonthValue() - fromDate.getMonthValue();
+            startYear = fromDate.getYear();
+            startMonth = fromDate.getMonthValue();
+            endMonth = toDate.getMonthValue();
+            while (countMonth > 0) {
+                double profitMonth = 0;
+                for (OtherBill a : list) {
+                    if (a.getName().equals("Vận chuyển")&&a.getTime().getMonthValue() == (startMonth % 12) && a.getTime().getYear() == (startYear + countMonth / 12)) {
+                        profitMonth = profitMonth + a.getPrice();
+                    }
+                }
+                int newYear = (startYear + startMonth / 12);
+                int newMonth = ((startMonth - 1) % 12 + 1);
+                listTranspotationCostsStatisticsDay.add(new XYChart.Data<>(newMonth + "/" + newYear, profitMonth));
+                countMonth--;
+                startMonth++;
+            }
+            return listTranspotationCostsStatisticsMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listTranspotationCostsStatisticsQuarter = FXCollections.observableArrayList();
+            countMonth = (toDate.getYear() - fromDate.getYear() - 1) * 12 + 13 + toDate.getMonthValue() - fromDate.getMonthValue();
+            startYear = fromDate.getYear();
+            startMonth = fromDate.getMonthValue();
+            while (countMonth > 0) {
+                double profitQuarter = 0;
+                for (OtherBill a : list) {
+                    if (a.getName().equals("Vận chuyển")&&(startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= (startMonth + 2) % 12) {
+                        profitQuarter = profitQuarter + a.getPrice();
+                    }
+                }
+                int newYear = startYear + startMonth / 12;
+                int newQuarter = ((startMonth + 2) / 3 - 1) % 4 + 1;
+                listTranspotationCostsStatisticsQuarter.add(new XYChart.Data<>("Quarter " + newQuarter + "/" + newYear, profitQuarter));
+                startMonth = startMonth + 3;
+                countMonth = countMonth - 3;
+            }
+            return listTranspotationCostsStatisticsQuarter;
+        } else if (granularity.equals(StatisticGranularity.Year)) {
+            listTranspotationCostsStatisticsYear = FXCollections.observableArrayList();
+            startYear = fromDate.getYear();
+            endYear = toDate.getYear();
+            while (endYear >= startYear) {
+                double profitYear = 0;
+                for (OtherBill a : list) {
+                    if (a.getName().equals("Vận chuyển")&&a.getTime().getYear() == startYear) {
+                        profitYear = profitYear + a.getPrice();
+                    }
+                }
+                listTranspotationCostsStatisticsYear.add(new XYChart.Data<>(startYear + "", profitYear));
+                startYear++;
+            }
+            return listTranspotationCostsStatisticsYear;
+        } else {
+            return null;
+        }
     }
     public ObservableList<XYChart.Data<String, Double>> getCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
         //chi phi bo ra
-        BillManager m =new BillManager();
-        test = FXCollections.observableArrayList();
-        ObservableList<ImportBill> a = m.getImportBills(fromDate,toDate);
-        ObservableList<StaffBill> b = m.getStaffBills(fromDate,toDate);
-        ObservableList<OtherBill> d = m.getOtherBills(fromDate,toDate);
-
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<OtherBill> a = adapter.getAllOtherBills();
+        ObservableList<ImportBill> b= adapter.getAllImportBills();
+        ObservableList<StaffBill> c = adapter.getAllStaffBills();
+        listBillFromDateToDate =FXCollections.observableArrayList();
+        listBillFromDateToDate.addAll(a);
+        listBillFromDateToDate.addAll(b);
+        listBillFromDateToDate.addAll(c);
+        if(granularity.equals(StatisticGranularity.Day)){
+            listBillFromDateToDateDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate)!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (Bill bill: listBillFromDateToDate) {
+                    if(d.compareTo(bill.getTime())==0){
+                        cost =cost + bill.getPrice();
+                    }
+                }
+                listBillFromDateToDateDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listBillFromDateToDateDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listBillFromDateToDateMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonth()!=toDate.getMonth();d=d.plusMonths(1)){
+                double cost =0;
+                for (Bill bill: listBillFromDateToDate) {
+                    if(d.getMonth()==bill.getTime().getMonth()&&d.getYear()==bill.getTime().getYear()){
+                        cost =cost+ bill.getPrice();
+                    }
+                }
+                listBillFromDateToDateMonth.add(new XYChart.Data<>(d.getMonthValue()+"",cost));
+            }
+            return listBillFromDateToDateMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listBillFromDateToDateQuarter=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonth()!=toDate.getMonth();d=d.plusMonths(3)){
+                double cost =0;
+                for (Bill bill: listBillFromDateToDate) {
+                    if(d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
+                        cost =cost+ bill.getPrice();
+                    }
+                }
+                listBillFromDateToDateQuarter.add(new XYChart.Data<>(d.getMonthValue()+"",cost));
+            }
+            return listBillFromDateToDateQuarter;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listBillFromDateToDateYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=toDate.getYear();d=d.plusYears(1)){
+                double cost =0;
+                for (Bill bill: listBillFromDateToDate) {
+                    if(bill.getTime().getYear()==d.getYear()){
+                        cost=cost+bill.getPrice();
+                    }
+                }
+                listBillFromDateToDateYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listBillFromDateToDateYear;
+        }
         return null;
     }
-    public ObservableList<XYChart.Data<String, Double>> getRevenueStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity){
+    public ObservableList<XYChart.Data<String, Double>> getRevenueStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
         //doanh thu
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<OtherBill> a = adapter.getAllOtherBills();
+        ObservableList<ImportBill> b= adapter.getAllImportBills();
+        ObservableList<StaffBill> c = adapter.getAllStaffBills();
+        ObservableList<SaleBill> d = adapter.getAllSaleBills();
+        listBillCostFromDateToDate =FXCollections.observableArrayList();
+        listBillProfitFromDateToDate=FXCollections.observableArrayList();
+        listBillCostFromDateToDate.addAll(a);
+        listBillCostFromDateToDate.addAll(b);
+        listBillCostFromDateToDate.addAll(c);
+        listBillProfitFromDateToDate.addAll(d);
+        if(granularity.equals(StatisticGranularity.Day)){
+            listBillProfitFromDateToDateDay =FXCollections.observableArrayList();
+            for(LocalDate ld=fromDate;ld.compareTo(toDate)!=0;ld=ld.plusDays(1)){
+                double cost =0;
+                double profit=0;
+                for (Bill bill: listBillCostFromDateToDate) {
+                    if(ld.compareTo(bill.getTime())==0){
+                        cost =cost + bill.getPrice();
+                    }
+                }
+                for(Bill bill: listBillProfitFromDateToDate){
+                    if(ld.compareTo(bill.getTime())==0){
+                        profit=profit+ bill.getPrice();
+                    }
+                }
+                listBillProfitFromDateToDateDay.add(new XYChart.Data<>(d+"",profit-cost));
+            }
+            return listBillProfitFromDateToDateDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listBillProfitFromDateToDateMonth =FXCollections.observableArrayList();
+            for (LocalDate ld =fromDate;ld.getYear()!= toDate.getYear()||ld.getMonth()!=toDate.getMonth();ld=ld.plusMonths(1)){
+                double cost =0;
+                double profit=0;
+                for (Bill bill: listBillCostFromDateToDate) {
+                    if(ld.getMonth()==bill.getTime().getMonth()&&ld.getYear()==bill.getTime().getYear()){
+                        cost =cost+ bill.getPrice();
+                    }
+                }
+                for (Bill bill: listBillProfitFromDateToDate) {
+                    if(ld.getMonth()==bill.getTime().getMonth()&&ld.getYear()==bill.getTime().getYear()){
+                        profit =profit+ bill.getPrice();
+                    }
+                }
+                listBillProfitFromDateToDateMonth.add(new XYChart.Data<>(ld.getMonthValue()+"",profit-cost));
+            }
+            return listBillProfitFromDateToDateMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listBillProfitFromDateToDateQuarter=FXCollections.observableArrayList();
+            for (LocalDate ld =fromDate;ld.getYear()!= toDate.getYear()||ld.getMonth()!=toDate.getMonth();ld=ld.plusMonths(3)){
+                double cost =0;
+                double profit=0;
+                for (Bill bill: listBillCostFromDateToDate) {
+                    if(ld.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(ld.getMonthValue()+2)&&ld.getYear()==bill.getTime().getYear()){
+                        cost =cost+ bill.getPrice();
+                    }
+                }
+                for (Bill bill: listBillProfitFromDateToDate) {
+                    if(ld.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(ld.getMonthValue()+2)&&ld.getYear()==bill.getTime().getYear()){
+                        profit =profit+ bill.getPrice();
+                    }
+                }
+                listBillProfitFromDateToDateQuarter.add(new XYChart.Data<>(ld.getMonthValue()+"",profit-cost));
+            }
+            return listBillProfitFromDateToDateQuarter;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listBillProfitFromDateToDateYear=FXCollections.observableArrayList();
+            for(LocalDate ld=fromDate;ld.getYear()!=toDate.getYear();ld=ld.plusYears(1)){
+                double cost =0;
+                double profit=0;
+                for (Bill bill: listBillCostFromDateToDate) {
+                    if(bill.getTime().getYear()==ld.getYear()){
+                        cost=cost+bill.getPrice();
+                    }
+                }
+                for (Bill bill: listBillProfitFromDateToDate) {
+                    if(bill.getTime().getYear()==ld.getYear()){
+                        profit=profit+bill.getPrice();
+                    }
+                }
+                listBillProfitFromDateToDateYear.add(new XYChart.Data<>(ld.getYear()+"",profit-cost));
+            }
+            return listBillProfitFromDateToDateYear;
+        }
         return null;
+    }
+    public ObservableList<PieChart.Data> getAllTypesOfCostsStatistics(LocalDate fromDate, LocalDate toDate) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        listBill=FXCollections.observableArrayList();
+        ObservableList<OtherBill> a = adapter.getAllOtherBills();
+        ObservableList<ImportBill> b= adapter.getAllImportBills();
+        ObservableList<StaffBill> c = adapter.getAllStaffBills();
+        ObservableList<SaleBill> d = adapter.getAllSaleBills();
+        for(LocalDate ld=fromDate;ld.compareTo(toDate)!=0;ld=ld.plusDays(1) ){
+            //Vận chuyển
+            double costTranSport =0;
+            for (OtherBill ob:a) {
+                if(ob.getName().equals("Vận chuyển")&&ob.getTime().compareTo(ld)==0){
+                    costTranSport = costTranSport+ob.getPrice();
+                }
+            }
+            listBill.add(new PieChart.Data("Vận chuyển",costTranSport));
+            //Mặt bằng
+            double costSpace =0;
+            for (OtherBill ob:a) {
+                if(ob.getName().equals("Mặt bằng")&&ob.getTime().compareTo(ld)==0){
+                    costSpace = costSpace+ob.getPrice();
+                }
+            }
+            listBill.add(new PieChart.Data("Mặt bằng",costSpace));
+            //Chi phí nhân viên
+            double costStaff =0;
+            for (StaffBill sb:c) {
+                if(sb.getName().equals("nhân viên")&&sb.getTime().compareTo(ld)==0){
+                    costStaff = costStaff+sb.getPrice();
+                }
+            }
+            listBill.add(new PieChart.Data("nhân viên",costStaff));
+            //Chi phí nhập hàng
+            double costImport =0;
+            for (ImportBill ib:b) {
+                if(ib.getName().equals("nhập hàng")&&ib.getTime().compareTo(ld)==0){
+                    costImport = costImport+ib.getPrice();
+                }
+            }
+            listBill.add(new PieChart.Data("nhập hàng",costImport));
+            //Số lượng hàng bán được
+            double costSale =0;
+            for (SaleBill sbl:d) {
+                if(sbl.getName().equals("bán được")&&sbl.getTime().compareTo(ld)==0){
+                    costSale = costSale+sbl.getPrice();
+                }
+            }
+            listBill.add(new PieChart.Data("bán được",costSale));
+        }
+        return listBill;
     }
 }
