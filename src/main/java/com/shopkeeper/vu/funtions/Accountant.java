@@ -255,7 +255,7 @@ public class Accountant {
             countMonth = (toDate.getYear() - fromDate.getYear() - 1) * 12 + 13 + toDate.getMonthValue() - fromDate.getMonthValue();
             startYear = fromDate.getYear();
             startMonth = fromDate.getMonthValue()-(fromDate.getMonthValue()-1)%3;
-            while (countMonth > 0) {
+            while (countMonth+2 > 0) {
                 double profitQuarter = 0;
                 for (SaleBill a : list) {
                     if (a.getTime().getYear()==(startYear+(startMonth-1)/12)&&(startMonth % 12) <= a.getTime().getMonthValue() && a.getTime().getMonthValue() <= ((startMonth + 1) % 12+1)) {
@@ -327,17 +327,18 @@ public class Accountant {
             countMonth = (toDate.getYear() - fromDate.getYear() - 1) * 12 + 13 + toDate.getMonthValue() - fromDate.getMonthValue();
             startYear = fromDate.getYear();
             startMonth = fromDate.getMonthValue()-(fromDate.getMonthValue()-1)%3;
-            while (countMonth > 0) {
+            while (countMonth+2 > 0) {
                 double profitQuarter = 0;
                 for (Product a : list) {
                     if (productInfo.getTitle().equals(a.getProductInfo().getTitle()) && ((startMonth-1) % 12+1) <= a.getSaleBill().getTime().getMonthValue() && a.getSaleBill().getTime().getMonthValue() <= (startMonth + 1) % 12+1) {
                         profitQuarter = profitQuarter + a.getSaleValue();
                     }
                 }
-                int newYear = startYear + (startMonth-1) / 12;
+                int newYear = startYear + (startMonth) / 12;
                 int newQuarter = ((startMonth + 2) / 3 - 1) % 4 + 1;
                 listSaleProductInfoQuarter.add(new XYChart.Data<>("Quarter " + newQuarter + "/" + newYear, profitQuarter));
                 startMonth = startMonth + 3;
+                System.out.println(startMonth);
                 countMonth = countMonth - 3;
             }
             return listSaleProductInfoQuarter;
