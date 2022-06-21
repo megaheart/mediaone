@@ -3,6 +3,7 @@ package com.shopkeeper.mediaone;
 import com.shopkeeper.lam.database.*;
 import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.*;
+import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.*;
 import javafx.application.Application;
@@ -23,8 +24,8 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws Exception {
 
 
-
-        javafx.application.Platform.exit();
+        FeedbackWindowFactory.getFactory().openWindow();
+        //javafx.application.Platform.exit();
     }
 
     public static void main(String[] args) {

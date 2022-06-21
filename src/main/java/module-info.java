@@ -13,6 +13,7 @@ module com.shopkeeper.mediaone {
     requires java.sql;
 
     opens com.shopkeeper.mediaone to javafx.fxml;
-    opens com.shopkeeper.linh to javafx.fxml;
+    opens com.shopkeeper.linh.windowfactories.feedback to javafx.fxml;
+    opens com.shopkeeper.linh.windowfactories to javafx.fxml;
     exports com.shopkeeper.mediaone;
 }
