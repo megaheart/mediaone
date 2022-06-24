@@ -5,5 +5,7 @@ public enum JobOfPerson {
    ACTOR,
    MUSICIAN,
    WRITER,
-   FILM_DIRECTOR;
+   FILM_DIRECTOR,
+   FOOTBALLER,
+   CEO;
 }

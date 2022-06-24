@@ -15,6 +15,11 @@ public class test2 {
         Person x4=new Person("DOREMON",LocalDate.of(3424,2,24),"meo may den tu tuong lai",JobOfPerson.ACTOR);
         Person x5=new Person("Son Tung",LocalDate.of(2323,4,2),"hay nhat viet nam",JobOfPerson.SINGER);
         Person x6=new Person("Jack",LocalDate.of(3424,2,24),"Jack 5 củ",JobOfPerson.SINGER);
+        Person x7=new Person("Cristiano Ronaldo",LocalDate.of(2323,4,2),"cao nhat viet nam",JobOfPerson.FOOTBALLER);
+        Person x8=new Person("Tokuda",LocalDate.of(1997,4,2),"dien phim Nhat Ban",JobOfPerson.FOOTBALLER);
+        Person x9=new Person("Elon Musk",LocalDate.of(2323,4,2),"người giàu nhất thế giới",JobOfPerson.CEO);
+        Person x10=new Person("Bill Gates",LocalDate.of(2323,4,2),"người giàu nhất thế giới trước năm 2020",JobOfPerson.CEO);
+        Person x11=new Person("Huan Hoa Hong",LocalDate.of(1999,4,2),"Người hay lộn xào trên mạng",JobOfPerson.ACTOR);
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPeople()){
             System.out.println(x);

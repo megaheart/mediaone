@@ -12,6 +12,9 @@ public class test1 {
         Category x3 = new Category("EDM","nhac rat cang");
         Category x4 = new Category("Light novel","truyen chu wibu");
         Category x5 = new Category("Trinh tham","truyen/phim co noi dung giai do, toi pham, pha an");
+        Category x6 = new Category("R18","dành cho lứa tuổi 18 trở lên ");
+        Category x7 = new Category("12+","Dành cho lứa tuổi trên 12");
+        Category x8 = new Category();
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllCategories()){
             System.out.println(x);

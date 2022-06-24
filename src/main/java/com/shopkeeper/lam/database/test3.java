@@ -9,11 +9,16 @@ import com.shopkeeper.mediaone.database.DatabaseAdapter;
 
 public class test3 {
     public void insertPublisher() throws Exception {
-        Publisher p1 = new Publisher("Kim Dong","Viet Nam","xuat ban Doremon");
-        Publisher p2 = new Publisher("Hoyoverse","Trung Quoc","genshin,honkai");
-        Publisher p3 = new Publisher("Garena","Trung Quoc","LOL,FIFA 4");
+        Publisher p1 = new Publisher("Kim Dong","Viet Nam","xuat ban truyện,sách như Doremon,Conan,...");
+        Publisher p2 = new Publisher("Hoyoverse","Trung Quốc","xuất bản sách về genshin,honkai");
+        Publisher p3 = new Publisher("Garena","Trung Quốc","LOL,FIFA 4");
         Publisher p4 = new Publisher("HolyWood","USA",":)))");
         Publisher p5 = new Publisher("WibuIsYou","Japan","We can make you be wibu.");
+        Publisher p6 = new Publisher("Nhà xuất bản giáo dục và đào tạo","Việt Nam","xuất bản sách giáo dục");
+        Publisher p7 = new Publisher("Nhà xuất bản Bách Khoa Hà Nội","Đại học Bách Khoa Hà Nội","xuất bản sách cho sinh viên Bách Khoa hoặc trường khác");
+        Publisher p8 = new Publisher("Nhà xuất bản trẻ","161B Lý Chính Thắng-Phường 7-Quận 3-Thành Phố Hồ Chí Minh","xuất bản truyện tranh,sách phục vụ thanh niên,thiếu nhi");
+        Publisher p9 = new Publisher("Nhà xuất bản tổng hợp TPHCM","Số 6/86 Duy Tân-Cầu Giấy-Hà Nội","Sách về chính trị,lịch sử,giáo trình,...");
+        Publisher p10 = new Publisher("Nhà xuất bản chính trị Quốc gia","Số 6/86 DUy Tân Cầu Giấy Hà Nội","Xuất bản sách chính trị,lý luận và pháp luật");
 
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPublishers()){

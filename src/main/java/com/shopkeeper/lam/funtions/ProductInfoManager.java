@@ -10,63 +10,73 @@ import java.util.ArrayList;
 public class ProductInfoManager {
     private ProductInfoManager manager;
     public ProductInfoManager getManager() {
+        if (manager == null){
+            manager = new ProductInfoManager();
+        }
         return manager;
     }
     public ObservableList<MusicInfo> getAllMusicInfo() throws Exception {
-        return DatabaseAdapter.getDbAdapter().getAllMusicInfos();
+        var adapter = DatabaseAdapter.getDbAdapter();
+        return adapter.getAllMusicInfos();
     }
     public ObservableList<FilmInfo> getAllFilmInfo() throws Exception {
-        return DatabaseAdapter.getDbAdapter().getAllFilmInfos();
+        var adapter = DatabaseAdapter.getDbAdapter();
+        return adapter.getAllFilmInfos();
     }
     public ObservableList<BookInfo> getAllBookInfo() throws Exception {
-        return DatabaseAdapter.getDbAdapter().getAllBookInfos();
+        var adapter = DatabaseAdapter.getDbAdapter();
+        return adapter.getAllBookInfos();
     }
     public void add(ProductInfo productInfo) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
         if (productInfo instanceof MusicInfo) {
-            DatabaseAdapter.getDbAdapter().insertMusicInfo((MusicInfo) productInfo);
+            adapter.insertMusicInfo((MusicInfo) productInfo);
         }
         if (productInfo instanceof FilmInfo) {
-            DatabaseAdapter.getDbAdapter().insertFilmInfo((FilmInfo) productInfo);
+            adapter.insertFilmInfo((FilmInfo) productInfo);
         }
         if (productInfo instanceof BookInfo) {
-            DatabaseAdapter.getDbAdapter().insertBookInfo((BookInfo) productInfo);
+            adapter.insertBookInfo((BookInfo) productInfo);
         }
     }
     public void remove(ProductInfo productInfo) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
         if (productInfo instanceof MusicInfo) {
-            DatabaseAdapter.getDbAdapter().deleteMusicInfo((MusicInfo) productInfo);
+            adapter.deleteMusicInfo((MusicInfo) productInfo);
         }
         if (productInfo instanceof FilmInfo) {
-            DatabaseAdapter.getDbAdapter().deleteFilmInfo((FilmInfo) productInfo);
+            adapter.deleteFilmInfo((FilmInfo) productInfo);
         }
         if (productInfo instanceof BookInfo) {
-            DatabaseAdapter.getDbAdapter().deleteBookInfo((BookInfo) productInfo);
+            adapter.deleteBookInfo((BookInfo) productInfo);
         }
     }
     public void update(ProductInfo productInfo) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
         if (productInfo instanceof MusicInfo) {
-            DatabaseAdapter.getDbAdapter().updateMusicInfo((MusicInfo) productInfo);
+            adapter.updateMusicInfo((MusicInfo) productInfo);
         }
         if (productInfo instanceof FilmInfo) {
-            DatabaseAdapter.getDbAdapter().updateFilmInfo((FilmInfo) productInfo);
+            adapter.updateFilmInfo((FilmInfo) productInfo);
         }
         if (productInfo instanceof BookInfo) {
-            DatabaseAdapter.getDbAdapter().updateBookInfo((BookInfo) productInfo);
+            adapter.updateBookInfo((BookInfo) productInfo);
         }
     }
     public ArrayList<ProductInfo> findByTitle(String title) throws Exception {
         ArrayList<ProductInfo> productInfos = new ArrayList<>();
-        for(ProductInfo productInfo : DatabaseAdapter.getDbAdapter().getAllMusicInfos()){
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(ProductInfo productInfo : adapter.getAllMusicInfos()){
             if(productInfo.getTitle().equalsIgnoreCase(title.trim())){
                 productInfos.add(productInfo);
             }
         }
-        for(ProductInfo productInfo : DatabaseAdapter.getDbAdapter().getAllFilmInfos()){
+        for(ProductInfo productInfo : adapter.getAllFilmInfos()){
             if(productInfo.getTitle().equalsIgnoreCase(title.trim())){
                 productInfos.add(productInfo);
             }
         }
-        for(ProductInfo productInfo : DatabaseAdapter.getDbAdapter().getAllBookInfos()){
+        for(ProductInfo productInfo : adapter.getAllBookInfos()){
             if(productInfo.getTitle().equalsIgnoreCase(title.trim())){
                 productInfos.add(productInfo);
             }
