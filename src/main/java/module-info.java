@@ -14,5 +14,6 @@ module com.shopkeeper.mediaone {
 
     opens com.shopkeeper.mediaone to javafx.fxml;
     opens com.shopkeeper.linh to javafx.fxml;
+    opens com.shopkeeper.minh.windowfactories to javafx.fxml;
     exports com.shopkeeper.mediaone;
 }
