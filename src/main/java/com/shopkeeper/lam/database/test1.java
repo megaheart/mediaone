@@ -14,7 +14,9 @@ public class test1 {
         Category x5 = new Category("Trinh tham","truyen/phim co noi dung giai do, toi pham, pha an");
         Category x6 = new Category("R18","dành cho lứa tuổi 18 trở lên ");
         Category x7 = new Category("12+","Dành cho lứa tuổi trên 12");
-        Category x8 = new Category();
+        Category x8 = new Category("Lãng mạn","Thể loại về tình yêu");
+        Category x9 = new Category("Drama","Thể loại về những tình tiết khó lường");
+        Category x10 = new Category("Dảk","Thể loại mà nhiều người chết hoặc NTR");
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllCategories()){
             System.out.println(x);

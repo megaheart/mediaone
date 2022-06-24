@@ -20,6 +20,7 @@ public class test2 {
         Person x9=new Person("Elon Musk",LocalDate.of(2323,4,2),"người giàu nhất thế giới",JobOfPerson.CEO);
         Person x10=new Person("Bill Gates",LocalDate.of(2323,4,2),"người giàu nhất thế giới trước năm 2020",JobOfPerson.CEO);
         Person x11=new Person("Huan Hoa Hong",LocalDate.of(1999,4,2),"Người hay lộn xào trên mạng",JobOfPerson.ACTOR);
+        Person x12 = new Person("Paul Pogba", LocalDate.of(1999, 4, 2), "Kẻ hủy diệt Manchester United,nghệ sĩ nhảy múa của nhà hát ", JobOfPerson.FOOTBALLER);
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPeople()){
             System.out.println(x);
