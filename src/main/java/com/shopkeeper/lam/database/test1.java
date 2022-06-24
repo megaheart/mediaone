@@ -58,4 +58,5 @@ public class test1 {
             //Còn nếu không các ô phải in từng thuộc tính 1 ra
         }
     }
+
 }
