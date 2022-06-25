@@ -8,6 +8,7 @@ import com.shopkeeper.linh.models.FeedbackAbout;
 import com.shopkeeper.linh.models.FeedbackType;
 import com.shopkeeper.linh.windowfactories.feedback.FeedbackListCell;
 import com.shopkeeper.linh.windowfactories.feedback.FeedbackListOrder;
+import com.shopkeeper.linh.windowfactories.feedback.FeedbackObservableList;
 import com.shopkeeper.linh.windowfactories.utilities.ComboBoxOption;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import javafx.collections.FXCollections;
@@ -175,6 +176,7 @@ public class FeedbackWindowController {
                 break;
             case Service:
                 feedbackTargetDisplayer.setText("Về: Dịch vụ");
+                feedbackDescriptionDisplayer.setText(feedback.getDescription());
                 break;
         }
     }
@@ -184,13 +186,14 @@ public class FeedbackWindowController {
     private ComboBox<ComboBoxOption<FeedbackListOrder>> orderCombobox;
     @FXML
     private ListView<Feedback> feedbackListView;
+    private FeedbackObservableList feedbackList;
     private void initializeFeedbackList(){
         //Initialize feedback list order options
         orderCombobox.setItems(FXCollections.observableArrayList(
-                new ComboBoxOption<>(FeedbackListOrder.NameAscending, "Cũ nhất"),
+                new ComboBoxOption<>(FeedbackListOrder.TimeAscending, "Cũ nhất"),
                 new ComboBoxOption<>(FeedbackListOrder.TimeDescending, "Mới nhất"),
-                new ComboBoxOption<>(FeedbackListOrder.NameAscending, "A->z"),
-                new ComboBoxOption<>(FeedbackListOrder.NameDescending, "z->A")
+                new ComboBoxOption<>(FeedbackListOrder.TitleAscending, "A->z"),
+                new ComboBoxOption<>(FeedbackListOrder.TitleDescending, "z->A")
         ));
         orderCombobox.getSelectionModel().selectFirst();
         feedbackListView.setCellFactory(new Callback<ListView<Feedback>, ListCell<Feedback>>()
@@ -203,13 +206,17 @@ public class FeedbackWindowController {
         });
         try{
             DatabaseAdapter databaseAdapter = DatabaseAdapter.getDbAdapter();
-            feedbackListView.setItems(databaseAdapter.getAllFeedbacks());
+            feedbackList = new FeedbackObservableList(databaseAdapter.getAllFeedbacks());
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        feedbackListView.setItems(feedbackList);
         feedbackListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             displayFeedback(newValue);
+        });
+        orderCombobox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            feedbackList.setOrder(newValue.getValue());
         });
     }
     //endregion
