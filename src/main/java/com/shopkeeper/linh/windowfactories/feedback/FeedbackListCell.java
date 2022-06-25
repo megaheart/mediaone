@@ -9,7 +9,13 @@ public class FeedbackListCell extends ListCell<Feedback> {
     @Override
     public void updateItem(Feedback data, boolean empty)
     {
+        if (empty || data == null) {
+            setText(null);
+            setGraphic(null);
+            return;
+        }
         super.updateItem(data, empty);
+
         if(data != null)
         {
             BorderPane container = FeedbackListViewItemController.getBorderPane(data);

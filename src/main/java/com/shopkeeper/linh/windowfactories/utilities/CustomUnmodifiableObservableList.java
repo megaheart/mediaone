@@ -16,52 +16,54 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
     //change comparator you need to resort items
     protected Comparator<E> comparator;
     protected ObservableList<E> items;
-    private ObservableList<E> source;
+    private Collection<E> source;
     protected CustomUnmodifiableObservableList(){
         items = FXCollections.observableArrayList();
         source = null;
         comparator = null;
     }
-    public void setSource(ObservableList<E> source){
+    public void setSource(Collection<E> source){
         this.source = source;
         this.items.clear();
         this.items.addAll(source);
         this.items.sort(comparator);
-        this.source.addListener(new ListChangeListener<E>() {
-            @Override
-            public void onChanged(Change<? extends E> c) {
-                while (c.next()){
-                    if(c.wasReplaced()) {
-                        System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Replaced.");
+        if(source instanceof ObservableList<E>){
+            ((ObservableList<E>)this.source).addListener(new ListChangeListener<E>() {
+                @Override
+                public void onChanged(Change<? extends E> c) {
+                    while (c.next()){
+                        if(c.wasReplaced()) {
+                            System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Replaced.");
 
-                    }
-                    else if(c.wasPermutated()) {
-                        System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Permutated.");
+                        }
+                        else if(c.wasPermutated()) {
+                            System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Permutated.");
 
-                    }
-                    else if(c.wasUpdated()) {
-                        System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Updated.");
+                        }
+                        else if(c.wasUpdated()) {
+                            System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Updated.");
 
-                    }
-                    else if(c.wasAdded()) {
-                        for(int i = c.getFrom(); i < c.getTo(); i++){
-                            var item =  c.getList().get(i);
-                            for(int j = 0; j < items.size(); j++){
-                                if(comparator.compare(items.get(j), item) >= 0){
-                                    items.add(j, item);
-                                    break;
+                        }
+                        else if(c.wasAdded()) {
+                            for(int i = c.getFrom(); i < c.getTo(); i++){
+                                var item =  c.getList().get(i);
+                                for(int j = 0; j < items.size(); j++){
+                                    if(comparator.compare(items.get(j), item) >= 0){
+                                        items.add(j, item);
+                                        break;
+                                    }
                                 }
                             }
                         }
-                    }
-                    else if(c.wasRemoved()) {
-                        for(var removeItem : c.getRemoved()){
-                            items.remove(removeItem);
+                        else if(c.wasRemoved()) {
+                            for(var removeItem : c.getRemoved()){
+                                items.remove(removeItem);
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
     }
 
     //region ObservableList implements
