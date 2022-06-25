@@ -3,6 +3,7 @@ package com.shopkeeper.mediaone;
 import com.shopkeeper.lam.database.*;
 import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.*;
+import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.*;
 import com.shopkeeper.minh.windowfactories.StaffWindowFactory;
@@ -20,12 +21,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class HelloApplication extends Application {
+
     @Override
     public void start(Stage stage) throws Exception {
         StaffWindowFactory.getFactory().openWindow();
     }
 
-    public static void main(String[] args) {
-        launch();
+    public static void main(String[] args) throws Exception {
+         launch();
     }
 }

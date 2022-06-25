@@ -9,10 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.lang.reflect.Array;
-import java.time.DayOfWeek;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -60,9 +57,7 @@ public class StaffManager {
         return null;
     }
 
-    public ArrayList<Staff> findByName(String s) throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        ObservableList<Staff> listOfStaffs = adapter.getAllStaffs();
+    public ArrayList<Staff> findByName(String s, ArrayList<Staff> listOfStaffs) throws Exception{
 
         ArrayList<Staff> staffs = new ArrayList<>();
 
@@ -72,15 +67,45 @@ public class StaffManager {
         return staffs;
     }
 
-    public ArrayList<Staff> findByEmail(String s) throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        ObservableList<Staff> listOfStaffs = adapter.getAllStaffs();
-
+    public ArrayList<Staff> findByEmail(String s, ArrayList<Staff> listOfStaffs){
         ArrayList<Staff> staffs = new ArrayList<>();
-
         for (Staff staff: listOfStaffs)
             if (staff.getEmail().contains(s)) staffs.add(staff);
+        return staffs;
+    }
 
+    public ArrayList<Staff> findByPhoneNumber(String s, ArrayList<Staff> listOfStaffs){
+        ArrayList<Staff> staffs = new ArrayList<>();
+        for (Staff staff: listOfStaffs)
+            if (staff.getPhoneNumber().contains(s)) staffs.add(staff);
+        return staffs;
+    }
+
+    public ArrayList<Staff> findByDescription(String s, ArrayList<Staff> listOfStaffs){
+        ArrayList<Staff> staffs = new ArrayList<>();
+        for (Staff staff: listOfStaffs)
+            if (staff.getDescription().contains(s)) staffs.add(staff);
+        return staffs;
+    }
+
+    public ArrayList<Staff> findBySex(Boolean isMale, ArrayList<Staff> listOfStaffs){
+        ArrayList<Staff> staffs = new ArrayList<>();
+        for (Staff staff: listOfStaffs)
+            if (staff.getIsMale() == isMale) staffs.add(staff);
+        return staffs;
+    }
+
+    public ArrayList<Staff> findByBirthday(LocalDate birthday, ArrayList<Staff> listOfStaffs){
+        ArrayList<Staff> staffs = new ArrayList<>();
+        for (Staff staff: listOfStaffs)
+            if (staff.getDateOfBirth().isEqual(birthday)) staffs.add(staff);
+        return staffs;
+    }
+
+    public ArrayList<Staff> findByState(StaffState state, ArrayList<Staff> listOfStaffs){
+        ArrayList<Staff> staffs = new ArrayList<>();
+        for (Staff staff: listOfStaffs)
+            if (staff.getState() == state) staffs.add(staff);
         return staffs;
     }
 
