@@ -11,18 +11,25 @@ public class Shift {
     private int dateOfWeek;
     private LocalTime startTime;
     private LocalTime endTime;
+    private int shiftId;
 
     public Shift(){
         startTime = null;
         endTime = null;
         dateOfWeek = 0;
+        shiftId = 0;
     }
 
     public Shift(ArrayList<Staff> staffs, int dateOfWeek, LocalTime startTime, LocalTime endTime){
+        shiftId = 0;
         this.staffs = staffs;
         this.dateOfWeek = dateOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
+    }
+
+    public int getShiftId() {
+        return shiftId;
     }
 
     public ArrayList<Staff> getStaffs() {
@@ -42,10 +49,15 @@ public class Shift {
     }
 
     public void setStartTime(LocalTime startTime) {
-        if (this.startTime != null){
-            throw new InvalidParameterException("startTime is able to be set only one time.");
+        if (this.startTime == null) {
+            this.startTime = startTime;
+            return;
+        }
+        if (startTime.isAfter(this.endTime)){
+            throw new InvalidParameterException("startTime is invalid.");
         }
         this.startTime = startTime;
+        return;
     }
 
     public LocalTime getEndTime() {
@@ -53,8 +65,12 @@ public class Shift {
     }
 
     public void setEndTime(LocalTime endTime) {
-        if (this.endTime != null){
-            throw new InvalidParameterException("endTime is able to be set only one time.");
+        if (this.endTime == null) {
+            this.endTime = endTime;
+            return;
+        }
+        if (endTime.isBefore(this.startTime)){
+            throw new InvalidParameterException("endTime is invalid.");
         }
         this.endTime = endTime;
     }
@@ -63,4 +79,10 @@ public class Shift {
         this.staffs = staffs;
     }
 
+    public void setShiftId(int shiftId) {
+        if (this.shiftId > 0){
+            throw new InvalidParameterException("shiftId is able to be set only one time.");
+        }
+        this.shiftId = shiftId;
+    }
 }

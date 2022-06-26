@@ -1,12 +1,12 @@
-package com.shopkeeper.minh.windowfactories.staff;
+package com.shopkeeper.minh.windowfactories.shift;
 
-import com.shopkeeper.linh.models.Staff;
+import com.shopkeeper.minh.models.Shift;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.BorderPane;
 
-public class StaffListCell extends ListCell<Staff> {
+public class ShiftListCell extends ListCell<Shift> {
     @Override
-    public void updateItem(Staff data, boolean empty){
+    public void updateItem(Shift data, boolean empty){
         if(empty || data == null){
             setText(null);
             setGraphic(null);
@@ -14,7 +14,7 @@ public class StaffListCell extends ListCell<Staff> {
         }
         super.updateItem(data, empty);
         if (data != null){
-            BorderPane container = StaffListViewItemController.getBorderPane(data);
+            BorderPane container = ShiftListViewItemController.getBorderPane(data);
             setGraphic(container);
         }
     }

@@ -174,4 +174,44 @@ public class StaffManager {
 
         return attendance;
     }
+
+    public Shift findShiftById(int shiftId) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Shift> shifts = adapter.getAllShifts();
+
+        for (Shift shift: shifts){
+            if (shift.getShiftId() == shiftId) return shift;
+        }
+
+        System.out.println("No shift has that Id");
+        return null;
+    }
+
+    public ArrayList<Shift> findByStartTime(LocalTime startTime, ArrayList<Shift> shiftArrayList){
+        ArrayList<Shift> shifts = new ArrayList<>();
+        for (Shift shift: shiftArrayList)
+            if (shift.getStartTime().equals(startTime) || shift.getStartTime().isAfter(startTime)) shifts.add(shift);
+        return shifts;
+    }
+
+    public ArrayList<Shift> findByEndTime(LocalTime endTime, ArrayList<Shift> shiftArrayList){
+        ArrayList<Shift> shifts = new ArrayList<>();
+        for (Shift shift: shiftArrayList)
+            if (shift.getStartTime().equals(endTime) || shift.getStartTime().isBefore(endTime)) shifts.add(shift);
+        return shifts;
+    }
+
+    public ArrayList<Shift> findByDateOfWeek(int dateOfWeek, ArrayList<Shift> shiftArrayList){
+        ArrayList<Shift> shifts = new ArrayList<>();
+        for (Shift shift: shiftArrayList)
+            if (shift.getDateOfWeek() == dateOfWeek) shifts.add(shift);
+        return shifts;
+    }
+
+    public ArrayList<Shift> findByStaffs(ArrayList<Staff> staffs, ArrayList<Shift> shiftArrayList){
+        ArrayList<Shift> shifts = new ArrayList<>();
+        for (Shift shift: shiftArrayList)
+            if (shift.getStaffs().containsAll(staffs)) shifts.add(shift);
+        return shifts;
+    }
 }

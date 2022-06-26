@@ -28,7 +28,7 @@
                <top>
                   <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
                      <children>
-                        <GridPane fx:id="filterPanel" prefHeight="187.0" prefWidth="900.0" style="-fx-border-color: gray; -fx-border-width: 0 0 1 0; -fx-effect: dropshad; -fx-background-color: e9e9e9; -fx-view-order: 1;">
+                        <GridPane fx:id="filterPanel" prefHeight="187.0" prefWidth="900.0" style="-fx-border-color: gray; -fx-border-width: 0 0 1 0; -fx-background-color: e9e9e9; -fx-view-order: 1;">
                           <columnConstraints>
                             <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.99998779296874" minWidth="10.0" prefWidth="209.40001220703124" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.4" minWidth="10.0" prefWidth="51.19999999999996" />
@@ -139,14 +139,6 @@
                                           <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="punchInButton" mnemonicParsing="false" onMouseClicked="#resetFilterPanel" prefHeight="26.0" prefWidth="98.0" text="Chấm công">
-                                       <graphic>
-                                          <Text fill="#fa07d9" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
-                                       </graphic>
-                                       <HBox.margin>
-                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                                       </HBox.margin>
-                                    </Button>
                                  </children>
                               </HBox>
                               <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="4" GridPane.rowIndex="1">
@@ -252,10 +244,266 @@
             </BorderPane>
          </content>
     </Tab>
-    <Tab text="Thống kê">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-      </content>
-    </Tab>
+      <Tab text="Ca làm">
+         <content>
+            <BorderPane prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <GridPane fx:id="filterPanel1" prefHeight="187.0" prefWidth="900.0" style="-fx-border-color: gray; -fx-border-width: 0 0 1 0; -fx-background-color: e9e9e9; -fx-view-order: 1;">
+                           <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.4" minWidth="10.0" prefWidth="167.00000610351563" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.4" minWidth="10.0" prefWidth="186.59995117187503" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="338.4" minWidth="10.0" prefWidth="196.20001220703125" />
+                              <ColumnConstraints hgrow="SOMETIMES" maxWidth="329.4" minWidth="10.0" prefWidth="173.79998779296875" />
+                              <ColumnConstraints />
+                              <ColumnConstraints maxWidth="0.0" minWidth="0.0" prefWidth="0.0" />
+                              <ColumnConstraints maxWidth="127.20000000000005" minWidth="127.20000000000005" prefWidth="127.20000000000005" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints maxHeight="62.39999694824219" minHeight="10.0" prefHeight="31.20000381469727" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="67.99999084472655" minHeight="10.0" prefHeight="46.999996948242185" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="72.80000610351564" minHeight="10.0" prefHeight="56.60000305175781" vgrow="SOMETIMES" />
+                              <RowConstraints maxHeight="48.00001831054689" minHeight="10.0" prefHeight="38.800006103515614" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                           <children>
+                              <VBox alignment="CENTER_LEFT" prefHeight="28.0" prefWidth="931.0" style="-fx-background-color: #4d4d4d;" GridPane.columnSpan="7">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="26.0" prefWidth="912.0" text="Quản lý danh sách ca làm" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="-5.0" right="-5.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <HBox alignment="CENTER" prefHeight="29.0" prefWidth="863.0" GridPane.columnSpan="7" GridPane.rowIndex="3">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#filterShiftList" prefHeight="26.0" prefWidth="98.0" text="Tìm kiếm">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                       <graphic>
+                                          <Text fill="#0bd140" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#updateShift" prefHeight="26.0" prefWidth="98.0" text="Cập nhật">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                       <graphic>
+                                          <Text fill="#140ccf" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#insertShift" prefHeight="26.0" prefWidth="98.0" text="Thêm">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                       <graphic>
+                                          <Text fill="#cfa10c" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#deleteShift" prefHeight="26.0" prefWidth="98.0" text="Xóa">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                       <graphic>
+                                          <Text fill="#cf0c12" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#resetFilterPanel1" prefHeight="26.0" prefWidth="98.0" text="Đặt lại">
+                                       <graphic>
+                                          <Text fill="#0cb9cf" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="49.0" prefWidth="346.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="175.0" text="Thời gian kết thúc">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <TextField fx:id="filterShiftEndHour" promptText="Nhập giờ">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <TextField fx:id="filterShiftEndMinute" promptText="Nhập phút">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="446.0" text="ID ca làm" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="filterShiftIdTxtBox" promptText="Nhập ID">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="19.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <HBox prefHeight="55.0" prefWidth="127.0" GridPane.columnIndex="6" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="82.0" text="Thứ">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <ComboBox fx:id="dateOfWeekCombobox" prefWidth="150.0">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                 </children>
+                              </HBox>
+                              <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                 <children>
+                                    <Label prefHeight="18.0" prefWidth="446.0" text="ID nhân viên" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                    </Label>
+                                    <TextField fx:id="filterStaffIdTxtBox" promptText="Nhập danh sách ID nhân viên">
+                                       <VBox.margin>
+                                          <Insets left="10.0" right="10.0" />
+                                       </VBox.margin>
+                                    </TextField>
+                                 </children>
+                              </VBox>
+                              <HBox prefHeight="56.0" prefWidth="374.0" GridPane.columnIndex="2" GridPane.columnSpan="4" GridPane.rowIndex="2">
+                                 <children>
+                                    <Button mnemonicParsing="false" onMouseClicked="#insertStaffToShift" prefHeight="26.0" prefWidth="138.0" text="Thêm nhân viên">
+                                       <graphic>
+                                          <Text fill="#c80ccf" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#deleteStaffFromShift" prefHeight="26.0" prefWidth="138.0" text="Xóa nhân viên">
+                                       <graphic>
+                                          <Text fill="#0ccf3e" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="15.0" left="20.0" right="20.0" top="15.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox prefHeight="55.0" prefWidth="387.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+                                 <children>
+                                    <Label prefHeight="26.0" prefWidth="175.0" text="Thời gian bắt đầu">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" top="10.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="System Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="filterShiftStartHour" promptText="Nhập giờ">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                    <TextField fx:id="filterShiftStartMinute" promptText="Nhập phút">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </GridPane>
+                        <HBox alignment="CENTER_LEFT" prefHeight="41.0" prefWidth="900.0" style="-fx-background-color: e6e6e6; -fx-view-order: 333; -fx-border-width: 0 0 1 0; -fx-border-color: #989898;">
+                           <children>
+                              <Label prefHeight="35.0" prefWidth="84.0" text="  Kết quả:">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="result1" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="822.1365966796875">
+                                 <font>
+                                    <Font name="System Italic" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </top>
+               <left>
+                  <ListView fx:id="shiftListView" prefHeight="411.0" prefWidth="455.0" BorderPane.alignment="CENTER" />
+               </left>
+               <center>
+                  <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-view-order: 9999;" BorderPane.alignment="CENTER">
+                     <content>
+                        <AnchorPane prefHeight="204.0" prefWidth="448.0">
+                           <children>
+                              <VBox fx:id="shiftDisplayer" layoutY="1.0" prefHeight="406.0" prefWidth="420.0" style="-fx-background-color: #ffffff;">
+                                 <padding>
+                                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                                 </padding>
+                                 <children>
+                                    <AnchorPane prefHeight="38.0" prefWidth="388.0" style="-fx-border-width: 0 0 2 0; -fx-border-color: gray;">
+                                       <children>
+                                          <Text fx:id="shiftHeaderDisplayer" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thời gian ca làm" wrappingWidth="386.0">
+                                             <font>
+                                                <Font size="22.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </AnchorPane>
+                                    <Text fx:id="shiftIdDisplayer" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="386.0">
+                                       <font>
+                                          <Font name="System Italic" size="14.0" />
+                                       </font>
+                                       <VBox.margin>
+                                          <Insets bottom="16.0" top="6.0" />
+                                       </VBox.margin>
+                                    </Text>
+                                    <Text fx:id="shiftStaffDisplayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Danh sách nhân viên" wrappingWidth="386.0">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
+               </center>
+            </BorderPane>
+         </content>
+      </Tab>
   </tabs>
 </TabPane>
