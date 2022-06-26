@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class WarehouseWindowFactory extends WindowFactory {
+public class AccountantWindowFactory extends WindowFactory {
 
 
     @Override
@@ -19,10 +19,10 @@ public class WarehouseWindowFactory extends WindowFactory {
     public Stage openWindow() {
         try{
             Stage stage = new Stage();
-            FXMLLoader fxmlLoader = new FXMLLoader(WarehouseWindowFactory.class.getResource("vu.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(AccountantWindowFactory.class.getResource("AWF.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1300, 700);
             stage.setTitle("Thống kê của hàng media");
-            stage.getIcons().add(new Image(String.valueOf(WarehouseWindowFactory.class.getResource("img.png"))));
+            stage.getIcons().add(new Image(String.valueOf(AccountantWindowFactory.class.getResource("img.png"))));
             stage.setScene(scene);
             stage.show();
         }

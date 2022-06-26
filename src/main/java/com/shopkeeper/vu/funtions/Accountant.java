@@ -52,6 +52,13 @@ public class Accountant {
     ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateMonth;
     ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateQuarter;
     ObservableList<XYChart.Data<String, Double>> listBillProfitFromDateToDateYear;
+    ObservableList<XYChart.Data<String, Double>> listCostsStatisticsOtherDay;
+    ObservableList<XYChart.Data<String, Double>> listCostsStatisticsOtherMonth;
+
+    ObservableList<XYChart.Data<String, Double>> listCostsStatisticsOtherQuarter;
+
+    ObservableList<XYChart.Data<String, Double>> listCostsStatisticsOtherYear;
+
     ObservableList<PieChart.Data> listBill;
     ObservableList<Bill> listBillFromDateToDate;
     ObservableList<Bill> listBillCostFromDateToDate;
@@ -450,6 +457,62 @@ public class Accountant {
         }
         return null;
     }
+    public ObservableList<XYChart.Data<String, Double>> getCostsOtherStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        //chi phi van chuyen
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<OtherBill> list = adapter.getAllOtherBills();
+        listCostsStatisticsOtherDay = FXCollections.observableArrayList();
+        if(granularity.equals(StatisticGranularity.Day)){
+            listCostsStatisticsOtherDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (OtherBill bill: list) {
+                    if(bill.getName().equals("Mặt bằng")==false&&bill.getName().equals("Vận chuyển")==false&&d.compareTo(bill.getTime())==0){
+                        cost =cost + bill.getPrice();
+                    }
+                }
+                listCostsStatisticsOtherDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listCostsStatisticsOtherDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listCostsStatisticsOtherMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonth()!=toDate.getMonth();d=d.plusMonths(1)){
+                double cost =0;
+                for (Bill bill: list) {
+                    if(bill.getName().equals("Mặt bằng")==false&&bill.getName().equals("Vận chuyển")==false&&d.getMonth()==bill.getTime().getMonth()&&d.getYear()==bill.getTime().getYear()){
+                        cost =cost+ bill.getPrice();
+                    }
+                }
+                listCostsStatisticsOtherMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+            }
+            return listCostsStatisticsOtherMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listCostsStatisticsOtherQuarter=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+                double cost =0;
+                for (Bill bill: list) {
+                    if(bill.getName().equals("Mặt bằng")==false&&bill.getName().equals("Vận chuyển")==false&&d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
+                        cost =cost+ bill.getPrice();
+                    }
+                }
+                listCostsStatisticsOtherQuarter.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+            }
+            return listCostsStatisticsOtherQuarter;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listCostsStatisticsOtherYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
+                double cost =0;
+                for (Bill bill: list) {
+                    if(bill.getName().equals("Mặt bằng")==false&&bill.getName().equals("Vận chuyển")==false&&bill.getTime().getYear()==d.getYear()){
+                        cost=cost+bill.getPrice();
+                    }
+                }
+                listCostsStatisticsOtherYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listCostsStatisticsOtherYear;
+        }
+        return null;
+    }
     public ObservableList<XYChart.Data<String, Double>> getCostsStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
         //chi phi bo ra
         var adapter = DatabaseAdapter.getDbAdapter();
@@ -613,6 +676,7 @@ public class Accountant {
         double costStaff =0;
         double costTranSport =0;
         double costImport =0;
+        double costOther = 0;
         for(LocalDate ld=fromDate;ld.compareTo(toDate)!=0;ld=ld.plusDays(1) ){
             //Vận chuyển
 
@@ -651,13 +715,19 @@ public class Accountant {
                     costSale = costSale+sbl.getPrice();
                 }
             }
-
+            // chi phi khac
+            for(OtherBill bill :a){
+                if(bill.getName().equals("Mặt bằng")==false&&bill.getName().equals("Vận chuyển")==false&&bill.getTime().compareTo(ld)==0){
+                    costOther = costOther + bill.getPrice();
+                }
+            }
         }
         listBill.add(new PieChart.Data("Mặt bằng",costSpace));
         listBill.add(new PieChart.Data("nhân viên",costStaff));
         listBill.add(new PieChart.Data("nhập hàng",costImport));
         listBill.add(new PieChart.Data("Vận chuyển",costTranSport));
         listBill.add(new PieChart.Data("bán được",costSale));
+        listBill.add(new PieChart.Data("Chi phí khác",costOther));
         return listBill;
     }
 }
