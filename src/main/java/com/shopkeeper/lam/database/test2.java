@@ -13,14 +13,22 @@ public class test2 {
         Person x2=new Person("Kamisato Ayaka",LocalDate.of(2000,4,13),"the best",JobOfPerson.ACTOR);
         Person x3=new Person("Emi Fukada",LocalDate.of(2323,4,2),"dien vien phim gi do",JobOfPerson.ACTOR);
         Person x4=new Person("DOREMON",LocalDate.of(3424,2,24),"meo may den tu tuong lai",JobOfPerson.ACTOR);
-        Person x5=new Person("Son Tung",LocalDate.of(2323,4,2),"hay nhat viet nam",JobOfPerson.SINGER);
+        Person x5=new Person("Sơn Tùng MTP",LocalDate.of(2323,4,2),"hay nhat viet nam",JobOfPerson.SINGER);
         Person x6=new Person("Jack",LocalDate.of(3424,2,24),"Jack 5 củ",JobOfPerson.SINGER);
         Person x7=new Person("Cristiano Ronaldo",LocalDate.of(2323,4,2),"cao nhat viet nam",JobOfPerson.FOOTBALLER);
         Person x8=new Person("Tokuda",LocalDate.of(1997,4,2),"dien phim Nhat Ban",JobOfPerson.FOOTBALLER);
         Person x9=new Person("Elon Musk",LocalDate.of(2323,4,2),"người giàu nhất thế giới",JobOfPerson.CEO);
         Person x10=new Person("Bill Gates",LocalDate.of(2323,4,2),"người giàu nhất thế giới trước năm 2020",JobOfPerson.CEO);
-        Person x11=new Person("Huan Hoa Hong",LocalDate.of(1999,4,2),"Người hay lộn xào trên mạng",JobOfPerson.ACTOR);
+        Person x11=new Person("Huấn Hoa Hồng",LocalDate.of(1999,4,2),"Người hay lộn xào trên mạng",JobOfPerson.ACTOR);
         Person x12 = new Person("Paul Pogba", LocalDate.of(1999, 4, 2), "Kẻ hủy diệt Manchester United,nghệ sĩ nhảy múa của nhà hát ", JobOfPerson.FOOTBALLER);
+        Person x13 = new Person("Nguyễn Xuân Thảo", LocalDate.of(1999, 4, 2), "Dạy toán ở Hust", JobOfPerson.TEACHER);
+        Person x14 = new Person("Lục Tiểu Linh Đồng ", LocalDate.of(1970, 4, 2), "Tác giả Tôn Ngộ Không", JobOfPerson.FILM_DIRECTOR);
+        Person x15 = new Person("Nguyễn Văn Thắng", LocalDate.of(1999, 4, 2), "Người giàu nhất thế giới", JobOfPerson.CEO);
+        Person x16 = new Person("Yua Mikami", LocalDate.of(1999, 4, 2), "Diễn viên nhật bản khá hot", JobOfPerson.CEO);
+        Person x17 = new Person("Châu Tinh Trì", LocalDate.of(1999, 4, 2), "Diễn viên hài Trung Quốc", JobOfPerson.CEO);
+        Person x18 = new Person("Tố Hữu", LocalDate.of(1999, 4, 2), "Nhà thơ ", JobOfPerson.POET);
+        Person x19 = new Person("Nguyễn Du", LocalDate.of(1999, 4, 2), "Nhà thơ", JobOfPerson.POET);
+        Person x20 = new Person("Chủ tịch Hồ Chí Minh", LocalDate.of(1999, 4, 2), "Người vĩ đại nhất lịch sử VIệt Nam", JobOfPerson.POET);
         var adapter = DatabaseAdapter.getDbAdapter();
         for(var x : adapter.getAllPeople()){
             System.out.println(x);
