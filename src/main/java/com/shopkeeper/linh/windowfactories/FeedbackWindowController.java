@@ -1,5 +1,6 @@
 package com.shopkeeper.linh.windowfactories;
 
+import com.shopkeeper.lam.models.BookInfo;
 import com.shopkeeper.lam.models.FilmInfo;
 import com.shopkeeper.lam.models.MusicInfo;
 import com.shopkeeper.lam.models.ProductInfo;
@@ -8,16 +9,21 @@ import com.shopkeeper.linh.models.FeedbackAbout;
 import com.shopkeeper.linh.models.FeedbackType;
 import com.shopkeeper.linh.windowfactories.feedback.FeedbackListCell;
 import com.shopkeeper.linh.windowfactories.feedback.FeedbackListOrder;
+import com.shopkeeper.linh.windowfactories.feedback.FeedbackObservableList;
+import com.shopkeeper.linh.windowfactories.feedback.FeedbackAboutForFilter;
 import com.shopkeeper.linh.windowfactories.utilities.ComboBoxOption;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import javafx.collections.FXCollections;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
+
+import java.time.LocalDate;
 
 public class FeedbackWindowController {
     //region Feedback Filter Panel
@@ -28,7 +34,7 @@ public class FeedbackWindowController {
     @FXML
     private GridPane filterPanel;
     @FXML
-    private ComboBox<ComboBoxOption<FeedbackAbout>> feedbackAboutCombobox;
+    private ComboBox<ComboBoxOption<FeedbackAboutForFilter>> feedbackAboutCombobox;
     @FXML
     private ComboBox<ComboBoxOption<FeedbackType>> feedbackTypeCombobox;
     @FXML
@@ -58,17 +64,153 @@ public class FeedbackWindowController {
 //        String targetName = filterTargetNameTxt.getText();
 //        LocalDate fromDate = filterFromDateBox.getValue();
 //        LocalDate toDate = filterToDateBox.getValue();
-        if(ComboBoxOption.isSelectAllOption(feedbackAboutCombobox.getValue())){
-            System.out.println("chon tat ca");
-        }
-        else{
-            System.out.println("chon 1 thang duy nhat");
-        }
+        FilteredList<Feedback> filteredList = new FilteredList<>(feedbackFullList);
+        if(!ComboBoxOption.isSelectAllOption(feedbackAboutCombobox.getValue())){
+            switch (feedbackAboutCombobox.getValue().getValue()){
+                case Staff -> filteredList = filteredList.filtered(feedback -> {
+                    return feedback.getFeedbackAbout() == FeedbackAbout.Staff;
+                });
+                case Product -> filteredList = filteredList.filtered(feedback -> {
+                    return feedback.getFeedbackAbout() == FeedbackAbout.Product;
+                });
+                case ProductInfo -> filteredList = filteredList.filtered(feedback -> {
+                    return feedback.getFeedbackAbout() == FeedbackAbout.ProductInfo;
+                });
+                case MusicInfo -> filteredList = filteredList.filtered(feedback -> {
+                    try{
+                        return feedback.getFeedbackAbout() == FeedbackAbout.ProductInfo
+                                && feedback.getProductInfoTarget() instanceof MusicInfo;
+                    }
+                    catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+                });
+                case FilmInfo -> filteredList = filteredList.filtered(feedback -> {
+                    try{
+                        return feedback.getFeedbackAbout() == FeedbackAbout.ProductInfo
+                                && feedback.getProductInfoTarget() instanceof FilmInfo;
+                    }
+                    catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+                });
+                case BookInfo -> filteredList = filteredList.filtered(feedback -> {
+                    try{
+                        return feedback.getFeedbackAbout() == FeedbackAbout.ProductInfo
+                                && feedback.getProductInfoTarget() instanceof BookInfo;
+                    }
+                    catch (Exception e){
+                        throw new RuntimeException(e);
+                    }
+                });
+                case Service -> filteredList = filteredList.filtered(feedback -> {
+                    return feedback.getFeedbackAbout() == FeedbackAbout.Service;
+                });
+            }
 
+        }
+        if(!ComboBoxOption.isSelectAllOption(feedbackTypeCombobox.getValue())){
+            FeedbackType feedbackType = feedbackTypeCombobox.getValue().getValue();
+            filteredList = filteredList.filtered(feedback -> {
+                return feedback.getFeedbackType() == feedbackType;
+            });
+        }
+        if(!ComboBoxOption.isSelectAllOption(beUsefulCombobox.getValue())){
+            boolean isUseful = beUsefulCombobox.getValue().getValue();
+            filteredList = filteredList.filtered(feedback -> {
+                return feedback.getIsUseful() == isUseful;
+            });
+        }
+        LocalDate fromDate = filterFromDateBox.getValue();
+        LocalDate toDate = filterToDateBox.getValue();
+        if(fromDate != null || toDate != null){
+            filteredList = filteredList.filtered(feedback -> {
+                if(fromDate != null && feedback.getTime().compareTo(fromDate) < 0) return false;
+                if(toDate != null && feedback.getTime().compareTo(toDate) > 0) return false;
+                return true;
+            });
+        }
+        String subName = filterSubnameTxtBox.getText();
+        if(subName != null && (subName = subName.trim()).length() != 0){
+            final String _subName = subName;
+            filteredList = filteredList.filtered(feedback -> {
+                return feedback.getTitle().contains(_subName);
+            });
+        }
+        String targetName = filterTargetNameTxt.getText();
+        if(targetName != null && (targetName = targetName.trim()).length() != 0){
+            try {
+                long id = Long.parseLong(targetName);
+                filteredList = filteredList.filtered(feedback -> {
+                    switch (feedback.getFeedbackAbout()){
+                        case Staff:
+                            try{
+                                return feedback.getStaffTarget().getStaffId() == id;
+                            }
+                            catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
+                        case ProductInfo:
+                            try{
+                                return feedback.getProductInfoTarget().getProductInfoId() == id;
+                            }
+                            catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
+                        case  Product:
+                            try{
+                                return feedback.getProductTarget().getProductId() == id;
+                            }
+                            catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
+                        case Service:
+                            return false;
+                    }
+                    return false;
+                });
+            }catch (NumberFormatException inv){
+                final String _targetName = targetName;
+                filteredList = filteredList.filtered(feedback -> {
+                    switch (feedback.getFeedbackAbout()){
+                        case Staff:
+                            try{
+                                return feedback.getStaffTarget().getName().contains(_targetName);
+                            }
+                            catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
+                        case ProductInfo:
+                            try{
+                                return feedback.getProductInfoTarget().getTitle().contains(_targetName);
+                            }
+                            catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
+                        case  Product:
+                            try{
+                                return feedback.getProductTarget().getProductInfo().getTitle().contains(_targetName);
+                            }
+                            catch (Exception e){
+                                throw new RuntimeException(e);
+                            }
+                        case Service:
+                            return feedback.getTitle().contains(_targetName);
+                    }
+                    return false;
+                });
+            }
+        }
+        feedbackList = new FeedbackObservableList(filteredList);
+        feedbackList.setOrder(orderCombobox.getValue().getValue());
+        feedbackListView.setItems(feedbackList);
     }
     @FXML
     private void closeFilterPanel(){
         filterPanel.setVisible(false);
+        feedbackList = feedbackFullList;
+        feedbackList.setOrder(orderCombobox.getValue().getValue());
+        feedbackListView.setItems(feedbackList);
     }
     @FXML
     private void openFilterPanel(){
@@ -77,13 +219,17 @@ public class FeedbackWindowController {
 
     private void initializeFeedbackFilterPanel(){
         filterPanel.managedProperty().bind(filterPanel.visibleProperty());
+        filterPanel.setVisible(false);
         //Initialize feedback about options
         feedbackAboutCombobox.setItems(FXCollections.observableArrayList(
                 ComboBoxOption.SelectAllOption("Chọn tất cả"),
-                new ComboBoxOption<>(FeedbackAbout.Service, "Dịch vụ cửa hàng"),
-                new ComboBoxOption<>(FeedbackAbout.Staff, "Nhân viên phục vụ"),
-                new ComboBoxOption<>(FeedbackAbout.ProductInfo, "Bài hát/Bộ phim/Bộ sách"),
-                new ComboBoxOption<>(FeedbackAbout.Product, "Sản phẩm")
+                new ComboBoxOption<>(FeedbackAboutForFilter.Service, "Dịch vụ cửa hàng"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.Staff, "Nhân viên phục vụ"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.ProductInfo, "Bài hát/Bộ phim/Bộ sách"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.MusicInfo, "Bài hát"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.FilmInfo, "Bộ phim"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.BookInfo, "Bộ sách"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.Product, "Sản phẩm")
         ));
         feedbackAboutCombobox.getSelectionModel().selectFirst();
         //Initialize feedback type options
@@ -116,6 +262,10 @@ public class FeedbackWindowController {
         feedbackDisplayer.setVisible(false);
     }
     private void displayFeedback(Feedback feedback){
+        if(feedback == null) {
+            feedbackDisplayer.setVisible(false);
+            return;
+        }
         feedbackDisplayer.setVisible(true);
         feedbackHeaderDisplayer.setText(feedback.getTitle());
         String s;
@@ -175,6 +325,7 @@ public class FeedbackWindowController {
                 break;
             case Service:
                 feedbackTargetDisplayer.setText("Về: Dịch vụ");
+                feedbackDescriptionDisplayer.setText(feedback.getDescription());
                 break;
         }
     }
@@ -184,13 +335,15 @@ public class FeedbackWindowController {
     private ComboBox<ComboBoxOption<FeedbackListOrder>> orderCombobox;
     @FXML
     private ListView<Feedback> feedbackListView;
+    private FeedbackObservableList feedbackList;
+    private FeedbackObservableList feedbackFullList;
     private void initializeFeedbackList(){
         //Initialize feedback list order options
         orderCombobox.setItems(FXCollections.observableArrayList(
-                new ComboBoxOption<>(FeedbackListOrder.NameAscending, "Cũ nhất"),
+                new ComboBoxOption<>(FeedbackListOrder.TimeAscending, "Cũ nhất"),
                 new ComboBoxOption<>(FeedbackListOrder.TimeDescending, "Mới nhất"),
-                new ComboBoxOption<>(FeedbackListOrder.NameAscending, "A->z"),
-                new ComboBoxOption<>(FeedbackListOrder.NameDescending, "z->A")
+                new ComboBoxOption<>(FeedbackListOrder.TitleAscending, "A->z"),
+                new ComboBoxOption<>(FeedbackListOrder.TitleDescending, "z->A")
         ));
         orderCombobox.getSelectionModel().selectFirst();
         feedbackListView.setCellFactory(new Callback<ListView<Feedback>, ListCell<Feedback>>()
@@ -203,13 +356,18 @@ public class FeedbackWindowController {
         });
         try{
             DatabaseAdapter databaseAdapter = DatabaseAdapter.getDbAdapter();
-            feedbackListView.setItems(databaseAdapter.getAllFeedbacks());
+            feedbackFullList = new FeedbackObservableList(databaseAdapter.getAllFeedbacks());
+            feedbackList = feedbackFullList;
         }
         catch (Exception e){
             e.printStackTrace();
         }
+        feedbackListView.setItems(feedbackList);
         feedbackListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             displayFeedback(newValue);
+        });
+        orderCombobox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            feedbackList.setOrder(newValue.getValue());
         });
     }
     //endregion
