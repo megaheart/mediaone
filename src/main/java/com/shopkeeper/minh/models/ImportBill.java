@@ -21,6 +21,7 @@ public final class ImportBill extends Bill{
         billType = BillType.Import;
     }
 
+
     public ImportBill(String name, double price, LocalDate time, boolean isEffected, String note, String distributor){
         this.billType = BillType.Import;
         this.name = name;
