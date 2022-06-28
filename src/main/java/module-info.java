@@ -14,10 +14,12 @@ module com.shopkeeper.mediaone {
 
     opens com.shopkeeper.mediaone to javafx.fxml;
     opens com.shopkeeper.linh to javafx.fxml;
+    opens com.shopkeeper.linh.windowfactories.feedback to javafx.fxml;
+    opens com.shopkeeper.linh.windowfactories to javafx.fxml;
+
     opens com.shopkeeper.minh.windowfactories to javafx.fxml;
     opens com.shopkeeper.minh.windowfactories.staff to javafx.fxml;
     opens com.shopkeeper.minh.windowfactories.shift to javafx.fxml;
-    opens com.shopkeeper.linh.windowfactories.feedback to javafx.fxml;
-    opens com.shopkeeper.linh.windowfactories to javafx.fxml;
+    opens com.shopkeeper.minh.windowfactories.staffbill to javafx.fxml;
     exports com.shopkeeper.mediaone;
 }

@@ -5,9 +5,12 @@ import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.linh.windowfactories.utilities.ComboBoxOption;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.functions.StaffManager;
+import com.shopkeeper.minh.models.Attendance;
 import com.shopkeeper.minh.models.Shift;
+import com.shopkeeper.minh.models.StaffBill;
 import com.shopkeeper.minh.windowfactories.shift.ShiftListCell;
 import com.shopkeeper.minh.windowfactories.staff.StaffListCell;
+import com.shopkeeper.minh.windowfactories.staffbill.StaffBillListCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -315,6 +318,9 @@ public class StaffWindowController {
         initializeShiftFilterPanel();
         initializeShiftDisplayer();
         initializeShiftList(StaffManager.getManager().getShiftList());
+        initializeStaffBillFilterPanel();
+        initializeStaffBillDisplayer();
+        initializeStaffBillList(StaffManager.getManager().getStaffBillList());
     }
 
     @FXML
@@ -863,7 +869,7 @@ public class StaffWindowController {
                 long staffId = Long.parseLong(staffIdString);
                 Staff staff = StaffManager.getManager().findById(staffId);
                 if (staff != null) {
-                    if (!searchingStaffs.contains(staff))
+                    if (!searchingStaffs.contains(staff) && staff.getState() == StaffState.Working)
                         searchingStaffs.add(staff);
                 }
                 else {
@@ -889,6 +895,12 @@ public class StaffWindowController {
             initializeShiftList(shiftObservableList);
             return;
         }
+    }
+
+    public boolean isOverlap(LocalTime startTime1, LocalTime endTime1, LocalTime startTime2, LocalTime endTime2){
+        if (startTime1.isAfter(startTime2) && endTime1.isBefore(endTime2)) return true;
+        if (startTime2.isAfter(startTime1) && endTime2.isBefore(endTime1)) return true;
+        return false;
     }
 
     @FXML
@@ -932,11 +944,18 @@ public class StaffWindowController {
             return;
         }
 
+        // Date of week search
+        if (dateOfWeek != 0) shift.setDateOfWeek(dateOfWeek);
+
+        startHour = shift.getStartTime().getHour();
+        startMinute = shift.getStartTime().getMinute();
+        endHour = shift.getEndTime().getHour();
+        endMinute = shift.getEndTime().getMinute();
+
         // Starttime search
         if (startHourTxt != null && !startHourTxt.isEmpty()) {
                 try {
                     startHour = Integer.parseInt(startHourTxt);
-                    shift.setStartTime(LocalTime.of(startHour, shift.getStartTime().getMinute()));
                 } catch (Exception e) {
                     result1.setText("Chỉ nhập số nguyên vào giờ hoặc nhập bất hợp lệ.");
                     initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
@@ -947,7 +966,6 @@ public class StaffWindowController {
         if (startMinuteTxt != null && !startMinuteTxt.isEmpty()) {
             try {
                 startMinute = Integer.parseInt(startMinuteTxt);
-                shift.setStartTime(LocalTime.of(shift.getStartTime().getHour(), startMinute));
             } catch (Exception e) {
                 result1.setText("Chỉ nhập số nguyên vào phút hoặc nhập bất hợp lệ.");
                 initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
@@ -959,7 +977,6 @@ public class StaffWindowController {
         if (endHourTxt != null && !endHourTxt.isEmpty()) {
             try {
                 endHour = Integer.parseInt(endHourTxt);
-                shift.setEndTime(LocalTime.of(endHour, shift.getEndTime().getMinute()));
             } catch (Exception e) {
                 result1.setText("Chỉ nhập số nguyên vào giờ hoặc nhập bất hợp lệ.");
                 initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
@@ -970,7 +987,6 @@ public class StaffWindowController {
         if (endMinuteTxt != null && !endMinuteTxt.isEmpty()) {
             try {
                 endMinute = Integer.parseInt(endMinuteTxt);
-                shift.setEndTime(LocalTime.of(shift.getEndTime().getHour(), endMinute));
             } catch (Exception e) {
                 result1.setText("Chỉ nhập số nguyên vào phút hoặc nhập bất hợp lệ.");
                 initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
@@ -978,9 +994,30 @@ public class StaffWindowController {
             }
         }
 
+        LocalTime startTime = LocalTime.of(startHour, startMinute);
+        LocalTime endTime = LocalTime.of(endHour, endMinute);
 
-        // Date of week search
-        if (dateOfWeek != 0) shift.setDateOfWeek(dateOfWeek);
+        if (startTime.isAfter(endTime)){
+            result1.setText("Thời gian bắt đầu phải trước thời gian kết thúc.");
+            initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
+            return;
+        }
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+
+        ObservableList<Shift> shiftObservableList = adapter.getAllShifts();
+
+        for (Shift shift1: shiftObservableList){
+            if (shift.getDateOfWeek() == shift1.getDateOfWeek() && isOverlap(startTime, endTime, shift1.getStartTime(), shift1.getEndTime())){
+                result1.setText("Không thể cập nhật do thời gian ca làm không được chồng nhau");
+                initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
+                return;
+            }
+        }
+
+
+        shift.setStartTime(startTime);
+        shift.setEndTime(endTime);
 
         // Find by staffs
 
@@ -993,7 +1030,7 @@ public class StaffWindowController {
                 long staffId = Long.parseLong(staffIdString);
                 Staff staff = StaffManager.getManager().findById(staffId);
                 if (staff != null) {
-                    if (!searchingStaffs.contains(staff))
+                    if (!searchingStaffs.contains(staff) && staff.getState() == StaffState.Working)
                         searchingStaffs.add(staff);
                 }
                 else {
@@ -1006,7 +1043,7 @@ public class StaffWindowController {
             shift.setStaffs(searchingStaffs);
         }
 
-        var adapter = DatabaseAdapter.getDbAdapter();
+
         adapter.updateShift(shift);
 
 
@@ -1021,8 +1058,7 @@ public class StaffWindowController {
             ArrayList<Shift> newShiftList = new ArrayList<>();
             newShiftList.add(newShift);
             result1.setText("Update thành công");
-            ObservableList<Shift> shiftObservableList = FXCollections.observableList(newShiftList);
-            initializeShiftList(shiftObservableList);
+            initializeShiftList(FXCollections.observableList(newShiftList));
             return;
         }
     }
@@ -1141,7 +1177,7 @@ public class StaffWindowController {
                 long staffId = Long.parseLong(staffIdString);
                 Staff staff = StaffManager.getManager().findById(staffId);
                 if (staff != null) {
-                    if (!searchingStaffs.contains(staff))
+                    if (!searchingStaffs.contains(staff) && staff.getState() == StaffState.Working)
                     searchingStaffs.add(staff);
                 }
                 else {
@@ -1160,6 +1196,19 @@ public class StaffWindowController {
         }
 
         var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Shift> shiftObservableList = adapter.getAllShifts();
+
+
+        for (Shift shift1: shiftObservableList){
+            if (shift.getDateOfWeek() == shift1.getDateOfWeek() && isOverlap(shift.getStartTime(), shift.getEndTime(), shift1.getStartTime(), shift1.getEndTime())){
+                result1.setText("Không thể thêm do thời gian ca làm không được chồng nhau");
+                initializeShiftList(FXCollections.observableArrayList(new ArrayList<Shift>()));
+                return;
+            }
+        }
+
+
+
         adapter.insertShift(shift);
 
         // Display
@@ -1176,8 +1225,7 @@ public class StaffWindowController {
             ArrayList<Shift> newShiftList = new ArrayList<>();
             newShiftList.add(newShift);
             result1.setText(String.format("Thêm thành công, ID ca mới là %d", shift.getShiftId()));
-            ObservableList<Shift> shiftObservableList = FXCollections.observableList(newShiftList);
-            initializeShiftList(shiftObservableList);
+            initializeShiftList(FXCollections.observableList(newShiftList));
             return;
         }
     }
@@ -1359,7 +1407,7 @@ public class StaffWindowController {
                 long staffId = Long.parseLong(staffIdString);
                 Staff staff = StaffManager.getManager().findById(staffId);
                 if (staff != null) {
-                    if (!searchingStaffs.contains(staff))
+                    if (!searchingStaffs.contains(staff) && staff.getState() == StaffState.Working)
                         searchingStaffs.add(staff);
                 }
                 else {
@@ -1530,4 +1578,549 @@ public class StaffWindowController {
         }
 
     }
+
+    @FXML
+    private ListView<StaffBill> staffBillListView;
+
+    @FXML
+    private VBox staffBillDisplayer;
+
+    @FXML
+    private Text staffBillHeaderDisplayer;
+
+    @FXML
+    private Text staffBillIdDisplayer;
+
+    @FXML
+    private Text staffBillDescriptionDisplayer;
+
+    @FXML
+    private GridPane filterPanel2;
+
+    @FXML
+    private Text result2;
+
+    @FXML
+    private TextField filterNoteBill;
+
+    @FXML
+    private TextField filterSalary;
+
+    @FXML
+    private TextField filterBillStaffId;
+
+    @FXML
+    private TextField filterBillName;
+
+    @FXML
+    private TextField filterBillId;
+
+    @FXML
+    private ComboBox<ComboBoxOption<Boolean>> filterEffected;
+
+    @FXML
+    private void resetFilterPanel2(){
+        filterNoteBill.setText("");
+        filterSalary.setText("");
+        filterBillStaffId.setText("");
+        filterBillName.setText("");
+        filterBillId.setText("");
+        filterEffected.getSelectionModel().selectFirst();
+    }
+
+    private void initializeStaffBillFilterPanel(){
+        filterPanel2.managedProperty().bind(filterPanel2.visibleProperty());
+        // Initialize date of week options
+        filterEffected.setItems(FXCollections.observableArrayList(
+                new ComboBoxOption<>(true, "Còn hiệu lực"),
+                new ComboBoxOption<>(false, "Hết hiệu lực")
+        ));
+        filterEffected.getSelectionModel().selectFirst();
+    }
+
+    private void initializeStaffBillDisplayer(){staffBillDisplayer.setVisible(false);}
+
+    private void displayStaffBill(StaffBill staffBill){
+        if (staffBill != null){
+            staffBillDisplayer.setVisible(true);
+            staffBillHeaderDisplayer.setText(staffBill.getName());
+            staffBillIdDisplayer.setText(String.format("ID: %d", staffBill.getBillId()));
+            String s = "";
+            s += "Còn hiệu lực: ";
+            if (staffBill.getIsEffected()){
+                s += "true";
+            }
+            else {
+                s += "false";
+            }
+            s += ",\n\n";
+
+            s += "Thời gian: "; s += staffBill.getTime().toString(); s += ",\n\n";
+            s += String.format("Lương: %.2f nghìn đồng", staffBill.getPrice()); s += ",\n\n";
+            s += String.format("Note: %s", staffBill.getNote()); s += ",\n\n";
+            s += "Tính từ: "; s += staffBill.getFrom().toString(); s += ",\n\n";
+            s += String.format("Lương cơ bản 1 giờ: %.2f nghìn đồng", staffBill.getStandardSalaryPerHour()); s += ",\n\n";
+            s += String.format("Số giờ làm việc: %.2f", staffBill.getWorkHours()); s += ",\n\n";
+            s += String.format("ID nhân viên: %d", staffBill.getStaff().getStaffId());
+            staffBillDescriptionDisplayer.setText(s);
+        }
+    }
+
+    private void initializeStaffBillList(ObservableList<StaffBill> staffBills){
+        staffBillListView.setCellFactory(new Callback<ListView<StaffBill>, ListCell<StaffBill>>() {
+            @Override
+            public ListCell<StaffBill> call(ListView<StaffBill> staffBillListView) {
+                return new StaffBillListCell();
+            }
+        });
+
+        try {
+            staffBillListView.setItems(staffBills);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        staffBillListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            displayStaffBill(newValue);
+        });
+    }
+
+    @FXML
+    public void filterStaffBillList() throws Exception{
+        String note = filterNoteBill.getText();
+        String salaryTxt = filterSalary.getText();
+        double salary;
+        String staffIdTxt = filterBillStaffId.getText();
+        long staffId;
+        String name = filterBillName.getText();
+        int billId;
+        String billIdTxt = filterBillId.getText();
+        boolean effected = filterEffected.getValue().getValue();
+
+        ArrayList<StaffBill> oldStaffBillList;
+        ArrayList<StaffBill> newStaffBillList = new ArrayList<StaffBill>(StaffManager.getManager().getStaffBillList());
+
+        if (billIdTxt != null && !billIdTxt.isEmpty()){
+            try{
+                billId = Integer.parseInt(billIdTxt);
+            }
+            catch (Exception e){
+                result2.setText("Chỉ nhập số nguyên vào ID.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+
+            StaffBill staffBill = StaffManager.getManager().findBillById(billId);
+            if (staffBill == null){
+                result2.setText("Không tìm thấy");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+            newStaffBillList = new ArrayList<>();
+            newStaffBillList.add(staffBill);
+        }
+
+        // Find by staffs
+
+        if (staffIdTxt != null && !staffIdTxt.isEmpty()){
+            String[] staffIdStrings = staffIdTxt.split(",");
+            ArrayList<Staff> searchingStaffs = new ArrayList<>();
+
+            for (String staffIdString: staffIdStrings){
+                staffId = Long.parseLong(staffIdString);
+                Staff staff = StaffManager.getManager().findById(staffId);
+                if (staff != null) {
+                    if (!searchingStaffs.contains(staff))
+                        searchingStaffs.add(staff);
+                }
+                else {
+                    result2.setText("Nhân viên không có trong danh sách.");
+                    initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                    return;
+                }
+            }
+            oldStaffBillList = newStaffBillList;
+            newStaffBillList = StaffManager.getManager().findBillByStaff(searchingStaffs, oldStaffBillList);
+
+            if (newStaffBillList.isEmpty() || newStaffBillList == null){
+                result2.setText("Không tìm thấy");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+
+        // Find By Salary
+        if (salaryTxt != null && !salaryTxt.isEmpty()){
+            try {
+                salary = Double.parseDouble(salaryTxt);
+            }
+            catch (Exception e){
+                result2.setText("Chỉ nhập số thực vào lương.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+            oldStaffBillList = newStaffBillList;
+            newStaffBillList = StaffManager.getManager().findBillBySalary(salary, oldStaffBillList);
+
+            if (newStaffBillList.isEmpty() || newStaffBillList == null){
+                result2.setText("Không tìm thấy");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+
+        // Find by name
+        if (name != null && !name.isEmpty()){
+            oldStaffBillList = newStaffBillList;
+            newStaffBillList = new ArrayList<>();
+            for (StaffBill staffBill: oldStaffBillList)
+                if (staffBill.getName().contains(name))
+                    newStaffBillList.add(staffBill);
+
+            if (newStaffBillList.isEmpty() || newStaffBillList == null){
+                result2.setText("Không tìm thấy");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+
+        // Find by note
+        if (note != null && !note.isEmpty()){
+            oldStaffBillList = newStaffBillList;
+            newStaffBillList = new ArrayList<>();
+            for (StaffBill staffBill: oldStaffBillList)
+                if (staffBill.getNote().contains(note))
+                    newStaffBillList.add(staffBill);
+
+            if (newStaffBillList.isEmpty() || newStaffBillList == null){
+                result2.setText("Không tìm thấy");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+
+        // Find by effected
+        oldStaffBillList = newStaffBillList;
+        newStaffBillList = new ArrayList<>();
+        for (StaffBill staffBill: oldStaffBillList)
+            if (staffBill.getIsEffected() == effected)
+                newStaffBillList.add(staffBill);
+
+        if (newStaffBillList.isEmpty() || newStaffBillList == null){
+            result2.setText("Không tìm thấy");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        // Display
+        if (!newStaffBillList.isEmpty() && newStaffBillList != null){
+            result2.setText("Tìm thấy");
+            initializeStaffBillList(FXCollections.observableList(newStaffBillList));
+            return;
+        }
+    }
+
+    @FXML
+    public void updateStaffBill() throws Exception{
+        String note = filterNoteBill.getText();
+        String salaryTxt = filterSalary.getText();
+        double salary;
+        String staffIdTxt = filterBillStaffId.getText();
+        long staffId;
+        String name = filterBillName.getText();
+        int billId;
+        String billIdTxt = filterBillId.getText();
+        boolean effected = filterEffected.getValue().getValue();
+
+        if (billIdTxt != null && !billIdTxt.isEmpty()){
+            try{
+                billId = Integer.parseInt(billIdTxt);
+            }
+            catch (Exception e){
+                result2.setText("Chỉ nhập số nguyên vào ID.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+        else {
+            result2.setText("Nhập ID của hóa đơn trước khi update.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        StaffBill staffBill = StaffManager.getManager().findBillById(billId);
+        if (staffBill == null){
+            result2.setText("Không tìm thấy.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (staffIdTxt != null && !staffIdTxt.isEmpty()){
+            result2.setText("Không được nhập ID nhân viên khi update.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (salaryTxt != null && !salaryTxt.isEmpty()){
+            result2.setText("Không được nhập lương cơ bản khi update.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (name != null && !name.isEmpty()) staffBill.setName(name);
+        if (note != null && !note.isEmpty()) staffBill.setNote(note);
+
+        staffBill.setIsEffected(effected);
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+        adapter.updateStaffBill(staffBill);
+
+        StaffBill newStaffBill = StaffManager.getManager().findBillById(billId);
+        if (newStaffBill == null){
+            result2.setText("Error");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+        else {
+            // Display
+            ArrayList<StaffBill> newStaffBillList = new ArrayList<>();
+            newStaffBillList.add(newStaffBill);
+            result2.setText("Update thành công");
+            initializeStaffBillList(FXCollections.observableList(newStaffBillList));
+            return;
+        }
+    }
+
+    @FXML
+    public void deleteStaffBill() throws Exception{
+        String note = filterNoteBill.getText();
+        String salaryTxt = filterSalary.getText();
+        String staffIdTxt = filterBillStaffId.getText();
+        String name = filterBillName.getText();
+        int billId;
+        String billIdTxt = filterBillId.getText();
+        boolean effected = filterEffected.getValue().getValue();
+
+        if (billIdTxt != null && !billIdTxt.isEmpty()){
+            try{
+                billId = Integer.parseInt(billIdTxt);
+            }
+            catch (Exception e){
+                result2.setText("Chỉ nhập số nguyên vào ID.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+        else {
+            result2.setText("Nhập ID của hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        StaffBill staffBill = StaffManager.getManager().findBillById(billId);
+
+        if (staffIdTxt != null && !staffIdTxt.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (salaryTxt != null && !salaryTxt.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (name != null && !name.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (note != null && !note.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+
+        if (staffBill == null){
+            result2.setText("Không tìm thấy.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (staffBill.getIsEffected()) {
+            result2.setText("Chỉ được xóa hóa đơn đã hết hiệu lực.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+        adapter.deleteStaffBill(staffBill);
+
+        // Display
+        result2.setText("Xóa thành công.");
+        initializeStaffBillList(FXCollections.observableList(StaffManager.getManager().getStaffBillList()));
+        return;
+    }
+
+    @FXML
+    public void punchIn() throws Exception{
+        String note = filterNoteBill.getText();
+        String salaryTxt = filterSalary.getText();
+        String staffIdTxt = filterBillStaffId.getText();
+        long staffId;
+        String name = filterBillName.getText();
+        String billIdTxt = filterBillId.getText();
+
+
+        if (note != null && !note.isEmpty()){
+            result2.setText("Chỉ nhập ID nhân viên khi chấm công");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (salaryTxt != null && !salaryTxt.isEmpty()){
+            result2.setText("Chỉ nhập ID nhân viên khi chấm công");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (name != null && !name.isEmpty()){
+            result2.setText("Chỉ nhập ID nhân viên khi chấm công");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (billIdTxt != null && !billIdTxt.isEmpty()){
+            result2.setText("Chỉ nhập ID nhân viên khi chấm công");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (staffIdTxt == null || staffIdTxt.isEmpty()){
+            result2.setText("Nhập ID nhân viên trước khi chấm công");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        String[] staffIdStrings = staffIdTxt.split(",");
+        ArrayList<Staff> searchingStaffs = new ArrayList<>();
+
+        for (String staffIdString: staffIdStrings){
+            staffId = Long.parseLong(staffIdString);
+            Staff staff = StaffManager.getManager().findById(staffId);
+            if (staff != null) {
+                if (!searchingStaffs.contains(staff) && staff.getState() == StaffState.Working)
+                    searchingStaffs.add(staff);
+            }
+            else {
+                result2.setText("Nhân viên không có trong danh sách.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+
+        Attendance attendance = StaffManager.getManager().punchIn(searchingStaffs);
+
+        if (attendance == null){
+            result2.setText("Không có ca làm nào bây giờ hoặc không thể chấm công do mỗi ca làm chỉ cho chấm công một lần duy nhất.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        result2.setText("Chấm công thành công.");
+        initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+        return;
+
+    }
+
+    @FXML
+    public void paySalary() throws Exception{
+        String note = filterNoteBill.getText();
+        String salaryTxt = filterSalary.getText();
+        double salary = 50.0;
+        String staffIdTxt = filterBillStaffId.getText();
+        long staffId;
+        String name = filterBillName.getText();
+        String billIdTxt = filterBillId.getText();
+
+        if (billIdTxt != null && !billIdTxt.isEmpty()){
+            result2.setText("Không nhập ID của hóa đơn trước khi trả lương");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+
+        if (salaryTxt != null && !salaryTxt.isEmpty()){
+            try {
+                salary = Double.parseDouble(salaryTxt);
+            }
+            catch (Exception e){
+                result2.setText("Chỉ nhập số thực vào lương.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        } else {
+            result2.setText("Nhập lương cơ bản một giờ trước khi trả lương.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+
+
+        ArrayList<Staff> searchingStaffs = new ArrayList<>(StaffManager.getManager().getAll());
+
+        if (staffIdTxt != null && !staffIdTxt.isEmpty()){
+            String[] staffIdStrings = staffIdTxt.split(",");
+            for (String staffIdString: staffIdStrings){
+                staffId = Long.parseLong(staffIdString);
+                Staff staff = StaffManager.getManager().findById(staffId);
+                if (staff != null) {
+                    if (!searchingStaffs.contains(staff) && staff.getState() == StaffState.Working)
+                        searchingStaffs.add(staff);
+                }
+                else {
+                    result2.setText("Nhân viên không có trong danh sách.");
+                    initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                    return;
+                }
+            }
+        }
+
+        ArrayList<StaffBill> newStaffBills = new ArrayList<>();
+
+        for (Staff staff: searchingStaffs){
+            StaffBill staffBill = new StaffBill();
+
+            if (name != null && !name.isEmpty()) staffBill.setName(name);
+            else staffBill.setName(String.format("Hóa đơn trả lương cho %s (ID: %d)", staff.getName(), staff.getStaffId()));
+
+            if (note != null && !note.isEmpty()) staffBill.setNote(note);
+            else staffBill.setNote("Không có ghi chú");
+
+            staffBill.setStaff(staff);
+
+            staffBill.setIsEffected(true);
+            staffBill.setTime(LocalDate.now());
+            staffBill.setStandardSalaryPerHour(salary);
+            staffBill.setFrom(StaffManager.getManager().getFrom(staff));
+            staffBill.setWorkHours(StaffManager.getManager().getWorkHours(staff));
+            staffBill.setPrice(salary * staffBill.getWorkHours());
+
+            adapter.insertStaffBill(staffBill);
+            newStaffBills.add(staffBill);
+
+        }
+
+        // Display
+        result2.setText("Trả lương thành công");
+        initializeStaffBillList(FXCollections.observableArrayList(newStaffBills));
+        return;
+    }
+
+
+
 }

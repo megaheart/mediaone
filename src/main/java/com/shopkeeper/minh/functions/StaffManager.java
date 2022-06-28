@@ -5,6 +5,7 @@ import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.Attendance;
 import com.shopkeeper.minh.models.Shift;
+import com.shopkeeper.minh.models.StaffBill;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -138,7 +139,7 @@ public class StaffManager {
         adapter.insertShift(newShift);
     }
 
-    public Attendance punchIn(Staff[] staffs) throws Exception {
+    public Attendance punchIn(ArrayList<Staff> staffs) throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         Shift currentShift = null;
         LocalDateTime now = LocalDateTime.now();
@@ -147,6 +148,8 @@ public class StaffManager {
         ArrayList<Staff> absenteeStaffs = new ArrayList<>();
         ObservableList<Shift> shifts = adapter.getAllShifts();
         Duration duration;
+
+        ObservableList<Attendance> attendances = adapter.getAllAttendances();
 
         for (Shift shift: shifts) {
             if (shift.getDateOfWeek() == now.getDayOfWeek().getValue() && now.toLocalTime().isAfter(shift.getStartTime()) && now.toLocalTime().isBefore(shift.getEndTime())) {
@@ -157,6 +160,14 @@ public class StaffManager {
 
         if (currentShift == null) return null;
 
+        for (Attendance attendance1: attendances){
+            if (attendance1.getTime().getDayOfWeek().getValue() == currentShift.getDateOfWeek() && attendance1.getTime().toLocalTime().isAfter(currentShift.getStartTime())
+            && attendance1.getTime().toLocalTime().isBefore(currentShift.getEndTime())){
+                return null;
+            }
+        }
+
+
         for (Staff staff: staffs){
             if (staff.getState() == StaffState.Working) workingStaffs.add(staff);
         }
@@ -166,7 +177,7 @@ public class StaffManager {
         duration = Duration.between(currentShift.getStartTime(), currentShift.getEndTime());
 
         for (Staff staff: currentShift.getStaffs()){
-            if ((!Arrays.asList(staffs).contains(staff)) || staff.getState() != StaffState.Working) absenteeStaffs.add(staff);
+            if (!staffs.contains(staff) || staff.getState() != StaffState.Working) absenteeStaffs.add(staff);
         }
 
         attendance = new Attendance(now, duration, workingStaffs, absenteeStaffs);
@@ -214,4 +225,85 @@ public class StaffManager {
             if (shift.getStaffs().containsAll(staffs)) shifts.add(shift);
         return shifts;
     }
+
+    public ObservableList<StaffBill> getStaffBillList() throws Exception{
+        var adapter = DatabaseAdapter.getDbAdapter();
+        return FXCollections.unmodifiableObservableList(adapter.getAllStaffBills());
+    }
+
+    public StaffBill findBillById(int billId) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<StaffBill> staffBills = adapter.getAllStaffBills();
+
+        for (StaffBill staffBill: staffBills){
+            if (staffBill.getBillId() == billId) return staffBill;
+        }
+
+        System.out.println("No bill has that Id");
+        return null;
+    }
+
+    public ArrayList<StaffBill> findBillByStaff(ArrayList<Staff> staffArrayList, ArrayList<StaffBill> staffBillArrayList){
+        ArrayList<StaffBill> staffBills = new ArrayList<>();
+        for (StaffBill staffBill: staffBillArrayList)
+            for (Staff staff: staffArrayList)
+                if (staffBill.getStaff().getStaffId() == staff.getStaffId())
+                    staffBills.add(staffBill);
+        return staffBills;
+    }
+
+    public ArrayList<StaffBill> findBillBySalary(double salary, ArrayList<StaffBill> staffBillArrayList){
+        ArrayList<StaffBill> staffBills = new ArrayList<>();
+        for (StaffBill staffBill: staffBillArrayList)
+            if (staffBill.getStandardSalaryPerHour() == salary)
+                staffBills.add(staffBill);
+        return staffBills;
+    }
+
+    public LocalDate getFrom(Staff staff) throws Exception{
+        LocalDate from = LocalDate.now();
+        var adapter = DatabaseAdapter.getDbAdapter();
+        LocalDate latestPay = null;
+
+        ObservableList<StaffBill> staffBills = adapter.getAllStaffBills();
+        ObservableList<Attendance> attendances = adapter.getAllAttendances();
+
+        for (StaffBill staffBill: staffBills){
+            if (staff.getStaffId() == staffBill.getStaff().getStaffId()){
+                if (latestPay == null) latestPay = staffBill.getTime();
+                else if (latestPay.isBefore(staffBill.getTime())) latestPay = staffBill.getTime();
+            }
+        }
+
+        if (latestPay != null) return latestPay;
+
+        for (Attendance attendance: attendances){
+            if (attendance.getStaffsWork().contains(staff)){
+                if (latestPay == null) from = attendance.getTime().toLocalDate();
+                else if (from.isAfter(attendance.getTime().toLocalDate())) from = attendance.getTime().toLocalDate();
+            }
+        }
+
+        return from;
+    }
+
+    public double getWorkHours(Staff staff) throws Exception{
+        double workHours = 0;
+        LocalDate from = getFrom(staff);
+        var adapter = DatabaseAdapter.getDbAdapter();
+
+        ObservableList<Attendance> attendances = adapter.getAllAttendances();
+
+        for (Attendance attendance: attendances){
+            if (attendance.getStaffsWork().contains(staff)){
+                if (attendance.getTime().toLocalDate().isEqual(from) || attendance.getTime().toLocalDate().isAfter(from)) {
+                    workHours += (double) attendance.getDuration().toMinutes() / 60;
+                }
+            }
+        }
+
+        return workHours;
+    }
+
+
 }
