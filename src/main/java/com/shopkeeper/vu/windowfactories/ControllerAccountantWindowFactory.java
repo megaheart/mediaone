@@ -1,5 +1,7 @@
 package com.shopkeeper.vu.windowfactories;
 
+import com.shopkeeper.lam.models.FilmInfo;
+import com.shopkeeper.lam.models.ProductInfo;
 import com.shopkeeper.vu.funtions.Accountant;
 import com.shopkeeper.vu.funtions.StatisticGranularity;
 import javafx.collections.FXCollections;
@@ -36,27 +38,60 @@ public class ControllerAccountantWindowFactory implements Initializable {
     @FXML
     private Label lb_nhanvien;
     @FXML
+    private Label lb_chiphikhac;
+    @FXML
     private PieChart tk_all;
     @FXML
-            private DatePicker date_day1;
+    private DatePicker date_day1;
     @FXML
     private DatePicker date_day2;
-
+    @FXML
+    private DatePicker date_day3;
+    @FXML
+    private DatePicker date_day4;
+    @FXML
+    private ComboBox cb_pick2;
+    @FXML
+    private ComboBox cb_type2;
+    @FXML
+    private ComboBox cb_info;
+    @FXML
+    private LineChart lineChart2;
+    @FXML
+    private PieChart pc22;
+    @FXML
+    private Label lb_musicsale;
+    @FXML
+    private Label lb_booksale;
+    @FXML
+    private Label lb_filmsale;
+    @FXML
+    private Label lb_musicimport;
+    @FXML
+    private Label lb_bookimport;
+    @FXML
+    private Label lb_filmimport;
+    XYChart.Series sr2;
 
 
     XYChart.Series sr;
-    @FXML
-    PieChart pc;
-
     private  String[] pick = {"Ngày", "Tháng","Quý","Năm"};
-    private  String[] stye ={"Bán ra","Nhập hàng","Lương nhân viên","Chi phí mặt bằng","Chi phí vận chuyển","Chi phí khác","Lợi nhuận"};
+    private  String[] stye ={"Chi phí khác","Bán ra","Nhập hàng","Chi phí vận chuyển","Chi phí mặt bằng","Lương nhân viên","Lợi nhuận"};
+    private String[] ty ={"Bán ra","Nhập vào"};
+    private String[] loai ={"Music","Book","Film"};
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboBox_stye.getItems().addAll(stye);
+        cb_pick2.getItems().addAll(pick);
+
 
         comboBox_pick.getItems().addAll(pick);
+        cb_info.getItems().addAll(loai);
         comboBox_stye.getSelectionModel().selectFirst();
-
+        cb_type2.getItems().addAll(ty);
+        cb_info.getSelectionModel().selectFirst();
+        cb_type2.getSelectionModel().selectFirst();
+        cb_pick2.getSelectionModel().selectFirst();
         comboBox_pick.getSelectionModel().selectFirst();
 
     }
@@ -123,6 +158,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost +b.getYValue();
                     sr.getData().add(b);
                 }
+                lb_chiphikhac.setText("Chi phí khác : "+ cost +" đồng");
                 sr.setName("Chi phí khác");
                 lineChart.getData().add(sr);
             }
@@ -135,7 +171,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost +b.getYValue();
                     //sr.getData().add(b);
                 }
-                lb_loinhuan.setText("Lợi nhận của cửa hàng: "+cost+"đồng");
+                lb_loinhuan.setText("Lợi nhận của cửa hàng : "+cost+"đồng");
                 //sr.setName("Lợi nhuận");
                 //lineChart.getData().add(sr);
             }
@@ -148,7 +184,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     sr.getData().add(b);
                     cost = cost +b.getYValue();
                 }
-                lb_matbang.setText("Chi phí mặt bằng: "+cost+"đồng");
+                lb_matbang.setText("Chi phí mặt bằng : "+cost+"đồng");
                 sr.setName("Chi phí mặt bằng");
                 lineChart.getData().add(sr);
             }
@@ -227,7 +263,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     sr.getData().add(b);
                     cost = cost +b.getYValue();
                 }
-                lb_matbang.setText("Chi phí mặt bằng: "+cost+"đồng");
+                lb_matbang.setText("Chi phí mặt bằng : "+cost+"đồng");
                 sr.setName("Chi phí mặt bằng");
                 lineChart.getData().add(sr);
             }
@@ -240,7 +276,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     sr.getData().add(b);
                     cost =cost+b.getYValue();
                 }
-                lb_vanchuyen.setText("Chi phí vận chuyển: "+cost+"đồng");
+                lb_vanchuyen.setText("Chi phí vận chuyển : "+cost+"đồng");
                 sr.setName("Chi phí vận chuyển");
                 lineChart.getData().add(sr);
             }
@@ -253,6 +289,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost +b.getYValue();
                     sr.getData().add(b);
                 }
+                lb_chiphikhac.setText("Chi phí khác :"+ cost +" đồng");
                 sr.setName("Chi phí khác");
                 lineChart.getData().add(sr);
             }
@@ -318,7 +355,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     sr.getData().add(b);
                     cost = cost +b.getYValue();
                 }
-                lb_matbang.setText("Chi phí mặt bằng: "+cost+"đồng");
+                lb_matbang.setText("Chi phí mặt bằng : "+cost+"đồng");
                 sr.setName("Chi phí mặt bằng");
                 lineChart.getData().add(sr);
             }
@@ -331,7 +368,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     sr.getData().add(b);
                     cost =cost+b.getYValue();
                 }
-                lb_vanchuyen.setText("Chi phí vận chuyển: "+cost+"đồng");
+                lb_vanchuyen.setText("Chi phí vận chuyển : "+cost+"đồng");
                 sr.setName("Chi phí vận chuyển");
                 lineChart.getData().add(sr);
             }
@@ -344,6 +381,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost +b.getYValue();
                     sr.getData().add(b);
                 }
+                lb_chiphikhac.setText("Chi phí khác :"+ cost +" đồng");
                 sr.setName("Chi phí khác");
                 lineChart.getData().add(sr);
             }
@@ -396,7 +434,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost +b.getYValue();
                     //sr.getData().add(b);
                 }
-                lb_loinhuan.setText("Lợi nhận của cửa hàng: "+cost+"đồng");
+                lb_loinhuan.setText("Lợi nhận của cửa hàng : "+cost+"đồng");
                 //sr.setName("Lợi nhuận");
                 //lineChart.getData().add(sr);
             }
@@ -435,6 +473,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost +b.getYValue();
                     sr.getData().add(b);
                 }
+                lb_chiphikhac.setText("Chi phí khác : "+ cost +"đồng");
                 sr.setName("Chi phí khác");
                 lineChart.getData().add(sr);
             }
@@ -444,8 +483,6 @@ public class ControllerAccountantWindowFactory implements Initializable {
     public void oa_all() {
         LocalDate day1 = date_day1.getValue();
         LocalDate day2 = date_day2.getValue();
-        ObservableList<PieChart.Data> list = FXCollections.observableArrayList();
-        pc= new PieChart();
         Accountant a = new Accountant();
         ObservableList<PieChart.Data> list1;
         try {
@@ -453,23 +490,353 @@ public class ControllerAccountantWindowFactory implements Initializable {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println(list1);
         tk_all.setData(list1);
-        tk_all.setTitle("cac");
+        tk_all.setTitle("Biểu đồ của cửa hàng media");
     }
     public void oa_xoa(){
         comboBox_stye.getSelectionModel().selectFirst();
         comboBox_pick.getSelectionModel().selectFirst();
-
         lb_vanchuyen.setText(null);
         lb_nhanvien.setText(null);
         lb_matbang.setText(null);
         lb_banhang.setText(null);
         lb_nhaphang.setText(null);
         lb_loinhuan.setText(null);
-
+        lb_chiphikhac.setText(null);
         lineChart.getData().clear();
         tk_all.getData().clear();
         tk_all.setTitle(null);
+    }
+    public void bt_pt1() throws Exception {
+        LocalDate day3 = date_day3.getValue();
+        LocalDate day4 = date_day4.getValue();
+        if(day4.isBefore(day4)){
+            Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng chọn lại ngày",ButtonType.APPLY);
+            a.setHeaderText(null);
+            a.show();
+        }else {
+            Accountant a = new Accountant();
+            String chon1 = String.valueOf(cb_pick2.getValue());
+            String kieu1 = String.valueOf(cb_type2.getValue());
+            String loai = String.valueOf(cb_info.getValue());
+            if(chon1.equals("Ngày")&&kieu1.equals("Bán ra")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicsaleday =FXCollections.observableArrayList();
+                listmusicsaleday = a.getMusicSaleStatistics(day3, day4, StatisticGranularity.Day);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicsaleday) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Ngày")&&kieu1.equals("Bán ra")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBooksaleday = FXCollections.observableArrayList();
+                listBooksaleday = a.getBookSaleStatistics(day3, day4, StatisticGranularity.Day);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBooksaleday) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Ngày")&&kieu1.equals("Bán ra")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmsaleday = FXCollections.observableArrayList();
+                listFilmsaleday = a.getFilmSaleStatistics(day3, day4, StatisticGranularity.Day);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmsaleday) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Ngày")&&kieu1.equals("Nhập vào")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicimportday =FXCollections.observableArrayList();
+                listmusicimportday = a.getMusicImportStatistics(day3, day4, StatisticGranularity.Day);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicimportday) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
+                System.out.println(1);
+            }
+            if(chon1.equals("Ngày")&&kieu1.equals("Nhập vào")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBookimportday = FXCollections.observableArrayList();
+                listBookimportday = a.getBookImportStatistics(day3, day4, StatisticGranularity.Day);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBookimportday) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Ngày")&&kieu1.equals("Nhập vào")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmimportday = FXCollections.observableArrayList();
+                listFilmimportday = a.getFilmImportStatistics(day3, day4, StatisticGranularity.Day);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmimportday) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
+            }
+            // Thang
+
+            if(chon1.equals("Tháng")&&kieu1.equals("Bán ra")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicsalemonth =FXCollections.observableArrayList();
+                listmusicsalemonth = a.getMusicSaleStatistics(day3, day4, StatisticGranularity.Month);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicsalemonth) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Tháng")&&kieu1.equals("Bán ra")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBooksalemonth = FXCollections.observableArrayList();
+                listBooksalemonth = a.getBookSaleStatistics(day3, day4, StatisticGranularity.Month);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBooksalemonth) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Tháng")&&kieu1.equals("Bán ra")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmsalemonth = FXCollections.observableArrayList();
+                listFilmsalemonth = a.getFilmSaleStatistics(day3, day4, StatisticGranularity.Month);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmsalemonth) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Tháng")&&kieu1.equals("Nhập vào")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicimportmonth =FXCollections.observableArrayList();
+                listmusicimportmonth = a.getMusicImportStatistics(day3, day4, StatisticGranularity.Month);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicimportmonth) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Tháng")&&kieu1.equals("Nhập vào")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBookimportmonth = FXCollections.observableArrayList();
+                listBookimportmonth = a.getBookImportStatistics(day3, day4, StatisticGranularity.Month);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBookimportmonth) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Tháng")&&kieu1.equals("Nhập vào")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmimportmonth = FXCollections.observableArrayList();
+                listFilmimportmonth = a.getFilmImportStatistics(day3, day4, StatisticGranularity.Month);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmimportmonth) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
+            }
+            // Quy
+
+            if(chon1.equals("Quý")&&kieu1.equals("Bán ra")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicsalequater =FXCollections.observableArrayList();
+                listmusicsalequater = a.getMusicSaleStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicsalequater) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Quý")&&kieu1.equals("Bán ra")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBooksalequater = FXCollections.observableArrayList();
+                listBooksalequater = a.getBookSaleStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBooksalequater) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Quý")&&kieu1.equals("Bán ra")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmsalequater = FXCollections.observableArrayList();
+                listFilmsalequater = a.getFilmSaleStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmsalequater) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Quý")&&kieu1.equals("Nhập vào")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicimportquater =FXCollections.observableArrayList();
+                listmusicimportquater = a.getMusicImportStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicimportquater) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Quý")&&kieu1.equals("Nhập vào")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBookimportquater = FXCollections.observableArrayList();
+                listBookimportquater = a.getBookImportStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBookimportquater) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Quý")&&kieu1.equals("Nhập vào")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmimportquater = FXCollections.observableArrayList();
+                listFilmimportquater = a.getFilmImportStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmimportquater) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
+            }
+            // Nam
+            if(chon1.equals("Năm")&&kieu1.equals("Bán ra")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicsaleyear =FXCollections.observableArrayList();
+                listmusicsaleyear = a.getMusicSaleStatistics(day3, day4, StatisticGranularity.Year);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicsaleyear) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Năm")&&kieu1.equals("Bán ra")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBooksaleyear = FXCollections.observableArrayList();
+                listBooksaleyear = a.getBookSaleStatistics(day3, day4, StatisticGranularity.Year);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBooksaleyear) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Năm")&&kieu1.equals("Bán ra")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmsaleyear = FXCollections.observableArrayList();
+                listFilmsaleyear = a.getFilmSaleStatistics(day3, day3, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmsaleyear) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Năm")&&kieu1.equals("Nhập vào")&&loai.equals("Book")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listBookimportyear = FXCollections.observableArrayList();
+                listBookimportyear = a.getBookImportStatistics(day3, day4, StatisticGranularity.Year);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listBookimportyear) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Năm")&&kieu1.equals("Nhập vào")&&loai.equals("Film")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listFilmimportyear = FXCollections.observableArrayList();
+                listFilmimportyear = a.getFilmImportStatistics(day3, day4, StatisticGranularity.Quarter);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listFilmimportyear) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
+            }
+            if(chon1.equals("Năm")&&kieu1.equals("Nhập vào")&&loai.equals("Music")){
+                sr2 = new XYChart.Series();
+                ObservableList<XYChart.Data<String , Double>> listmusicimportyear =FXCollections.observableArrayList();
+                listmusicimportyear = a.getMusicImportStatistics(day3, day4, StatisticGranularity.Year);
+                double cost = 0;
+                for (XYChart.Data<String, Double> b: listmusicimportyear) {
+                    cost = cost + b.getYValue();
+                    sr2.getData().add(b);
+                }
+                lineChart2.getData().add(sr2);
+                lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
+            }
+            lineChart2.setAnimated(false);
+        }
+    }
+    public void bt_all1(){
+        LocalDate day3 = date_day3.getValue();
+        LocalDate day4 = date_day4.getValue();
+        Accountant a = new Accountant();
+        ObservableList<PieChart.Data> list = null;
+        try {
+            list = a.getAllInfor(day3, day4);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        pc22.setData(list);
+        pc22.setTitle("Các loại sản phẩm của cửa hàng");
+    }
+    public void bt_xoa1(){
+        lb_musicsale.setText(null);
+        lb_musicimport.setText(null);
+        lb_bookimport.setText(null);
+        lb_booksale.setText(null);
+        lb_filmimport.setText(null);
+        lb_filmsale.setText(null);
+        lineChart2.getData().clear();
+        sr2.getData().clear();
     }
 }

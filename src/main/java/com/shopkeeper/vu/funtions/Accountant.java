@@ -1,7 +1,6 @@
 package com.shopkeeper.vu.funtions;
 
-import com.shopkeeper.lam.models.Product;
-import com.shopkeeper.lam.models.ProductInfo;
+import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.models.Bill;
@@ -28,10 +27,34 @@ public class Accountant {
     ObservableList<XYChart.Data<String, Double>> listSaleBillMonth;
     ObservableList<XYChart.Data<String, Double>> listSaleBillQuarter;
     ObservableList<XYChart.Data<String, Double>> listSaleBillYear;
-    ObservableList<XYChart.Data<String, Double>> listSaleProductInfoDay;
-    ObservableList<XYChart.Data<String, Double>> listSaleProductInfoMonth;
-    ObservableList<XYChart.Data<String, Double>> listSaleProductInfoQuarter;
-    ObservableList<XYChart.Data<String, Double>> listSaleProductInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listImportMusicInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listImportMusicInfoDay;
+    ObservableList<XYChart.Data<String, Double>> listImportMusicInfoMonth;
+    ObservableList<XYChart.Data<String, Double>> listImportMusicInfoQuater;
+
+    ObservableList<XYChart.Data<String, Double>> listImportBookInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listImportBookInfoDay;
+    ObservableList<XYChart.Data<String, Double>> listImportBookInfoMonth;
+    ObservableList<XYChart.Data<String, Double>> listImportBookInfoQuater;
+    ObservableList<XYChart.Data<String, Double>> listImportFilmInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listImportFilmInfoDay;
+    ObservableList<XYChart.Data<String, Double>> listImportFilmInfoMonth;
+    ObservableList<XYChart.Data<String, Double>> listImportFilmInfoQuater;
+
+    ObservableList<XYChart.Data<String, Double>> listSaleMusicInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listSaleMusicInfoDay;
+    ObservableList<XYChart.Data<String, Double>> listSaleMusicInfoMonth;
+    ObservableList<XYChart.Data<String, Double>> listSaleMusicInfoQuater;
+
+    ObservableList<XYChart.Data<String, Double>> listSaleBookInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listSaleBookInfoDay;
+    ObservableList<XYChart.Data<String, Double>> listSaleBookInfoMonth;
+    ObservableList<XYChart.Data<String, Double>> listSaleBookInfoQuater;
+    ObservableList<XYChart.Data<String, Double>> listSaleFilmInfoYear;
+    ObservableList<XYChart.Data<String, Double>> listSaleFilmInfoDay;
+    ObservableList<XYChart.Data<String, Double>> listSaleFilmInfoMonth;
+    ObservableList<XYChart.Data<String, Double>> listSaleFilmInfoQuater;
+
     ObservableList<XYChart.Data<String, Double>> listStaffCostsStatisticsDay;
     ObservableList<XYChart.Data<String, Double>> listStaffCostsStatisticsMonth;
     ObservableList<XYChart.Data<String, Double>> listStaffCostsStatisticsQuarter;
@@ -60,6 +83,7 @@ public class Accountant {
     ObservableList<XYChart.Data<String, Double>> listCostsStatisticsOtherYear;
 
     ObservableList<PieChart.Data> listBill;
+    ObservableList<PieChart.Data> listProductinfo;
     ObservableList<Bill> listBillFromDateToDate;
     ObservableList<Bill> listBillCostFromDateToDate;
     ObservableList<Bill> listBillProfitFromDateToDate;
@@ -95,7 +119,7 @@ public class Accountant {
             return listImportBillMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listImportBillQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (ImportBill bill: list) {
                     if(d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -120,59 +144,338 @@ public class Accountant {
         }
         return null;
     }
-
-    public ObservableList<XYChart.Data<String, Double>> getImportStatistics(ProductInfo productInfo, LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+    // Imprort MusicInfor
+    public ObservableList<XYChart.Data<String, Double>> getMusicImportStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         ObservableList<Product> list = adapter.getAllProducts();
-        listImportProductInfoDay = FXCollections.observableArrayList();
         if(granularity.equals(StatisticGranularity.Day)){
-            listImportProductInfoDay =FXCollections.observableArrayList();
+            listImportMusicInfoDay =FXCollections.observableArrayList();
             for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
                 double cost =0;
                 for (Product a: list) {
-                    if(a.getImportBill().getTime().equals(d)&&a.getProductInfo().equals(productInfo)){
+                    if(a.getProductInfo() instanceof MusicInfo){
                         cost =cost+a.getImportCost();
                     }
                 }
-                listImportProductInfoDay.add(new XYChart.Data<>(d+"",cost));
+                listImportMusicInfoDay.add(new XYChart.Data<>(d+"",cost));
             }
-            return listImportProductInfoDay;
+            return listImportMusicInfoDay;
         }else if(granularity.equals(StatisticGranularity.Month)){
-            listImportProductInfoMonth =FXCollections.observableArrayList();
+            listImportMusicInfoMonth =FXCollections.observableArrayList();
             for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonthValue()!=toDate.getMonthValue();d=d.plusMonths(1)){
                 double cost =0;
                 for (Product a: list) {
-                    if(a.getImportBill().getTime().getYear()==d.getYear()&&a.getImportBill().getTime().getMonthValue()==d.getMonthValue()&&a.getProductInfo().equals(productInfo)){
+                    if(a.getProductInfo() instanceof MusicInfo){
                         cost =cost+ a.getImportCost();
                     }
                 }
-                listImportProductInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+                listImportMusicInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
             }
-            return listImportProductInfoMonth;
+            return listImportMusicInfoMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
-            listImportProductInfoQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            listImportMusicInfoQuater=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Product a: list) {
-                    if(a.getImportBill().getTime().getMonthValue()>=d.getMonthValue()&&a.getImportBill().getTime().getMonthValue()<=(d.getMonthValue()+2)&&a.getImportBill().getTime().getYear()==d.getYear()&&a.getProductInfo().equals(productInfo)){
+                    if(a.getProductInfo() instanceof MusicInfo){
                         cost =cost+ a.getImportCost();
                     }
                 }
-                listImportProductInfoQuarter.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+                listImportMusicInfoQuater.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
             }
-            return listImportProductInfoQuarter;
+            return listImportMusicInfoQuater;
         }else if(granularity.equals(StatisticGranularity.Year)){
-            listImportProductInfoYear=FXCollections.observableArrayList();
+            listImportMusicInfoYear=FXCollections.observableArrayList();
             for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
                 double cost =0;
                 for (Product a: list) {
-                    if(a.getImportBill().getTime().getYear()==d.getYear()&&a.getProductInfo().equals(productInfo)){
+                    if(a.getProductInfo() instanceof MusicInfo){
                         cost=cost+a.getImportCost();
                     }
                 }
-                listImportProductInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+                listImportMusicInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
             }
-            return listImportProductInfoYear;
+            return listImportMusicInfoYear;
+        }
+        return null;
+    }
+    // Import Book
+    public ObservableList<XYChart.Data<String, Double>> getBookImportStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Product> list = adapter.getAllProducts();
+        listImportBookInfoDay = FXCollections.observableArrayList();
+        if(granularity.equals(StatisticGranularity.Day)){
+            listImportBookInfoDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost =cost+a.getImportCost();
+                    }
+                }
+                listImportBookInfoDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listImportBookInfoDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listImportBookInfoMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonthValue()!=toDate.getMonthValue();d=d.plusMonths(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost =cost+ a.getImportCost();
+                    }
+                }
+                listImportBookInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+            }
+            return listImportBookInfoMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listImportBookInfoQuater=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost =cost+ a.getImportCost();
+                    }
+                }
+                listImportBookInfoQuater.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+            }
+            return listImportBookInfoQuater;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listImportBookInfoYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost=cost+a.getImportCost();
+                    }
+                }
+                listImportBookInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listImportBookInfoYear;
+        }
+        return null;
+    }
+    // Import Film
+    public ObservableList<XYChart.Data<String, Double>> getFilmImportStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Product> list = adapter.getAllProducts();
+        listImportFilmInfoDay = FXCollections.observableArrayList();
+        if(granularity.equals(StatisticGranularity.Day)){
+            listImportFilmInfoDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost =cost+a.getImportCost();
+                    }
+                }
+                listImportFilmInfoDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listImportFilmInfoDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listImportFilmInfoMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonthValue()!=toDate.getMonthValue();d=d.plusMonths(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost =cost+ a.getImportCost();
+                    }
+                }
+                listImportFilmInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+            }
+            return listImportFilmInfoMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listImportFilmInfoQuater=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost =cost+ a.getImportCost();
+                    }
+                }
+                listImportFilmInfoQuater.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+            }
+            return listImportFilmInfoQuater;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listImportFilmInfoYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost=cost+a.getImportCost();
+                    }
+                }
+                listImportFilmInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listImportFilmInfoYear;
+        }
+        return null;
+    }
+    //Sale Book
+    public ObservableList<XYChart.Data<String, Double>> getBookSaleStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Product> list = adapter.getAllProducts();
+        listSaleBookInfoDay = FXCollections.observableArrayList();
+        if(granularity.equals(StatisticGranularity.Day)){
+            listSaleBookInfoDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost =cost+a.getSaleValue();
+                    }
+                }
+                listSaleBookInfoDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listSaleBookInfoDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listSaleBookInfoMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonthValue()!=toDate.getMonthValue();d=d.plusMonths(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost =cost+ a.getSaleValue();
+                    }
+                }
+                listSaleBookInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+            }
+            return listSaleBookInfoMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listSaleBookInfoQuater=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost =cost+ a.getSaleValue();
+                    }
+                }
+                listSaleBookInfoQuater.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+            }
+            return listSaleBookInfoQuater;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listSaleBookInfoYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        cost=cost+a.getSaleValue();
+                    }
+                }
+                listSaleBookInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listSaleBookInfoYear;
+        }
+        return null;
+    }
+    // Sale Music
+    public ObservableList<XYChart.Data<String, Double>> getMusicSaleStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Product> list = adapter.getAllProducts();
+        listSaleMusicInfoDay = FXCollections.observableArrayList();
+        if(granularity.equals(StatisticGranularity.Day)){
+            listSaleMusicInfoDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof MusicInfo){
+                        cost =cost+a.getSaleValue();
+                    }
+                }
+                listSaleMusicInfoDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listSaleMusicInfoDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listSaleMusicInfoMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonthValue()!=toDate.getMonthValue();d=d.plusMonths(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof MusicInfo){
+                        cost =cost+ a.getSaleValue();
+                    }
+                }
+                listSaleMusicInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+            }
+            return listSaleMusicInfoMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listSaleMusicInfoQuater=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof MusicInfo){
+                        cost =cost+ a.getSaleValue();
+                    }
+                }
+                listSaleMusicInfoQuater.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+            }
+            return listSaleMusicInfoQuater;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listSaleMusicInfoYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof MusicInfo){
+                        cost=cost+a.getSaleValue();
+                    }
+                }
+                listSaleMusicInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listSaleMusicInfoYear;
+        }
+        return null;
+    }
+    // Sale Film
+    public ObservableList<XYChart.Data<String, Double>> getFilmSaleStatistics(LocalDate fromDate, LocalDate toDate, StatisticGranularity granularity) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Product> list = adapter.getAllProducts();
+        listSaleFilmInfoDay = FXCollections.observableArrayList();
+        if(granularity.equals(StatisticGranularity.Day)){
+            listSaleFilmInfoDay =FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.compareTo(toDate.plusDays(1))!=0;d=d.plusDays(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost =cost+a.getSaleValue();
+                    }
+                }
+                listSaleFilmInfoDay.add(new XYChart.Data<>(d+"",cost));
+            }
+            return listSaleFilmInfoDay;
+        }else if(granularity.equals(StatisticGranularity.Month)){
+            listSaleFilmInfoMonth =FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()!= toDate.getYear()||d.getMonthValue()!=toDate.getMonthValue();d=d.plusMonths(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost =cost+ a.getSaleValue();
+                    }
+                }
+                listSaleFilmInfoMonth.add(new XYChart.Data<>(d.getMonthValue()+"/"+d.getYear()+"",cost));
+            }
+            return listSaleFilmInfoMonth;
+        } else if (granularity.equals(StatisticGranularity.Quarter)) {
+            listSaleFilmInfoQuater=FXCollections.observableArrayList();
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost =cost+ a.getSaleValue();
+                    }
+                }
+                listSaleFilmInfoQuater.add(new XYChart.Data<>("Quarter "+(d.getMonthValue()/3+1)+"/"+d.getYear(),cost));
+            }
+            return listSaleFilmInfoQuater;
+        }else if(granularity.equals(StatisticGranularity.Year)){
+            listSaleFilmInfoYear=FXCollections.observableArrayList();
+            for(LocalDate d=fromDate;d.getYear()!=(toDate.getYear()+1);d=d.plusYears(1)){
+                double cost =0;
+                for (Product a: list) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        cost=cost+a.getSaleValue();
+                    }
+                }
+                listSaleFilmInfoYear.add(new XYChart.Data<>(d.getYear()+"",cost));
+            }
+            return listSaleFilmInfoYear;
         }
         return null;
     }
@@ -207,7 +510,7 @@ public class Accountant {
             return listSaleBillMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listSaleBillQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (SaleBill bill: list) {
                     if(d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -263,7 +566,7 @@ public class Accountant {
             return listImportProductInfoMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listImportProductInfoQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Product a: list) {
                     if(a.getSaleBill().getTime().getMonthValue()>=d.getMonthValue()&&a.getSaleBill().getTime().getMonthValue()<=(d.getMonthValue()+2)&&a.getSaleBill().getTime().getYear()==d.getYear()&&a.getProductInfo().equals(productInfo)){
@@ -320,7 +623,7 @@ public class Accountant {
             return listStaffCostsStatisticsMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listStaffCostsStatisticsQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Bill bill: list) {
                     if(d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -376,7 +679,7 @@ public class Accountant {
             return listSpaceCostsStatisticsMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listSpaceCostsStatisticsQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Bill bill: list) {
                     if(bill.getName().equals("Mặt bằng")&&d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -432,7 +735,7 @@ public class Accountant {
             return listTranspotationCostsStatisticsMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listTranspotationCostsStatisticsQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()< (toDate.getYear())||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Bill bill: list) {
                     if(bill.getName().equals("Vận chuyển")&&d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -488,7 +791,7 @@ public class Accountant {
             return listCostsStatisticsOtherMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listCostsStatisticsOtherQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()<= (toDate.getYear()-1)||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Bill bill: list) {
                     if(bill.getName().equals("Mặt bằng")==false&&bill.getName().equals("Vận chuyển")==false&&d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -549,7 +852,7 @@ public class Accountant {
             return listBillFromDateToDateMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listBillFromDateToDateQuarter=FXCollections.observableArrayList();
-            for (LocalDate d =fromDate;d.getYear()!= (toDate.getYear())||d.getMonthValue()!=(toDate.getMonthValue()+3);d=d.plusMonths(3)){
+            for (LocalDate d =fromDate;d.getYear()<= (toDate.getYear()-1)||d.getMonthValue()<(toDate.getMonthValue());d=d.plusMonths(3)){
                 double cost =0;
                 for (Bill bill: listBillFromDateToDate) {
                     if(d.getMonthValue()<=bill.getTime().getMonthValue()&&bill.getTime().getMonthValue()<=(d.getMonthValue()+2)&&d.getYear()==bill.getTime().getYear()){
@@ -626,7 +929,7 @@ public class Accountant {
             return listBillProfitFromDateToDateMonth;
         } else if (granularity.equals(StatisticGranularity.Quarter)) {
             listBillProfitFromDateToDateQuarter=FXCollections.observableArrayList();
-            for (LocalDate ld =fromDate;ld.getYear()!= toDate.getYear()||ld.getMonthValue()!=(toDate.getMonthValue()+3);ld=ld.plusMonths(3)){
+            for (LocalDate ld =fromDate;ld.getYear()<= (toDate.getYear()-1)||ld.getMonthValue()<(toDate.getMonthValue());ld=ld.plusMonths(3)){
                 double cost =0;
                 double profit=0;
                 for (Bill bill: listBillCostFromDateToDate) {
@@ -708,7 +1011,6 @@ public class Accountant {
                     costImport = costImport+ib.getPrice();
                 }
             }
-
             //Số lượng hàng bán được
             for (SaleBill sbl:d) {
                 if(sbl.getTime().compareTo(ld)==0){
@@ -729,5 +1031,39 @@ public class Accountant {
         listBill.add(new PieChart.Data("bán được",costSale));
         listBill.add(new PieChart.Data("Chi phí khác",costOther));
         return listBill;
+    }
+    public  ObservableList<PieChart.Data> getAllInfor(LocalDate toDate, LocalDate fromDate) throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        ObservableList<Product> listInfo = adapter.getAllProducts();
+        listProductinfo =FXCollections.observableArrayList();
+        double salemusic = 0;
+        double salebook = 0;
+        double salefilm = 0;
+        double importmusic = 0;
+        double importbook = 0;
+        double importfilm = 0;
+        for(LocalDate d = toDate ; d.compareTo(fromDate)==1; d.plusDays(1)){
+            for (Product a: listInfo) {
+                if(a.getProductInfo() instanceof MusicInfo){
+                    salemusic = salemusic + a.getSaleValue();
+                    importmusic = importmusic + a.getImportCost();
+                }
+                else if(a.getProductInfo() instanceof BookInfo){
+                    salebook = salebook +a.getSaleValue();
+                    importbook = importbook +a.getImportCost();
+                }
+                else{
+                    salefilm =salefilm +a.getSaleValue();
+                    importfilm = importfilm +a.getImportCost();
+                }
+            }
+        }
+        listProductinfo.add(new PieChart.Data("Music Sale", salemusic));
+        listProductinfo.add(new PieChart.Data("Music Import", importmusic));
+        listProductinfo.add(new PieChart.Data("Book Sale", salebook));
+        listProductinfo.add(new PieChart.Data("Book Import", importbook));
+        listProductinfo.add(new PieChart.Data("Film Sale", salefilm));
+        listProductinfo.add(new PieChart.Data("Film Import", importfilm));
+        return listProductinfo;
     }
 }

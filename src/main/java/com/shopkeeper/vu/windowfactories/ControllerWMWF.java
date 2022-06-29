@@ -1,5 +1,5 @@
 package com.shopkeeper.vu.windowfactories;
-import com.shopkeeper.lam.models.Product;
+import com.shopkeeper.lam.models.*;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.ImportBill;
 import com.shopkeeper.minh.models.OtherBill;
@@ -11,8 +11,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
-import java.security.MessageDigest;
-import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -74,6 +72,7 @@ public class ControllerWMWF implements Initializable {
     private  TableColumn<ImportBill, LocalDate> cl_timeimport;
     @FXML
     private  TableColumn<ImportBill, String> cl_rsimport;
+
     @FXML
     private TableView tableviewimport;
     @FXML
@@ -106,11 +105,19 @@ public class ControllerWMWF implements Initializable {
     @FXML
     private TableColumn<Product, Integer> cl_idproduct;
     @FXML
-    private TableColumn<Product, String> cl_typeproduct;
+    private TableColumn<Product, ProductInfo> cl_typeproduct;
     @FXML
     private TableColumn<Product, Double> cl_priceproduct;
     @FXML
     private TableColumn<Product, LocalDate> cl_timeproduct;
+    @FXML
+    private  TableColumn<Product, ProductState> cl_stateproduct;
+    @FXML
+    private  TableColumn<Product, Double> cl_importproduct;
+    @FXML
+    private TableColumn<Product, String> cl_placementproduct;
+    @FXML
+    private Button bt_delete;
 
 
 
@@ -121,8 +128,11 @@ public class ControllerWMWF implements Initializable {
     private ObservableList<ImportBill> listimport;
     private ObservableList<OtherBill> list;
     private String[] hieuluc = {"true","flase"};
+    private String[] type = {"Music","Book","Film"};
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
+        comboBox_kieuproduct.getItems().addAll(type);
         comboBox_tfother.getItems().addAll(hieuluc);
         comboBox_tfimport.getItems().addAll(hieuluc);
     }
@@ -304,22 +314,120 @@ public class ControllerWMWF implements Initializable {
     }
     // QUan ly Product
     public void setBt_timkiemproduct() throws Exception {
-        try{
-            var adapter =DatabaseAdapter.getDbAdapter();
-            listProductVip = FXCollections.observableArrayList();
-            listProduct = adapter.getAllProducts();
-            for (Product a: listProduct) {
-                if(a.getProductId()==Integer.valueOf(textField_idproduct.getText())){
-                    listProductVip.add(a);
+        String b = String.valueOf(comboBox_kieuproduct.getValue());
+        if(b.equals(null)){
+            try{
+                var adapter =DatabaseAdapter.getDbAdapter();
+                listProductVip = FXCollections.observableArrayList();
+                listProduct = adapter.getAllProducts();
+                for (Product a: listProduct) {
+                    if(a.getProductId()==Integer.valueOf(textField_idproduct.getText())){
+                        listProductVip.add(a);
+                    }
+                    if(a.getTrialFilename().equals(textField_nameother.getText())){
+                        listProductVip.add(a);
+                    }
                 }
-                if(a.getTrialFilename().equals(textField_nameother.getText())){
-                    listProductVip.add(a);
-                }
+                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
+                cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
+                cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
+                cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
+                cl_importproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("importCost"));
+                cl_placementproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("placement"));
+                tableView_product.setItems(listProductVip);
             }
-            cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
-            cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
-            cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
-            tableView_product.setItems(listProductVip);
+            catch (Exception e){
+                Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
+                a.setTitle("Thông báo khẩn");
+                a.setHeaderText(null);
+                a.show();
+            }
+        }
+        else if(b.equals("Music")){
+            try{
+                var adapter =DatabaseAdapter.getDbAdapter();
+                listProductVip = FXCollections.observableArrayList();
+                listProduct = adapter.getAllProducts();
+                for (Product a: listProduct) {
+                    if(a.getProductInfo() instanceof MusicInfo){
+                        listProductVip.add(a);
+                    }
+                }
+                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
+                cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
+                cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
+                cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
+                cl_importproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("importCost"));
+                cl_placementproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("placement"));
+                tableView_product.setItems(listProductVip);
+            }
+            catch (Exception e){
+                System.out.println(e.getMessage());
+                Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
+                a.setTitle("Thông báo khẩn");
+                a.setHeaderText(null);
+                a.show();
+            }
+        }
+        else if(b.equals("Film")){
+            try{
+                var adapter =DatabaseAdapter.getDbAdapter();
+                listProductVip = FXCollections.observableArrayList();
+                listProduct = adapter.getAllProducts();
+                for (Product a: listProduct) {
+                    if(a.getProductInfo() instanceof FilmInfo){
+                        listProductVip.add(a);
+                    }
+                }
+                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
+                cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
+                cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
+                cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
+                cl_importproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("importCost"));
+                cl_placementproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("placement"));
+                tableView_product.setItems(listProductVip);
+            }
+            catch (Exception e){
+                Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
+                a.setTitle("Thông báo khẩn");
+                a.setHeaderText(null);
+                a.show();
+            }
+        }
+        else {
+            try{
+                var adapter =DatabaseAdapter.getDbAdapter();
+                listProductVip = FXCollections.observableArrayList();
+                listProduct = adapter.getAllProducts();
+                for (Product a: listProduct) {
+                    if(a.getProductInfo() instanceof BookInfo){
+                        listProductVip.add(a);
+                    }
+                }
+                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
+                cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
+                cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
+                cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
+                cl_importproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("importCost"));
+                cl_placementproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("placement"));
+                tableView_product.setItems(listProductVip);
+            }
+            catch (Exception e){
+                Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
+                a.setTitle("Thông báo khẩn");
+                a.setHeaderText(null);
+                a.show();
+            }
+        }
+    }
+    public void setBt_updateproduct() throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
+
+        try{
+            Product a = (Product) tableView_product.getSelectionModel().getSelectedItem();
+            a.setSaleValue(Double.parseDouble(textField_priceproduct.getText()));
+            adapter.updateProduct(a);
+            this.setBt_timkiemproduct();
         }
         catch (Exception e){
             Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
@@ -328,22 +436,19 @@ public class ControllerWMWF implements Initializable {
             a.show();
         }
     }
-    public void setBt_updateproduct(){
 
+    public void setBt_delete() throws Exception {
         try{
+            var adapter  =DatabaseAdapter.getDbAdapter();
             Product a = (Product) tableView_product.getSelectionModel().getSelectedItem();
-            a.setSaleValue(Double.parseDouble(textField_priceproduct.getText()));
-            try {
-                this.setBt_timkiemproduct();
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
-        catch (Exception e){
-            Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
-            a.setTitle("Thông báo khẩn");
+            adapter.deleteProduct(a);
+            this.setBt_timkiemproduct();
+        }catch (Exception e){
+            Alert a = new Alert(Alert.AlertType.INFORMATION, "Vui lòng chọn để xóa",ButtonType.APPLY);
+            a.setTitle("Thông báo");
             a.setHeaderText(null);
             a.show();
         }
+        comboBox_kieuproduct.setValue(null);
     }
 }
