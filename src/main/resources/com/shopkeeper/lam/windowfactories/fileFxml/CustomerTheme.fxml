@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="298.0" prefWidth="435.0" styleClass="mobius" stylesheets="@application.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.lam.windowfactories.fileFxml.Window1Controller">
+   <children>
+      <JFXButton layoutX="41.0" layoutY="58.0" opacity="0.7" prefHeight="56.0" style="-fx-background-color: red; -fx-border-style: solid;" text="Xem sản phẩm">
+         <graphic>
+            <ImageView fitHeight="72.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Image/findproduct.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+      <JFXButton layoutX="40.0" layoutY="157.0" opacity="0.7" prefHeight="74.0" prefWidth="166.0" style="-fx-background-color: red; -fx-border-style: solid;" text="Phản hồi          ">
+         <graphic>
+            <ImageView fitHeight="72.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../Image/2139040.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </JFXButton>
+   </children>
+</AnchorPane>

@@ -9,6 +9,7 @@ public enum JobOfPerson {
    FOOTBALLER,
    CEO,
    TEACHER,
-   POET
+   POET,
+   LEGEND
    ;
 }

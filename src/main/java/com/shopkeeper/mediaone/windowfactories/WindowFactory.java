@@ -7,7 +7,7 @@ public abstract class WindowFactory {
 
     protected abstract Stage createWindow();
 
-    public abstract Stage openWindow();
+    public abstract Stage openWindow() throws Exception;
 
     public abstract Stage closeWindow();
 }

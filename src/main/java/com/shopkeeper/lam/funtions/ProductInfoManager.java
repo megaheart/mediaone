@@ -10,10 +10,19 @@ import java.util.Collections;
 
 public class ProductInfoManager {
     private ProductInfoManager manager;
-    private ObservableList<ProductInfo> listProductInfo;
+    private ObservableList<BookInfo> listBookInfo;
+    private ObservableList<MusicInfo> listMusicInfo;
+    private ObservableList<FilmInfo> listFilmInfo;
 
-    public ObservableList<ProductInfo> getListProductInfo() {
-        return listProductInfo;
+    public ObservableList<BookInfo> getListBookInfo() {
+        return listBookInfo;
+    }
+    public ObservableList<MusicInfo> getListMusicInfo() {
+        return listMusicInfo;
+    }
+
+    public ObservableList<FilmInfo> getListFilmInfo() {
+        return listFilmInfo;
     }
 
     public ProductInfoManager getManager() {
@@ -90,28 +99,9 @@ public class ProductInfoManager {
         }
         return productInfos;
     }
-    /*public ArrayList<ProductInfo> findByCategories(ArrayList<Category> categories) throws Exception {
-        ArrayList<ProductInfo> productInfos = new ArrayList<>();
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(ProductInfo productInfo : adapter.getAllMusicInfos()){
-            if(productInfo.getAuthor().equalsIgnoreCase(author.trim())){
-                productInfos.add(productInfo);
-            }
-        }
-        for(ProductInfo productInfo : adapter.getAllFilmInfos()){
-            if(productInfo.getAuthor().equalsIgnoreCase(author.trim())){
-                productInfos.add(productInfo);
-            }
-        }
-        for(ProductInfo productInfo : adapter.getAllBookInfos()){
-            if(productInfo.getAuthor().equalsIgnoreCase(author.trim())){
-                productInfos.add(productInfo);
-            }
-        }
-        return productInfos;
-    }*/
-    public void sortByReleaseDate(){
-        Collections.sort(listProductInfo, (o1, o2) -> {
+
+    public void sortMusicInfoByReleaseDate(){
+        Collections.sort(listMusicInfo, (o1, o2) -> {
             if (o1.getReleaseDate().isBefore(o2.getReleaseDate())) {
                 return -1;
             }
@@ -121,8 +111,8 @@ public class ProductInfoManager {
             return 0;
         });
     }
-    public void sortByPrice(){
-        Collections.sort(listProductInfo, (o1, o2) -> {
+    public void sortMusicInfoByPrice(){
+        Collections.sort(listMusicInfo, (o1, o2) -> {
             if (o1.getCurrentSalePrice() < o2.getCurrentSalePrice()) {
                 return -1;
             }
@@ -132,8 +122,8 @@ public class ProductInfoManager {
             return 0;
         });
     }
-    public void sortByTitle(){
-        Collections.sort(listProductInfo, (o1, o2) -> {
+    public void sortMusicInfoByTitle(){
+        Collections.sort(listMusicInfo, (o1, o2) -> {
             if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
                 return -1;
             }
@@ -143,8 +133,96 @@ public class ProductInfoManager {
             return 0;
         });
     }
-    public void sortByRating(){
-        Collections.sort(listProductInfo, (o1, o2) -> {
+    public void sortMusicInfoByRating(){
+        Collections.sort(listMusicInfo, (o1, o2) -> {
+            if (o1.getRating() < o2.getRating()) {
+                return -1;
+            }
+            if (o1.getRating() > o2.getRating()) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortBookInfoByReleaseDate(){
+        Collections.sort(listBookInfo, (o1, o2) -> {
+            if (o1.getReleaseDate().isBefore(o2.getReleaseDate())) {
+                return -1;
+            }
+            if (o1.getReleaseDate().isAfter(o2.getReleaseDate())) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortBookInfoByPrice(){
+        Collections.sort(listBookInfo, (o1, o2) -> {
+            if (o1.getCurrentSalePrice() < o2.getCurrentSalePrice()) {
+                return -1;
+            }
+            if (o1.getCurrentSalePrice() > o2.getCurrentSalePrice()) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortBookInfoByTitle(){
+        Collections.sort(listBookInfo, (o1, o2) -> {
+            if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                return -1;
+            }
+            if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortBookInfoByRating(){
+        Collections.sort(listBookInfo, (o1, o2) -> {
+            if (o1.getRating() < o2.getRating()) {
+                return -1;
+            }
+            if (o1.getRating() > o2.getRating()) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortFilmInfoByReleaseDate(){
+        Collections.sort(listFilmInfo, (o1, o2) -> {
+            if (o1.getReleaseDate().isBefore(o2.getReleaseDate())) {
+                return -1;
+            }
+            if (o1.getReleaseDate().isAfter(o2.getReleaseDate())) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortFilmInfoByPrice(){
+        Collections.sort(listFilmInfo, (o1, o2) -> {
+            if (o1.getCurrentSalePrice() < o2.getCurrentSalePrice()) {
+                return -1;
+            }
+            if (o1.getCurrentSalePrice() > o2.getCurrentSalePrice()) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortFilmInfoByTitle(){
+        Collections.sort(listFilmInfo, (o1, o2) -> {
+            if (o1.getTitle().compareTo(o2.getTitle()) < 0) {
+                return -1;
+            }
+            if (o1.getTitle().compareTo(o2.getTitle()) > 0) {
+                return 1;
+            }
+            return 0;
+        });
+    }
+    public void sortFilmInfoByRating(){
+        Collections.sort(listFilmInfo, (o1, o2) -> {
             if (o1.getRating() < o2.getRating()) {
                 return -1;
             }
