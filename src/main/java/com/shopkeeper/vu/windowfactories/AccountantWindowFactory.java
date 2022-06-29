@@ -8,15 +8,15 @@ import javafx.stage.Stage;
 
 public class AccountantWindowFactory extends WindowFactory {
 
-
+    private  static AccountantWindowFactory factory = new AccountantWindowFactory();
+    private static AccountantWindowFactory getFactory(){
+        return  factory;
+    }
+    private AccountantWindowFactory(){
+        currentWindow=null;
+    }
     @Override
     protected Stage createWindow() {
-
-        return null;
-    }
-
-    @Override
-    public Stage openWindow() {
         try{
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(AccountantWindowFactory.class.getResource("AWF.fxml"));
@@ -33,7 +33,16 @@ public class AccountantWindowFactory extends WindowFactory {
     }
 
     @Override
+    public Stage openWindow() {
+        if(currentWindow==null) currentWindow = createWindow();
+        currentWindow.show();
+        return currentWindow;
+    }
+
+    @Override
     public Stage closeWindow() {
-        return null;
+        if(currentWindow==null) return null;
+        currentWindow.hide();
+        return currentWindow;
     }
 }

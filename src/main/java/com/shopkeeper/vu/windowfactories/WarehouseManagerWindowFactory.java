@@ -7,13 +7,15 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class WarehouseManagerWindowFactory extends WindowFactory {
+    private static  WarehouseManagerWindowFactory factory = new WarehouseManagerWindowFactory();
+    public  static WarehouseManagerWindowFactory getFactory(){
+        return factory;
+    }
+    private WarehouseManagerWindowFactory(){
+        currentWindow = null;
+    }
     @Override
     protected Stage createWindow() {
-        return null;
-    }
-
-    @Override
-    public Stage openWindow() {
         try{
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(AccountantWindowFactory.class.getResource("WMWF.fxml"));
@@ -30,7 +32,16 @@ public class WarehouseManagerWindowFactory extends WindowFactory {
     }
 
     @Override
+    public Stage openWindow() {
+        if(currentWindow==null) currentWindow = createWindow();
+        currentWindow.show();
+        return currentWindow;
+    }
+
+    @Override
     public Stage closeWindow() {
-        return null;
+        if(currentWindow==null) return null;
+        currentWindow.hide();
+        return currentWindow;
     }
 }
