@@ -25,7 +25,7 @@ public class testProduct {
         Product f1 = new Product(musics.get(0), ProductState.IMPORTING, null, null, 0, 0,
                 "xnxx", "A18");
         Product f2 = new Product(musics.get(0), ProductState.ORDERED, importBills.get(0), null, 0, 0,
-                "vlyy", "B3");
+                "vlxx", "B3");
         Product f3 = new Product(films.get(0), ProductState.READY, null, saleBills.get(1), 0, 0,
                 "bacxyz", "C2");
         Product f4 = new Product(films.get(0), ProductState.RETURNED, importBills.get(2), saleBills.get(2), 0, 0,

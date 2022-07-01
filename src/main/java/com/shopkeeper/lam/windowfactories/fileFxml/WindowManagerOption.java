@@ -6,13 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Window1 extends WindowFactory  {
-    private static Window1 factory = new Window1();
+public class WindowManagerOption extends WindowFactory  {
+    private static WindowManagerOption factory = new WindowManagerOption();
 
-    public static Window1 getFactory() {
+    public static WindowManagerOption getFactory() {
         return factory;
     }
-    public Window1(){
+    public WindowManagerOption(){
         {
             currentWindow = null;
         }
@@ -22,8 +22,8 @@ public class Window1 extends WindowFactory  {
         Stage stage = new Stage();
         Scene scene = null;
         try {
-        Parent root = FXMLLoader.load(Window1.class.getResource("CustomerTheme.fxml"));
-        stage.setTitle("Test");
+        Parent root = FXMLLoader.load(this.getClass().getResource("ManagerChoose.fxml"));
+        stage.setTitle("Manager");
         stage.setResizable(false);
 
         scene  = new Scene(root);

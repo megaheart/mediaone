@@ -10,6 +10,8 @@ public enum JobOfPerson {
    CEO,
    TEACHER,
    POET,
-   LEGEND
+   LEGEND,
+   MOTIVATIONAL_SPEAKER,
+   MOTIVATIONAL_AUTHOR
    ;
 }

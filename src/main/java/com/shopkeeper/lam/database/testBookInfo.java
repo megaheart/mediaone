@@ -25,6 +25,11 @@ public class testBookInfo {
                 new ArrayList<>(Arrays.asList("Mâm xôi vàng", "Quay MV kiếm con rơi", "Ahihi:)")),
                 new ArrayList<>(Arrays.asList(people.get(4), people.get(1))),
                 100);
+        BookInfo b3 = new BookInfo("Đắc nhân tâm", "Đắc nhân tâm (Được lòng người), tên tiếng Anh là How to Win Friends and Influence People là một quyển sách nhằm tự giúp bản thân (self-help) bán chạy nhất từ trước đến nay. Quyển sách này do Dale Carnegie viết và đã được xuất bản lần đầu vào năm 1936, nó đã được bán 15 triệu bản trên khắp thế giới.[1][2] Nó cũng là quyển sách bán chạy nhất của New York Times trong 10 năm. Tác phẩm được đánh giá là cuốn sách đầu tiên và hay nhất trong thể loại này, có ảnh hưởng thay đổi cuộc đời đối với hàng triệu người trên thế giới.", categories.get(0),
+                LocalDate.of(2022, 2, 14), 100000, publishers.get(2), 1,
+                new ArrayList<>(Arrays.asList("Mâm xôi vàng", "Quay MV kiếm con rơi", "Ahihi:)")),
+                new ArrayList<>(Arrays.asList(people.get(4), people.get(1))),
+                100);
         for(var x : adapter.getAllBookInfos()){
             System.out.println(x);
         }
