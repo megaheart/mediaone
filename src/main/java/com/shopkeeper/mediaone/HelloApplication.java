@@ -5,9 +5,11 @@ import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.*;
 import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import com.shopkeeper.minh.functions.StaffManager;
 import com.shopkeeper.minh.models.*;
 import com.shopkeeper.minh.windowfactories.StaffWindowFactory;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 public class HelloApplication extends Application {
 
@@ -28,6 +31,6 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) throws Exception {
-         launch();
+        launch();
     }
 }

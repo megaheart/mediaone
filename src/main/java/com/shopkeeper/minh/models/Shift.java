@@ -76,7 +76,11 @@ public class Shift {
     }
 
     public void setStaffs(ArrayList<Staff> staffs) {
-        this.staffs = staffs;
+        ArrayList<Staff> addedStaffs = new ArrayList<>();
+        for (Staff staff: staffs){
+            if (!addedStaffs.contains(staff)) addedStaffs.add(staff);
+        }
+        this.staffs = addedStaffs;
     }
 
     public void setShiftId(int shiftId) {

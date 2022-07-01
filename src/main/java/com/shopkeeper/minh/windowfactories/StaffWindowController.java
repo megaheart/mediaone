@@ -2071,7 +2071,7 @@ public class StaffWindowController {
         var adapter = DatabaseAdapter.getDbAdapter();
 
 
-        ArrayList<Staff> searchingStaffs = new ArrayList<>(StaffManager.getManager().getAll());
+        ArrayList<Staff> searchingStaffs = new ArrayList<>();
 
         if (staffIdTxt != null && !staffIdTxt.isEmpty()){
             String[] staffIdStrings = staffIdTxt.split(",");
@@ -2089,7 +2089,9 @@ public class StaffWindowController {
                 }
             }
         }
-
+        else {
+            searchingStaffs = new ArrayList<>(StaffManager.getManager().getAll());
+        }
         ArrayList<StaffBill> newStaffBills = new ArrayList<>();
 
         for (Staff staff: searchingStaffs){

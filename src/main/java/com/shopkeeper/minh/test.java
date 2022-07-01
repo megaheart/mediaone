@@ -3,15 +3,18 @@ package com.shopkeeper.minh;
 import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import com.shopkeeper.minh.functions.StaffManager;
 import com.shopkeeper.minh.models.*;
 
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import javafx.collections.ObservableList;
 
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class test {
     public void insertOtherBills() throws Exception {
@@ -216,121 +219,156 @@ public class test {
         adapter.insertStaffBill(s5);
     }
 
-    public void updateStaffBills() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        var x4 = adapter.getAllStaffs().get(2);
-
-        var s4 = adapter.getAllStaffBills().get(3);
-        //Update toàn bộ các thuộc tính trừ ID
-        s4.setName("XXXXXXXXXX");
-        s4.setIsEffected(true);
-        s4.setPrice(4500);
-        s4.setNote("Updated bill");
-        s4.setTime(LocalDate.of(2022, 6, 14));
-        s4.setStaff(x4);
-
-        adapter.updateStaffBill(s4);
-    }
-
-    public void deleteStaffBills() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-
-        var x3 = adapter.getAllStaffBills().get(2);
-        adapter.deleteStaffBill(x3);
-
-    }
-
     public void insertAttendances() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
+        Random random = new Random(0);
+        int numOfStaffs;
+        int staffIndex;
+        LocalDateTime now;
+        Attendance attendance;
+        ArrayList<Staff> staffs;
+        Shift shift;
+        Staff staff;
 
-        ArrayList<Staff> staffsWork = new ArrayList<Staff>();
-        ArrayList<Staff> staffsAbsentee = new ArrayList<Staff>();
+        for (int i = 1; i <= 30; i++){
+            now = LocalDateTime.of(2022, 5, i, 8, 0);
+            shift = StaffManager.getManager().getCurrentShift(now);
+            numOfStaffs = random.nextInt(4);
 
-        var x2 = adapter.getAllStaffs().get(1);
-        var x3 = adapter.getAllStaffs().get(2);
-        var x4 = adapter.getAllStaffs().get(3);
+            staffs = new ArrayList<>();
 
-        staffsWork.add(x2);
+            for (int j = 1; j <= numOfStaffs; j++){
+                staffIndex = random.nextInt(3);
+                staff = shift.getStaffs().get(staffIndex);
+                if (!staffs.contains(staff)) staffs.add(staff);
+            }
 
-        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
-        Attendance s1 = new Attendance(LocalDateTime.of(2022, 6, 5, 7, 59), Duration.ofHours(1), staffsWork, staffsAbsentee);
-        staffsWork.add(x3);
-        Attendance s2 = new Attendance(LocalDateTime.of(2022, 8, 5, 7, 59), Duration.ofHours(2), staffsWork, staffsAbsentee);
-        staffsAbsentee.add(x4);
-        Attendance s3 = new Attendance(LocalDateTime.of(2022, 9, 5, 7, 59), Duration.ofHours(3), staffsWork, staffsAbsentee);
+            attendance = StaffManager.getManager().getAttendace(now, staffs);
+            if (attendance != null) adapter.insertAttendance(attendance);
 
-        adapter.insertAttendance(s1);
-        adapter.insertAttendance(s2);
-        adapter.insertAttendance(s3);
+            now = LocalDateTime.of(2022, 5, i, 13, 0);
+            shift = StaffManager.getManager().getCurrentShift(now);
+            numOfStaffs = random.nextInt(4);
+
+            staffs = new ArrayList<>();
+
+            for (int j = 1; j <= numOfStaffs; j++){
+                staffIndex = random.nextInt(3);
+                staff = shift.getStaffs().get(staffIndex);
+                if (!staffs.contains(staff)) staffs.add(staff);
+            }
+
+            attendance = StaffManager.getManager().getAttendace(now, staffs);
+            if (attendance != null) adapter.insertAttendance(attendance);
+            now = LocalDateTime.of(2022, 5, i, 20, 0);
+            shift = StaffManager.getManager().getCurrentShift(now);
+            numOfStaffs = random.nextInt(4);
+
+            staffs = new ArrayList<>();
+
+            for (int j = 1; j <= numOfStaffs; j++){
+                staffIndex = random.nextInt(3);
+                staff = shift.getStaffs().get(staffIndex);
+                if (!staffs.contains(staff)) staffs.add(staff);
+            }
+
+            attendance = StaffManager.getManager().getAttendace(now, staffs);
+            if (attendance != null) adapter.insertAttendance(attendance);
+        }
 
     }
 
-    public void updateAttendances() throws Exception {
+    public void insertAttendancesJune() throws Exception{
         var adapter = DatabaseAdapter.getDbAdapter();
-        var x4 = adapter.getAllStaffs().get(4);
+        Random random = new Random(1);
+        int numOfStaffs;
+        int staffIndex;
+        LocalDateTime now;
+        Attendance attendance;
+        ArrayList<Staff> staffs;
+        Shift shift;
+        Staff staff;
 
-        var s4 = adapter.getAllAttendances().get(3);
-        //Update toàn bộ các thuộc tính trừ ID
-        s4.getStaffsWork().add(x4);
+        for (int i = 1; i <= 30; i++){
+            now = LocalDateTime.of(2022, 6, i, 8, 0);
+            shift = StaffManager.getManager().getCurrentShift(now);
+            numOfStaffs = random.nextInt(4);
 
-        adapter.updateAttendance(s4);
+            staffs = new ArrayList<>();
+
+            for (int j = 1; j <= numOfStaffs; j++){
+                staffIndex = random.nextInt(3);
+                staff = shift.getStaffs().get(staffIndex);
+                if (!staffs.contains(staff)) staffs.add(staff);
+            }
+
+            attendance = StaffManager.getManager().getAttendace(now, staffs);
+            if (attendance != null) adapter.insertAttendance(attendance);
+
+            now = LocalDateTime.of(2022, 6, i, 13, 0);
+            shift = StaffManager.getManager().getCurrentShift(now);
+            numOfStaffs = random.nextInt(4);
+
+            staffs = new ArrayList<>();
+
+            for (int j = 1; j <= numOfStaffs; j++){
+                staffIndex = random.nextInt(3);
+                staff = shift.getStaffs().get(staffIndex);
+                if (!staffs.contains(staff)) staffs.add(staff);
+            }
+
+            attendance = StaffManager.getManager().getAttendace(now, staffs);
+            if (attendance != null) adapter.insertAttendance(attendance);
+            now = LocalDateTime.of(2022, 6, i, 20, 0);
+            shift = StaffManager.getManager().getCurrentShift(now);
+            numOfStaffs = random.nextInt(4);
+
+            staffs = new ArrayList<>();
+
+            for (int j = 1; j <= numOfStaffs; j++){
+                staffIndex = random.nextInt(3);
+                staff = shift.getStaffs().get(staffIndex);
+                if (!staffs.contains(staff)) staffs.add(staff);
+            }
+
+            attendance = StaffManager.getManager().getAttendace(now, staffs);
+            if (attendance != null) adapter.insertAttendance(attendance);
+        }
     }
 
-    public void deleteAttendances() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-
-        var x3 = adapter.getAllAttendances().get(2);
-        adapter.deleteAttendance(x3);
-
-    }
 
     public void insertShift() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
 
-        ArrayList<Staff> staffs = new ArrayList<Staff>();
+        ArrayList<Staff> staffs;
+        Shift shift;
+        ObservableList<Staff> staffObservableList = adapter.getAllStaffs();
+        Random random = new Random(0);
 
-        var x2 = adapter.getAllStaffs().get(1);
-        var x3 = adapter.getAllStaffs().get(2);
-        var x4 = adapter.getAllStaffs().get(3);
+        for (int i = 1; i <= 7; i++){
+            staffs = new ArrayList<>();
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            shift = new Shift(staffs, i, LocalTime.of(7, 0), LocalTime.of(12, 0));
+            adapter.insertShift(shift);
+            staffs = new ArrayList<>();
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            shift = new Shift(staffs, i, LocalTime.of(12, 0), LocalTime.of(17, 0));
+            adapter.insertShift(shift);
+            staffs = new ArrayList<>();
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            staffs.add(staffObservableList.get(random.nextInt(30)));
+            shift = new Shift(staffs, i, LocalTime.of(17, 0), LocalTime.of(22, 0));
+            adapter.insertShift(shift);
+        }
 
-        staffs.add(x2);
-
-        //Tạo 5 đối tượng mẫu với đầy đủ thuộc tính (trừ ID)
-        Shift s1 = new Shift(staffs, 2, LocalTime.of(14, 2), LocalTime.of(15, 25, 1));
-        staffs = new ArrayList<Staff>();
-        staffs.add(x2);
-        staffs.add(x3);
-        Shift s2 = new Shift(staffs, 2, LocalTime.of(16, 17, 18), LocalTime.of(19, 20, 21));
-        staffs = new ArrayList<Staff>();
-        staffs.add(x2);
-        staffs.add(x3);
-        staffs.add(x4);
-        Shift s3 = new Shift(staffs, 2, LocalTime.of(11, 2, 10, 8), LocalTime.of(12, 25, 1));
-
-        adapter.insertShift(s1);
-        adapter.insertShift(s2);
-        adapter.insertShift(s3);
-
-    }
-
-    public void updateShifts() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        var x4 = adapter.getAllStaffs().get(4);
-
-        var s4 = adapter.getAllShifts().get(3);
-        //Update toàn bộ các thuộc tính trừ ID
-        s4.getStaffs().add(x4);
-
-        adapter.updateShift(s4);
-    }
-
-    public void deleteShifts() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-
-        var x3 = adapter.getAllShifts().get(1);
-        adapter.deleteShift(x3);
 
     }
+
 
 }
 
