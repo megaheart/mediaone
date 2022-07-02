@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class ProductInfoManager {
-    private ProductInfoManager manager;
+    private static ProductInfoManager manager;
     private ObservableList<BookInfo> listBookInfo;
     private ObservableList<MusicInfo> listMusicInfo;
     private ObservableList<FilmInfo> listFilmInfo;
@@ -25,7 +25,7 @@ public class ProductInfoManager {
         return listFilmInfo;
     }
 
-    public ProductInfoManager getManager() {
+    public static ProductInfoManager getManager() {
         if (manager == null){
             manager = new ProductInfoManager();
         }
@@ -67,7 +67,7 @@ public class ProductInfoManager {
             adapter.deleteBookInfo((BookInfo) productInfo);
         }
     }
-    public void update(ProductInfo productInfo) throws Exception {
+    public  void update(ProductInfo productInfo) throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         if (productInfo instanceof MusicInfo) {
             adapter.updateMusicInfo((MusicInfo) productInfo);

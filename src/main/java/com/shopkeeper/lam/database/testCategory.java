@@ -49,6 +49,7 @@ public class testCategory {
         Category x35 = new Category("Sách truyền cảm hứng","Nhiều cuốn sách về self-help liên quan đến các bài học thành công trong kinh doanh hoặc bí quyết kinh doanh hiện đang đứng dầu trong các danh sách Best Sellers của thị trường này.");
         Category x36 = new Category("Tiểu sử, tự truyện và hồi ký","Đây là các thể loại sách phi hư cấu dùng để kể những câu chuyện về cuộc đời của một người.");
 
+        Category x37 = new Category("Unkown","Bằng cách nào đó,chúng tôi không biết được thể loại là gì");
 
 
 
@@ -89,7 +90,7 @@ public class testCategory {
         adapter.insertCategory(x34);
         adapter.insertCategory(x35);
         adapter.insertCategory(x36);
-
+        adapter.insertCategory(x37);
 
 
 

@@ -15,7 +15,8 @@ public class testFilmInfo {
         var categories = adapter.getAllCategories();
         var people = adapter.getAllPeople();
         var publishers = adapter.getAllPublishers();
-        FilmInfo f1 = new FilmInfo("Thánh bài", "Thánh bài nhại theo phim Thần bài (1989), một trong những phim về thể loại cờ bạc nổi tiếng của đạo diễn Vương Tinh. Trong phim điện ảnh Hồng Kông này, Châu Tinh Trì thủ vai chính và vươn lên vị trí ngôi sao hàng đầu của phim hài Hồng Kông cũng như định hình phong cách diễn của mình từ đó về sau.", categories.get(13),
+        FilmInfo f1 = new FilmInfo("Thánh bài", "Thánh bài nhại theo phim Thần bài (1989), một trong những phim về thể loại cờ bạc nổi tiếng của đạo diễn Vương Tinh. Trong phim điện ảnh Hồng Kông này, Châu Tinh Trì thủ vai chính và vươn lên vị trí ngôi sao hàng đầu của phim hài Hồng Kông cũng như định hình phong cách diễn của mình từ đó về sau.",
+                categories.get(13),
                 LocalDate.of(1989, 1, 1), 500000, publishers.get(22), 5,
                 new ArrayList<>(Arrays.asList("Không biết")),
                 people.get(26),

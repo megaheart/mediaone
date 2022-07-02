@@ -1,5 +1,6 @@
 package com.shopkeeper.lam.database;
 
+import com.shopkeeper.lam.funtions.ProductInfoManager;
 import com.shopkeeper.lam.models.Category;
 import com.shopkeeper.lam.models.MusicInfo;
 import com.shopkeeper.lam.models.Person;
@@ -140,9 +141,10 @@ public class testMusicInfo {
                 new ArrayList<>(Arrays.asList("Unknown")),
                 new ArrayList<>(Arrays.asList(people.get(8))),
                 LocalTime.of(0, 4, 30));
-        for(MusicInfo s : m){
+        /*for(MusicInfo s : m){
             adapter.insertMusicInfo(s);
-        }
+        }*/
+
 
 
     }
