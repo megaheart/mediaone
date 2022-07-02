@@ -53,9 +53,6 @@ public class testCategory {
 
 
         var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x : adapter.getAllCategories()){
-            System.out.println(x);
-        }
         adapter.insertCategory(x1);
         adapter.insertCategory(x2);
         adapter.insertCategory(x3);
