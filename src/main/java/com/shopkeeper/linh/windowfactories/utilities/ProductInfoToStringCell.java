@@ -15,12 +15,9 @@ public class ProductInfoToStringCell<T extends ProductInfo> extends ListCell<T> 
         }
         super.updateItem(data, empty);
 
-        if(data != null)
-        {
-            setText(String.format("%s [%d]",
-                    data.getTitle(),
-                    data.getProductInfoId()
-            ));
-        }
+        setText(String.format("%s [%d]",
+                data.getTitle(),
+                data.getProductInfoId()
+        ));
     }
 }

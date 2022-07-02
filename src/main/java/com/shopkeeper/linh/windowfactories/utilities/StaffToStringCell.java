@@ -16,13 +16,9 @@ public class StaffToStringCell extends ListCell<Staff> {
             return;
         }
         super.updateItem(data, empty);
-
-        if(data != null)
-        {
-            setText(String.format("%s [%d]",
-                    data.getName(),
-                    data.getStaffId()
-            ));
-        }
+        setText(String.format("%s [%d]",
+                data.getName(),
+                data.getStaffId()
+        ));
     }
 }

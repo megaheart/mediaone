@@ -5,6 +5,7 @@ import com.shopkeeper.lam.models.*;
 import com.shopkeeper.linh.models.*;
 import com.shopkeeper.linh.windowfactories.CustomerFeedbackWindowFactory;
 import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
+import com.shopkeeper.linh.windowfactories.PaymentWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.*;
 import javafx.application.Application;
@@ -27,6 +28,7 @@ public class HelloApplication extends Application {
 
         //CustomerFeedbackWindowFactory.getFactory().openWindow();
         //FeedbackWindowFactory.getFactory().openWindow();
+        PaymentWindowFactory.getFactory().openWindow();
         //javafx.application.Platform.exit();
     }
 
