@@ -62,9 +62,9 @@ public class testImportBill {
         bookBills[4] = new ImportBill("Sách Đứng Dậy Mạnh Mẽ", 50000, LocalDate.of(2021,11,11), true, "3 sách", "Nhà xuất bản Giáo dục Việt Nam");
         bookBills[5] = new ImportBill("Sách Nhật ký trong tù", 50000, LocalDate.of(2021,6,16), true, "3 sách", "Nhà xuất bản Giáo dục Việt Nam");
         bookBills[6] = new ImportBill("Sách Bản án chế độ thực dân Pháp", 50000, LocalDate.of(2021,1,11), true, "3 sách", "Nhà xuất bản Giáo dục Việt Nam");
-        bookBills[7] = new ImportBill("Sách Con đường phía trước (The Road Ahead)", 50000, LocalDate.of(2021,15,1), true, "3 sách", "Nhà xuất bản Dân trí");
+        bookBills[7] = new ImportBill("Sách Con đường phía trước (The Road Ahead)", 50000, LocalDate.of(2021,10,1), true, "3 sách", "Nhà xuất bản Dân trí");
         bookBills[8] = new ImportBill("Sách Tốc Độ Tư Duy", 50000, LocalDate.of(2021,1,11), true, "3 sách", "Nhà xuất bản Dân trí");
-        bookBills[9] = new ImportBill("Sách How to Prevent the Next Pandemic", 50000, LocalDate.of(2021,21,1), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
+        bookBills[9] = new ImportBill("Sách How to Prevent the Next Pandemic", 50000, LocalDate.of(2021,11,1), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
         bookBills[10] = new ImportBill("Sách Bill Gates Quotes: Bill Gates, Quotes, Quotations, Famous", 50000, LocalDate.of(2022,1,1), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
         bookBills[11] = new ImportBill("Sách How to Avoid a Climate Disaster", 50000, LocalDate.of(2021,6,16), true, "3 sách", "Nhà xuất bản Dân trí");
         bookBills[12] = new ImportBill("Sách The Art of Avatar", 50000, LocalDate.of(2021,1,19), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
