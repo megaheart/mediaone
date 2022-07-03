@@ -19,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
@@ -225,8 +226,8 @@ public class FeedbackWindowController {
                 ComboBoxOption.SelectAllOption("Chọn tất cả"),
                 new ComboBoxOption<>(FeedbackAboutForFilter.Service, "Dịch vụ cửa hàng"),
                 new ComboBoxOption<>(FeedbackAboutForFilter.Staff, "Nhân viên phục vụ"),
-                new ComboBoxOption<>(FeedbackAboutForFilter.ProductInfo, "Bài hát/Bộ phim/Bộ sách"),
-                new ComboBoxOption<>(FeedbackAboutForFilter.MusicInfo, "Bài hát"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.ProductInfo, "Bản nhạc/Bộ phim/Bộ sách"),
+                new ComboBoxOption<>(FeedbackAboutForFilter.MusicInfo, "Bản nhạc"),
                 new ComboBoxOption<>(FeedbackAboutForFilter.FilmInfo, "Bộ phim"),
                 new ComboBoxOption<>(FeedbackAboutForFilter.BookInfo, "Bộ sách"),
                 new ComboBoxOption<>(FeedbackAboutForFilter.Product, "Sản phẩm")
@@ -332,11 +333,31 @@ public class FeedbackWindowController {
     //endregion
     //region Feedback List
     @FXML
+    private HBox feedbackToolbar;
+    @FXML
     private ComboBox<ComboBoxOption<FeedbackListOrder>> orderCombobox;
     @FXML
     private ListView<Feedback> feedbackListView;
     private FeedbackObservableList feedbackList;
     private FeedbackObservableList feedbackFullList;
+    @FXML
+    private Button markAsUsefulBtn;
+    @FXML
+    private void markSelectedFeedbackAsUserful(){
+        Feedback item = feedbackListView.getSelectionModel().getSelectedItem();
+        if(item == null) return;
+        item.setIsUseful(!item.getIsUseful());
+        DatabaseAdapter.getDbAdapter().updateIsUseful(item);
+        if(item.getIsUseful()){
+
+            markAsUsefulBtn.setText("Đánh dấu KHÔNG hữu ích");
+
+        }
+        else{
+
+            markAsUsefulBtn.setText("Đánh dấu hữu ích");
+        }
+    }
     private void initializeFeedbackList(){
         //Initialize feedback list order options
         orderCombobox.setItems(FXCollections.observableArrayList(
@@ -365,6 +386,22 @@ public class FeedbackWindowController {
         feedbackListView.setItems(feedbackList);
         feedbackListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             displayFeedback(newValue);
+            if(newValue == null){
+                feedbackToolbar.setVisible(false);
+            }else{
+                if(newValue.getIsUseful()){
+
+                    markAsUsefulBtn.setText("Đánh dấu KHÔNG hữu ích");
+
+                }
+                else{
+
+                    markAsUsefulBtn.setText("Đánh dấu hữu ích");
+                }
+                feedbackToolbar.setVisible(true);
+
+            }
+            DatabaseAdapter.getDbAdapter().markAsRead(newValue);
         });
         orderCombobox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             feedbackList.setOrder(newValue.getValue());

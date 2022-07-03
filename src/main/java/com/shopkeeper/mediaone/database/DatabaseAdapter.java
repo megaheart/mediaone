@@ -18,10 +18,15 @@ import java.util.ArrayList;
 
 public class DatabaseAdapter {
     private static DatabaseAdapter _adapter;
-    public static DatabaseAdapter getDbAdapter() throws Exception {
+    public static DatabaseAdapter getDbAdapter() {
         if(_adapter == null){
-            _adapter = new DatabaseAdapter();
-            _adapter.load();
+            try{
+                _adapter = new DatabaseAdapter();
+                _adapter.load();
+            }
+            catch (Exception e){
+                throw new RuntimeException(e);
+            }
         }
         return _adapter;
     }
@@ -236,6 +241,12 @@ public class DatabaseAdapter {
     }
     public boolean deleteFeedback(Feedback feedback) {
         return feedbackDbSet.delete(feedback);
+    }
+    public boolean updateIsUseful(Feedback feedback) {
+        return feedbackDbSet.updateIsUseful(feedback);
+    }
+    public boolean markAsRead(Feedback feedback) {
+        return feedbackDbSet.markAsRead(feedback);
     }
     //endregion
     //-------------------Lam-------------------

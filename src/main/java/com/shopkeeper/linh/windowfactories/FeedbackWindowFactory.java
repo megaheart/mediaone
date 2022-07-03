@@ -47,6 +47,7 @@ public class FeedbackWindowFactory  extends WindowFactory {
 
     @Override
     public Stage closeWindow() {
+        if(currentWindow == null) return null;
         currentWindow.hide();
         return currentWindow;
     }

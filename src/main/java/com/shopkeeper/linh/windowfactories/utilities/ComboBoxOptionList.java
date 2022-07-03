@@ -4,107 +4,88 @@ import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
-public abstract class CustomUnmodifiableObservableList<E> implements ObservableList<E> {
-    //override if you dont want to use this algorithm
-    protected void sortItems(){
-        items.sort(comparator);
-    }
-    //change comparator you need to resort items
-    protected Comparator<E> comparator;
-    protected ObservableList<E> items;
-    private Collection<E> source;
-    private final ListChangeListener<E> listener;
-    protected CustomUnmodifiableObservableList(){
-        items = FXCollections.observableArrayList();
-        source = null;
-        comparator = null;
-        listener = new ListChangeListener<E>() {
-            @Override
-            public void onChanged(Change<? extends E> c) {
-                while (c.next()){
-                    if(c.wasReplaced()) {
-                        System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Replaced.");
+public abstract class ComboBoxOptionList<E> implements ObservableList<ComboBoxOption<E>> {
+    private ObservableList<ComboBoxOption<E>> items;
+    private final ListChangeListener<E> listener = new ListChangeListener<E>() {
+        @Override
+        public void onChanged(Change<? extends E> c) {
+            while (c.next()){
+                if(c.wasReplaced()) {
+                    System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Replaced.");
 
-                    }
-                    else if(c.wasPermutated()) {
-                        System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Permutated.");
+                }
+                else if(c.wasPermutated()) {
+                    System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Permutated.");
 
-                    }
-                    else if(c.wasUpdated()) {
-                        System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Updated.");
+                }
+                else if(c.wasUpdated()) {
+                    System.out.println("CustomUnmodifiableObservableList cannot track the change when source was Updated.");
 
-                    }
-                    else if(c.wasAdded()) {
-                        for(int i = c.getFrom(); i < c.getTo(); i++){
-                            var item =  c.getList().get(i);
-                            for(int j = 0; j < items.size(); j++){
-                                if(comparator.compare(items.get(j), item) >= 0){
-                                    items.add(j, item);
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    else if(c.wasRemoved()) {
-                        for(var removeItem : c.getRemoved()){
-                            items.remove(removeItem);
-                        }
+                }
+                else if(c.wasAdded()) {
+                    for(int i = c.getFrom(); i < c.getTo(); i++){
+                        var item =  c.getList().get(i);
+                        items.add(i + 1, new ComboBoxOption<>(item, getTitle(item)));
                     }
                 }
+                else if(c.wasRemoved()) {
+                    var index = c.getTo();
+                    if(c.getFrom() != index) throw new RuntimeException("Algorithm does not support this situation.");
+                    items.remove(index + 1, index + items.size() - c.getList().size());
+                }
             }
-        };
-    }
-    public void setSource(Collection<E> source){
-        if(this.source == source) return;
-        if(this.source != null){
-            ((ObservableList<E>)this.source).removeListener(listener);
         }
-        this.source = source;
-        this.items.clear();
-        this.items.addAll(source);
-        this.items.sort(comparator);
-        if(source instanceof ObservableList<E>){
-            ((ObservableList<E>)this.source).addListener(listener);
+    };
+    public ComboBoxOptionList(ObservableList<E> list){
+        items = FXCollections.observableArrayList();
+        items.add(ComboBoxOption.SelectAllOption("Chọn tất cả"));
+        for(var x : list){
+            items.add(new ComboBoxOption<>(x, getTitle(x)));
         }
+        list.addListener(listener);
     }
-
+    protected abstract String getTitle(E obj);
     //region ObservableList implements
     @Override
-    public void addListener(ListChangeListener<? super E> listener) {
+    public void addListener(ListChangeListener<? super ComboBoxOption<E>> listener) {
         items.addListener(listener);
     }
 
     @Override
-    public void removeListener(ListChangeListener<? super E> listener) {
+    public void removeListener(ListChangeListener<? super ComboBoxOption<E>> listener) {
         items.remove(listener);
     }
 
     @Override
-    public boolean addAll(E... elements) {
+    public boolean addAll(ComboBoxOption<E>... elements) {
         throw new RuntimeException("CustomObservableList can not addAll()");
     }
 
     @Override
-    public boolean setAll(E... elements) {
+    public boolean setAll(ComboBoxOption<E>... elements) {
         throw new RuntimeException("CustomObservableList can not setAll()");
     }
 
     @Override
-    public boolean setAll(Collection<? extends E> col) {
+    public boolean setAll(Collection<? extends ComboBoxOption<E>> col) {
         throw new RuntimeException("CustomObservableList can not setAll()");
     }
 
     @Override
-    public boolean removeAll(E... elements) {
+    public boolean removeAll(ComboBoxOption<E>... elements) {
         throw new RuntimeException("CustomObservableList can not removeAll()");
     }
 
     @Override
-    public boolean retainAll(E... elements) {
+    public boolean retainAll(ComboBoxOption<E>... elements) {
         throw new RuntimeException("CustomObservableList can not retainAll()");
     }
 
@@ -130,7 +111,7 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
 
     @NotNull
     @Override
-    public Iterator<E> iterator() {
+    public Iterator<ComboBoxOption<E>> iterator() {
         return items.iterator();
     }
 
@@ -147,8 +128,8 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
     }
 
     @Override
-    public boolean add(E e) {
-        throw new RuntimeException("CustomObservableList can not add(E e)");
+    public boolean add(ComboBoxOption<E> e) {
+        throw new RuntimeException("CustomObservableList can not add(ComboBoxOption<E> e)");
     }
 
     @Override
@@ -162,12 +143,12 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
     }
 
     @Override
-    public boolean addAll(@NotNull Collection<? extends E> c) {
+    public boolean addAll(@NotNull Collection<? extends ComboBoxOption<E>> c) {
         throw new RuntimeException("CustomObservableList can not addAll()");
     }
 
     @Override
-    public boolean addAll(int index, @NotNull Collection<? extends E> c) {
+    public boolean addAll(int index, @NotNull Collection<? extends ComboBoxOption<E>> c) {
         throw new RuntimeException("CustomObservableList can not addAll()");
     }
 
@@ -187,22 +168,22 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
     }
 
     @Override
-    public E get(int index) {
+    public ComboBoxOption<E> get(int index) {
         return items.get(index);
     }
 
     @Override
-    public E set(int index, E element) {
+    public ComboBoxOption<E> set(int index, ComboBoxOption<E> element) {
         throw new RuntimeException("CustomObservableList can not set()");
     }
 
     @Override
-    public void add(int index, E element) {
+    public void add(int index, ComboBoxOption<E> element) {
         throw new RuntimeException("CustomObservableList can not add()");
     }
 
     @Override
-    public E remove(int index) {
+    public ComboBoxOption<E> remove(int index) {
         throw new RuntimeException("CustomObservableList can not remove()");
     }
 
@@ -218,19 +199,19 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
 
     @NotNull
     @Override
-    public ListIterator<E> listIterator() {
+    public ListIterator<ComboBoxOption<E>> listIterator() {
         return items.listIterator();
     }
 
     @NotNull
     @Override
-    public ListIterator<E> listIterator(int index) {
+    public ListIterator<ComboBoxOption<E>> listIterator(int index) {
         return items.listIterator(index);
     }
 
     @NotNull
     @Override
-    public List<E> subList(int fromIndex, int toIndex) {
+    public List<ComboBoxOption<E>> subList(int fromIndex, int toIndex) {
         return items.subList(fromIndex, toIndex);
     }
 
