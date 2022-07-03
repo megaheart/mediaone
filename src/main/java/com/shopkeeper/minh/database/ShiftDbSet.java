@@ -22,9 +22,10 @@ public class ShiftDbSet {
 
     public boolean createTable(){
         String sql = "CREATE TABLE shifts ("
+                +  "shiftId         INTEGER PRIMARY KEY AUTOINCREMENT,"
                 +  "startTime       DATETIME NOT NULL,"
                 +  "endTime         DATETIME NOT NULL,"
-                +  "staff          TEXT     NOT NULL,"
+                +  "staff           TEXT     NOT NULL,"
                 +  "dateOfWeek      INTEGER  NOT NULL"
                 +  ");";
 
@@ -40,7 +41,7 @@ public class ShiftDbSet {
     }
 
     public void load() throws Exception{
-        String sql = "SELECT  startTime, endTime, staff, dateOfWeek FROM shifts;";
+        String sql = "SELECT shiftId, startTime, endTime, staff, dateOfWeek FROM shifts;";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
 
@@ -53,6 +54,7 @@ public class ShiftDbSet {
         while (rs.next()) {
             shift = new Shift();
             staffs = new ArrayList<Staff>();
+            shift.setShiftId(rs.getInt("shiftId"));
             shift.setStartTime(LocalTime.parse(rs.getString("startTime")));
             shift.setEndTime(LocalTime.parse(rs.getString("endTime")));
             shift.setDateOfWeek(rs.getInt("dateOfWeek"));
@@ -85,6 +87,8 @@ public class ShiftDbSet {
     }
 
     public boolean insert(Shift shift) {
+
+        if (shift.getShiftId() != 0) return false;
 
         if (!readOnlyCache.getStaffs().containsAll(shift.getStaffs())){
             System.err.println("One Staff in which output of shift.getStaffs() is not in DbAdapter's cache");
@@ -134,6 +138,10 @@ public class ShiftDbSet {
             pstmt.setString(3, staffsId);
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Creating shift failed, no rows affected.");
+            // Auto set ID
+            ResultSet generatedKeys = pstmt.getGeneratedKeys();
+            if (generatedKeys.next()) shift.setShiftId(generatedKeys.getInt(1));
+            else throw new Exception("Creating shift failed, no ID obtained.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -156,17 +164,15 @@ public class ShiftDbSet {
             return false;
         }
 
-        String sql = "UPDATE shifts SET staff = ? WHERE dateOfWeek = ? AND startTime = TIME(?) AND endTime = TIME(?);";
-        String oldSql = "SELECT staff FROM shifts WHERE startTime = TIME(?) AND endTime = TIME(?) AND dateOfWeek = ?;";
+        String sql = "UPDATE shifts SET staff = ?, dateOfWeek = ? , startTime = TIME(?), endTime = TIME(?) WHERE shiftId = ?;";
+        String oldSql = "SELECT staff FROM shifts WHERE shiftId = ?;";
 
         String[] oldStaffsId = {};
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql);
              PreparedStatement oldPstmt = conn.prepareStatement(oldSql)) {
 
-            oldPstmt.setString(1, shift.getStartTime().toString());
-            oldPstmt.setString(2, shift.getEndTime().toString());
-            oldPstmt.setInt(3, shift.getDateOfWeek());
+            oldPstmt.setInt(1, shift.getShiftId());
             ResultSet rs = oldPstmt.executeQuery();
 
             if (rs.next()){
@@ -175,6 +181,7 @@ public class ShiftDbSet {
 
 
             String staffsId = "";
+            pstmt.setInt(5, shift.getShiftId());
             pstmt.setString(3, shift.getStartTime().toString());
             pstmt.setString(4, shift.getEndTime().toString());
             pstmt.setInt(2, shift.getDateOfWeek());
@@ -186,7 +193,7 @@ public class ShiftDbSet {
             pstmt.setString(1, staffsId);
 
             int affected = pstmt.executeUpdate();
-            if(affected == 0) throw new Exception("Shift (ID = " + shift.getStartTime().toString() + "-" + shift.getEndTime().toString() + ") does not exist in \"shifts\" table.");
+            if(affected == 0) throw new Exception("Shift (ID = " + shift.getShiftId() + ") does not exist in \"shifts\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;
@@ -226,14 +233,12 @@ public class ShiftDbSet {
             return false;
         }
 
-        String sql = "DELETE FROM shifts WHERE startTime=TIME(?) AND endTime=TIME(?) AND dateOfWeek = ?;";
+        String sql = "DELETE FROM shifts WHERE shiftId=?;";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, shift.getStartTime().toString());
-            pstmt.setString(2, shift.getEndTime().toString());
-            pstmt.setInt(3, shift.getDateOfWeek());
+            pstmt.setInt(1, shift.getShiftId());
             int affected = pstmt.executeUpdate();
-            if(affected == 0) throw new Exception("Shift (ID = " + shift.getStartTime().toString() + "-" + shift.getEndTime().toString() + ") does not exist in \"shifts\" table.");
+            if(affected == 0) throw new Exception("Shift (ID = " + shift.getShiftId() + ") does not exist in \"shifts\" table.");
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return false;

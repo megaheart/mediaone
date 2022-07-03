@@ -48,9 +48,6 @@ public final class StaffBill extends Bill {
         return name;
     }
 
-    public void setBillType(BillType billType) {
-        this.billType = billType;
-    }
 
     public BillType getBillType() {
         return billType;
