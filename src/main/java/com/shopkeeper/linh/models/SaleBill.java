@@ -136,27 +136,28 @@ public class SaleBill extends Bill {
         this.note.set(note);
     }
 
-    private StringProperty name = new SimpleStringProperty();
-    private ObjectProperty<Customer> customer = new SimpleObjectProperty<Customer>();
-    private StringProperty location = new SimpleStringProperty();
+    private final StringProperty name = new SimpleStringProperty();
+    private final ObjectProperty<Customer> customer = new SimpleObjectProperty<Customer>();
+    private final StringProperty location = new SimpleStringProperty();
     //private DoubleProperty VAT = new SimpleDoubleProperty();
-    private BooleanProperty isPaid = new SimpleBooleanProperty();
-    private DoubleProperty price = new SimpleDoubleProperty();
+    private final BooleanProperty isPaid = new SimpleBooleanProperty();
+    private final DoubleProperty price = new SimpleDoubleProperty();
     private int billId;
-    private ObjectProperty<LocalDate> time = new SimpleObjectProperty<LocalDate>();
+    private final ObjectProperty<LocalDate> time = new SimpleObjectProperty<LocalDate>();
 
-    private BooleanProperty effected = new SimpleBooleanProperty();
-    private StringProperty note = new SimpleStringProperty();
+    private final BooleanProperty effected = new SimpleBooleanProperty();
+    private final StringProperty note = new SimpleStringProperty();
     public SaleBill(){
         customer.set(null);
     }
     public SaleBill(String name, Customer customer, String location, boolean isPaid, double price, LocalDate time, boolean isEffected, String note){
-        this.name.set(name);
-        this.customer.set(customer);
-        this.location.set(location);
+        this.billId = 0;
+        this.name.set(name);//filter
+        this.customer.set(customer);//filter
+        this.location.set(location);//filter
         this.isPaid.set(isPaid);
-        this.price.set(price);
-        this.time.set(time);
+        this.price.set(price);//filter
+        this.time.set(time);//filter
         this.effected.set(isEffected);
         this.setNote(note);
     }
