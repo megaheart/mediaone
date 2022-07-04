@@ -16,6 +16,11 @@ public class WarehouseManagerWindowFactory extends WindowFactory {
     }
     @Override
     protected Stage createWindow() {
+        return null;
+    }
+
+    @Override
+    public Stage openWindow() {
         try{
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(AccountantWindowFactory.class.getResource("WMWF.fxml"));
@@ -32,16 +37,7 @@ public class WarehouseManagerWindowFactory extends WindowFactory {
     }
 
     @Override
-    public Stage openWindow() {
-        if(currentWindow==null) currentWindow = createWindow();
-        currentWindow.show();
-        return currentWindow;
-    }
-
-    @Override
     public Stage closeWindow() {
-        if(currentWindow==null) return null;
-        currentWindow.hide();
-        return currentWindow;
+        return null;
     }
 }
