@@ -34,7 +34,7 @@ public class FeedbackDbSet {
         sqlBuilder.append("productInfoRating     INTEGER     NOT NULL,");
         sqlBuilder.append("staffTargetId         INTEGER     NOT NULL,");
         sqlBuilder.append("isUseful              BOOLEAN     NOT NULL,");
-        sqlBuilder.append("time                  DATETIME    NOT NULL");
+        sqlBuilder.append("time                  DATETIME    NOT NULL,");
         sqlBuilder.append("isRead                BOOLEAN     NOT NULL");
         sqlBuilder.append(");");
         String sql = sqlBuilder.toString();
