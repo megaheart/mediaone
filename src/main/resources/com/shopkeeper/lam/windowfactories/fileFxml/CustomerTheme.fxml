@@ -5,9 +5,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="298.0" prefWidth="435.0" styleClass="mobius" stylesheets="@application.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" >
+<AnchorPane prefHeight="441.0" prefWidth="648.0" styleClass="mobius" stylesheets="@application.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <JFXButton layoutX="41.0" layoutY="58.0" opacity="0.7" prefHeight="56.0" style="-fx-background-color: red; -fx-border-style: solid;" text="Xem sản phẩm">
+      <JFXButton layoutX="41.0" layoutY="58.0" opacity="0.7" prefHeight="76.0" prefWidth="182.0" style="-fx-background-color: red; -fx-border-style: solid;" text="Xem sản phẩm">
          <graphic>
             <ImageView fitHeight="72.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -16,7 +16,7 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <JFXButton layoutX="40.0" layoutY="157.0" opacity="0.7" prefHeight="74.0" prefWidth="166.0" style="-fx-background-color: red; -fx-border-style: solid;" text="Phản hồi          ">
+      <JFXButton layoutX="427.0" layoutY="58.0" opacity="0.7" prefHeight="76.0" prefWidth="182.0" style="-fx-background-color: red; -fx-border-style: solid;" text="Phản hồi          ">
          <graphic>
             <ImageView fitHeight="72.0" fitWidth="66.0" pickOnBounds="true" preserveRatio="true">
                <image>

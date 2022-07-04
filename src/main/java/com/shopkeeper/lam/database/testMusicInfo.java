@@ -141,9 +141,9 @@ public class testMusicInfo {
                 new ArrayList<>(Arrays.asList("Unknown")),
                 new ArrayList<>(Arrays.asList(people.get(8))),
                 LocalTime.of(0, 4, 30));
-        /*for(MusicInfo s : m){
+        for(MusicInfo s : m){
             adapter.insertMusicInfo(s);
-        }*/
+        }
 
 
 
