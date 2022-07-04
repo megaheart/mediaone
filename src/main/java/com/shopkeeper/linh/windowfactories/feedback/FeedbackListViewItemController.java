@@ -14,7 +14,7 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 
 public class FeedbackListViewItemController {
-    public static BorderPane getBorderPane(Feedback feedback){
+    public static FeedbackListViewItemController getController(Feedback feedback){
         FXMLLoader fxmlLoader = new FXMLLoader(FeedbackListViewItemController.class.getResource("feedback-list-view-item.fxml"));
 
         Parent template;
@@ -23,12 +23,15 @@ public class FeedbackListViewItemController {
             template = fxmlLoader.load();
             FeedbackListViewItemController controller = fxmlLoader.getController();
             controller.setDataContext(feedback);
-            return controller.container;
+            return controller;
         }
         catch (IOException e)
         {
             throw new RuntimeException(e);
         }
+    }
+    public BorderPane getContainer(){
+        return container;
     }
     @FXML
     private BorderPane container;
@@ -42,9 +45,34 @@ public class FeedbackListViewItemController {
     private Text typeTxt;
     @FXML
     private Text beUsefulTxt;
-
+    @FXML
+    private Text readMark;
+    public void setIsUseful(boolean isUseful){
+        if(isUseful){
+            beUsefulTxt.setText("Hữu ích");
+            beUsefulTxt.setFill(Paint.valueOf("#1ff4a2"));
+        }
+        else{
+            beUsefulTxt.setText("Không hữu ích");
+            beUsefulTxt.setFill(Paint.valueOf("#cfcfcf"));
+        }
+    }
+    public void setIsRead(boolean isRead){
+        if(isRead){
+            readMark.setVisible(true);
+        }
+        else{
+            readMark.setVisible(false);
+        }
+    }
     public void setDataContext(Feedback feedback){
-        titleTxt.setText(feedback.getTitle());
+        setIsRead(feedback.isRead());
+        if(feedback.getTitle().length() > 49){
+            titleTxt.setText(feedback.getTitle().substring(0, 49) + "...");
+        }
+        else{
+            titleTxt.setText(feedback.getTitle());
+        }
         timeTxt.setText(feedback.getTime().toString());
         switch (feedback.getFeedbackAbout()){
             case Staff:
