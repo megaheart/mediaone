@@ -1,5 +1,6 @@
 package com.shopkeeper.lam.models;
 
+import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.models.IReferencedCounter;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
@@ -19,8 +20,28 @@ public abstract class ProductInfo implements IReferencedCounter {
     private Publisher publisher;
     private double rating;
     private ArrayList<String> award;
-    public ProductInfo(){productInfoId=0;}
-
+    public ProductInfo(){
+        productInfoId=0;
+        this.title = "Unknown";
+        this.description = "Unknown";
+        this.category = DatabaseAdapter.getDbAdapter().getAllCategories().get(36);
+        this.releaseDate = LocalDate.now();
+        this.currentSalePrice = 999999;
+        this.publisher = DatabaseAdapter.getDbAdapter().getAllPublishers().get(0);
+        this.rating = 5;
+        this.award = new ArrayList<>(Arrays.asList("Best Seller"));
+    }
+    public ProductInfo(String title, String description, LocalDate releaseDate, double currentSalePrice) {
+        productInfoId=0;
+        this.title = title;
+        this.description = description;
+        this.category = DatabaseAdapter.getDbAdapter().getAllCategories().get(36);
+        this.releaseDate = releaseDate;
+        this.currentSalePrice = currentSalePrice;
+        this.publisher = DatabaseAdapter.getDbAdapter().getAllPublishers().get(0);
+        this.rating = 5;
+        this.award = new ArrayList<>(Arrays.asList("Best Seller"));
+    }
     public ProductInfo(String title, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award) {
         productInfoId=0;
         this.title = title;
@@ -63,6 +84,8 @@ public abstract class ProductInfo implements IReferencedCounter {
     }
 
     public void setCategory(Category category) {
+        var adapter = DatabaseAdapter.getDbAdapter();
+
         this.category = category;
     }
 
