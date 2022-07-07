@@ -1,6 +1,8 @@
 package com.shopkeeper.lam.models;
 
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import com.shopkeeper.mediaone.database.DbAdapterCache;
+import com.shopkeeper.mediaone.database.ReadOnlyDbAdapterCache;
 import com.shopkeeper.mediaone.models.IReferencedCounter;
 import javafx.beans.InvalidationListener;
 import javafx.beans.property.*;
@@ -20,6 +22,19 @@ public abstract class ProductInfo implements IReferencedCounter {
     private Publisher publisher;
     private double rating;
     private ArrayList<String> award;
+
+    private int numberOfProduct;
+
+    public int getNumberOfProduct() {
+
+        return numberOfProduct;
+
+    }
+
+    public void setNumberOfProduct(int numberOfProduct) {
+        this.numberOfProduct = numberOfProduct;
+    }
+
     public ProductInfo(){
         productInfoId=0;
         this.title = "Unknown";
@@ -30,6 +45,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.publisher = DatabaseAdapter.getDbAdapter().getAllPublishers().get(0);
         this.rating = 5;
         this.award = new ArrayList<>(Arrays.asList("Best Seller"));
+        numberOfProduct = 0;
     }
     public ProductInfo(String title, String description, LocalDate releaseDate, double currentSalePrice) {
         productInfoId=0;
@@ -41,6 +57,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.publisher = DatabaseAdapter.getDbAdapter().getAllPublishers().get(0);
         this.rating = 5;
         this.award = new ArrayList<>(Arrays.asList("Best Seller"));
+        numberOfProduct = 0;
     }
     public ProductInfo(String title, String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award) {
         productInfoId=0;
@@ -52,6 +69,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         this.publisher = publisher;
         this.rating = rating;
         this.award = award;
+        numberOfProduct = 0;
     }
 
     public String getTitle() {

@@ -79,6 +79,35 @@ public class ProductInfoManager {
             adapter.updateBookInfo((BookInfo) productInfo);
         }
     }
+
+    public MusicInfo findMusicInfoById(int id){
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var musicInfo : adapter.getAllMusicInfos()){
+            if(musicInfo.getProductInfoId() == id){
+                return musicInfo;
+            }
+        }
+        return null;
+    }
+    public FilmInfo findFilmInfoById(int id){
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var filmInfo : adapter.getAllFilmInfos()){
+            if(filmInfo.getProductInfoId() == id){
+                return filmInfo;
+            }
+        }
+        return null;
+    }
+    public BookInfo findBookInfoById(int id){
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for(var bookInfo : adapter.getAllBookInfos()){
+            if(bookInfo.getProductInfoId() == id){
+                return bookInfo;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<ProductInfo> findByTitle(String title) throws Exception {
         ArrayList<ProductInfo> productInfos = new ArrayList<>();
         var adapter = DatabaseAdapter.getDbAdapter();
