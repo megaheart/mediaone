@@ -1,6 +1,7 @@
 package com.shopkeeper.lam.windowfactories.fileFxml;
 
 import com.shopkeeper.lam.models.Person;
+import com.shopkeeper.linh.windowfactories.CustomerFeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ public class WindowCustomerController  {
 
     }
     public void openSendFeedBack(ActionEvent event) {
-
+        CustomerFeedbackWindowFactory.getFactory().openWindow();
     }
 
 }

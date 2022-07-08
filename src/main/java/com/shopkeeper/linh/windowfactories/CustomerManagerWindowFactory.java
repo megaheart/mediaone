@@ -3,25 +3,26 @@ package com.shopkeeper.linh.windowfactories;
 import com.shopkeeper.mediaone.windowfactories.WindowFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
-public class PaymentWindowFactory extends WindowFactory {
-    private static PaymentWindowFactory factory = new PaymentWindowFactory();
-    public static PaymentWindowFactory getFactory(){
+public class CustomerManagerWindowFactory extends WindowFactory {
+    private static CustomerManagerWindowFactory factory = new CustomerManagerWindowFactory();
+    public static CustomerManagerWindowFactory getFactory(){
         return factory;
     }
-    private PaymentWindowFactory(){
+    private CustomerManagerWindowFactory(){
         currentWindow = null;
     }
     @Override
     protected Stage createWindow() {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(PaymentWindowFactory.class.getResource("payment-window.fxml"));
+        URL location = FeedbackWindowFactory.class.getResource("customer-manager-window.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(location);
         Scene scene = null;
-        stage.setTitle("Quản lý thanh toán");
+        stage.setTitle("Quản lý phản hồi");
         stage.setResizable(false);
         try {
             scene = new Scene(fxmlLoader.load());
@@ -35,10 +36,8 @@ public class PaymentWindowFactory extends WindowFactory {
             return null;
         }
         stage.setScene(scene);
-        //stage.getIcons().add(new Image("file:C:\\Users\\linh2\\Downloads\\New folder\\home.png"));
         return stage;
     }
-
     @Override
     public Stage openWindow() {
         if(currentWindow == null) currentWindow = createWindow();

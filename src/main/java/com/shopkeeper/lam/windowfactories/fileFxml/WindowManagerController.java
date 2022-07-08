@@ -1,5 +1,11 @@
 package com.shopkeeper.lam.windowfactories.fileFxml;
 
+import com.shopkeeper.linh.models.Feedback;
+import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
+import com.shopkeeper.linh.windowfactories.PaymentWindowFactory;
+import com.shopkeeper.minh.windowfactories.StaffWindowFactory;
+import com.shopkeeper.vu.windowfactories.AccountantWindowFactory;
+import com.shopkeeper.vu.windowfactories.WarehouseManagerWindowFactory;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,19 +26,19 @@ public class WindowManagerController  {
 
     }
     public void openStaffManager(ActionEvent event){
-
+        StaffWindowFactory.getFactory().openWindow();
     }
     public void openFeedbackManager(ActionEvent event){
-
+        FeedbackWindowFactory.getFactory().openWindow();
     }
     public void openStockManager(ActionEvent event){
-
+        WarehouseManagerWindowFactory.getFactory().openWindow();
     }
     public void openPaymentManager(ActionEvent event){
-
+        PaymentWindowFactory.getFactory().openWindow();
     }
     public void openRevenueManager(ActionEvent event){
-
+        AccountantWindowFactory.getFactory().openWindow();
     }
 
 }
