@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class WindowManagerController  {
 
     @FXML
-    Button productManager,staffManager,feedbackManager,stockManager,paymentManager,revenueManager;
+    Button productManager,staffManager,feedbackManager,stockManager,paymentManager,revenueManager,dataSeed,customer;
     public void openProductManager(ActionEvent event){
 
     }
@@ -39,6 +39,12 @@ public class WindowManagerController  {
     }
     public void openRevenueManager(ActionEvent event){
         AccountantWindowFactory.getFactory().openWindow();
+    }
+    public void openCustomerManager(ActionEvent event){
+
+    }
+    public void setDataSeed(ActionEvent event){
+
     }
 
 }
