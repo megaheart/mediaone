@@ -10,6 +10,7 @@ import com.shopkeeper.linh.windowfactories.CustomerFeedbackWindowFactory;
 import com.shopkeeper.linh.windowfactories.CustomerManagerWindowFactory;
 
 import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
+import com.shopkeeper.linh.windowfactories.PaymentWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.*;
 import javafx.application.Application;
@@ -30,7 +31,6 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws Exception {
         ManagerWindowFactory.getFactory().openWindow();
         CustomerWindowFactory.getFactory().openWindow();
-
         //javafx.application.Platform.exit();
     }
 

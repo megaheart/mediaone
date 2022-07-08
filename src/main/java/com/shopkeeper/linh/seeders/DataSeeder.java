@@ -14,13 +14,16 @@ public class DataSeeder {
         new testPublisher().insertPublisher();
         new testPerson().insertPerson();
 
-
+        new com.shopkeeper.minh.test().insertOtherBills();
         //load 2
         SaleBillSeeder.SeedData();
         new testBookInfo().insert();
         new testMusicInfo().insert();
         new testFilmInfo().insert();
 
+        new com.shopkeeper.minh.test().insertShift();
+        new com.shopkeeper.minh.test().insertAttendances();
+        new com.shopkeeper.minh.test().insertAttendancesJune();
         //load 3
 
         //load 4

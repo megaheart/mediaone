@@ -47,6 +47,16 @@ public class test {
         adapter.insertOtherBill(x3);
         adapter.insertOtherBill(x4);
         adapter.insertOtherBill(x5);
+        adapter.insertOtherBill(x6);
+        adapter.insertOtherBill(x7);
+        adapter.insertOtherBill(x8);
+        adapter.insertOtherBill(x9);
+        adapter.insertOtherBill(x10);
+        adapter.insertOtherBill(x11);
+        adapter.insertOtherBill(x12);
+        adapter.insertOtherBill(x13);
+        adapter.insertOtherBill(x14);
+        adapter.insertOtherBill(x15);
 
 
     }
