@@ -70,6 +70,7 @@ public class AttendanceDbSet {
 
             for (String staffIdString: staffsWorkId){
                 boolean check = false;
+                if (staffIdString == null || staffIdString.isEmpty()) break;
                 staffId = Long.parseLong(staffIdString);
                 for (Staff staff: staffs){
                     if (staff.getStaffId() == staffId){
@@ -87,6 +88,7 @@ public class AttendanceDbSet {
 
             for (String staffIdString: staffsAbsenteeId){
                 boolean check = false;
+                if (staffIdString == null || staffIdString.isEmpty()) break;
                 staffId = Long.parseLong(staffIdString);
                 for (Staff staff: staffs){
                     if (staff.getStaffId() == staffId){
