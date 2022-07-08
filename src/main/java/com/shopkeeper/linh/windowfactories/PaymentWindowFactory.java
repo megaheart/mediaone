@@ -21,7 +21,7 @@ public class PaymentWindowFactory extends WindowFactory {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(PaymentWindowFactory.class.getResource("payment-window.fxml"));
         Scene scene = null;
-        stage.setTitle("Quản lý phản hồi");
+        stage.setTitle("Quản lý thanh toán");
         stage.setResizable(false);
         try {
             scene = new Scene(fxmlLoader.load());

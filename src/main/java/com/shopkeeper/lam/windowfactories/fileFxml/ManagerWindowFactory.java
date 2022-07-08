@@ -6,13 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class WindowCustomerOption extends WindowFactory {
-    private static WindowCustomerOption factory = new WindowCustomerOption();
+public class ManagerWindowFactory extends WindowFactory  {
+    private static ManagerWindowFactory factory = new ManagerWindowFactory();
 
-    public static WindowCustomerOption getFactory() {
+    public static ManagerWindowFactory getFactory() {
         return factory;
     }
-    public WindowCustomerOption(){
+    public ManagerWindowFactory(){
         {
             currentWindow = null;
         }
@@ -22,11 +22,11 @@ public class WindowCustomerOption extends WindowFactory {
         Stage stage = new Stage();
         Scene scene = null;
         try {
-            Parent root = FXMLLoader.load(this.getClass().getResource("Customer.fxml"));
-            stage.setTitle("Customer");
-            stage.setResizable(false);
+        Parent root = FXMLLoader.load(this.getClass().getResource("Manager.fxml"));
+        stage.setTitle("Manager");
+        stage.setResizable(false);
 
-            scene  = new Scene(root);
+        scene  = new Scene(root);
         }
         catch (Exception e){
             System.err.println(e.getMessage());

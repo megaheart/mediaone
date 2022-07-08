@@ -2,6 +2,8 @@ package com.shopkeeper.mediaone;
 
 import com.shopkeeper.lam.database.*;
 import com.shopkeeper.lam.models.*;
+import com.shopkeeper.lam.windowfactories.fileFxml.CustomerWindowFactory;
+import com.shopkeeper.lam.windowfactories.fileFxml.ManagerWindowFactory;
 import com.shopkeeper.linh.models.*;
 
 import com.shopkeeper.linh.windowfactories.CustomerFeedbackWindowFactory;
@@ -26,7 +28,8 @@ import java.util.Arrays;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-
+        ManagerWindowFactory.getFactory().openWindow();
+        CustomerWindowFactory.getFactory().openWindow();
 
         //javafx.application.Platform.exit();
     }

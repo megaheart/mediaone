@@ -11,11 +11,15 @@ module com.shopkeeper.mediaone {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
     requires java.sql;
+    requires annotations;
 
     opens com.shopkeeper.mediaone to javafx.fxml;
     opens com.shopkeeper.linh.windowfactories.feedback to javafx.fxml;
     opens com.shopkeeper.linh.windowfactories to javafx.fxml;
     opens com.shopkeeper.linh.windowfactories.customer to javafx.fxml;
+    opens com.shopkeeper.lam.windowfactories.fileFxml to javafx.fxml;
+    opens com.shopkeeper.linh.windowfactories.payment to javafx.fxml;
+    opens com.shopkeeper.minh.windowfactories to javafx.fxml;
     exports com.shopkeeper.mediaone;
     exports com.shopkeeper.vu.windowfactories;
     opens com.shopkeeper.vu.windowfactories to javafx.fxml;
