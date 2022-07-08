@@ -39,15 +39,28 @@ public class CustomerObservableList  extends CustomUnmodifiableObservableList<Cu
         comparator = nameAscending;
         setSource(customers);
         order = CustomerListOrder.NameAscending;
+        isAscend = true;
     }
     private CustomerListOrder order;
     public void setOrder(CustomerListOrder newOrder){
         if(newOrder == order) return;
         switch (newOrder){
-            case NameDescending -> comparator = nameDescending;
-            case NameAscending -> comparator = nameAscending;
-            case LocationAscending -> comparator = locationAscending;
-            case LocationDescending -> comparator = locationDescending;
+            case NameDescending -> {
+                comparator = nameDescending;
+                isAscend = false;
+            }
+            case NameAscending -> {
+                comparator = nameAscending;
+                isAscend = true;
+            }
+            case LocationAscending -> {
+                comparator = locationAscending;
+                isAscend = true;
+            }
+            case LocationDescending -> {
+                comparator = locationDescending;
+                isAscend = false;
+            }
         }
         if((newOrder == CustomerListOrder.NameDescending && order == CustomerListOrder.NameAscending)
                 || (newOrder == CustomerListOrder.NameAscending && order == CustomerListOrder.NameDescending)

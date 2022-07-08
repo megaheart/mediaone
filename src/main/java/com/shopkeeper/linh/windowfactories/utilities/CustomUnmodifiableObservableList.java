@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 
 public abstract class CustomUnmodifiableObservableList<E> implements ObservableList<E> {
+    protected boolean isAscend;
     //override if you dont want to use this algorithm
     protected void sortItems(){
         items.sort(comparator);
@@ -39,12 +40,33 @@ public abstract class CustomUnmodifiableObservableList<E> implements ObservableL
 
                     }
                     else if(c.wasAdded()) {
-                        for(int i = c.getFrom(); i < c.getTo(); i++){
-                            var item =  c.getList().get(i);
-                            for(int j = 0; j < items.size(); j++){
-                                if(comparator.compare(items.get(j), item) >= 0){
+                        if(isAscend){
+                            for(int i = c.getFrom(); i < c.getTo(); i++){
+                                var item =  c.getList().get(i);
+                                int j = items.size() - 1;
+                                for(; j > -1 ; j--){
+                                    if(comparator.compare(items.get(j), item) <= 0){
+                                        items.add(j + 1, item);
+                                        break;
+                                    }
+                                }
+                                if(j == -1){
+                                    items.add(j + 1, item);
+                                }
+                            }
+                        }
+                        else{
+                            for(int i = c.getFrom(); i < c.getTo(); i++){
+                                var item =  c.getList().get(i);
+                                int j = 0;
+                                for(; j < items.size(); j--){
+                                    if(comparator.compare(items.get(j), item) >= 0){
+                                        items.add(j, item);
+                                        break;
+                                    }
+                                }
+                                if(j == items.size()){
                                     items.add(j, item);
-                                    break;
                                 }
                             }
                         }
