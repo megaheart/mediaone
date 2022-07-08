@@ -8,21 +8,29 @@ import java.util.ArrayList;
 
 public class PersonManager {
     private static PersonManager manager;
+    private PersonManager(){}
 
     public static PersonManager getManager() {
+        if (manager == null){
+            manager = new PersonManager();
+        }
         return manager;
     }
     public ObservableList<Person> getAll() throws Exception {
-        return DatabaseAdapter.getDbAdapter().getAllPeople();
+        var adapter = DatabaseAdapter.getDbAdapter();
+        return adapter.getAllPeople();
     }
     public void add(Person person) throws Exception {
-        DatabaseAdapter.getDbAdapter().insertPerson(person);
+        var adapter = DatabaseAdapter.getDbAdapter();
+        adapter.insertPerson(person);
     }
     public void remove(Person person) throws Exception {
-        DatabaseAdapter.getDbAdapter().deletePerson(person);
+        var adapter = DatabaseAdapter.getDbAdapter();
+        adapter.deletePerson(person);
     }
     public void update(Person person) throws Exception {
-        DatabaseAdapter.getDbAdapter().updatePerson(person);
+        var adapter = DatabaseAdapter.getDbAdapter();
+        adapter.updatePerson(person);
     }
     public Person findById(int id) throws Exception {
         for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()){
@@ -34,7 +42,8 @@ public class PersonManager {
     }
     public ArrayList<Person> findByName(String name) throws Exception {
         ArrayList<Person> people = new ArrayList<>();
-        for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()) {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for (Person person : adapter.getAllPeople()) {
             if (person.getName().equalsIgnoreCase(name.trim())) {
                 people.add(person);
             }
@@ -43,7 +52,8 @@ public class PersonManager {
     }
     public ArrayList<Person> findByJob(JobOfPerson job) throws Exception {
         ArrayList<Person> people = new ArrayList<>();
-        for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()) {
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for (Person person : adapter.getAllPeople()) {
             if (person.getJob().equals(job)) {
                 people.add(person);
             }

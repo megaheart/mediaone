@@ -85,6 +85,7 @@ public class StaffBillDbSet {
         stmt.close();
     }
 
+
     public boolean insert(StaffBill bill) {
         if(bill.getBillId() != 0) return false;
         if (!readOnlyCache.getStaffs().contains(bill.getStaff())){
