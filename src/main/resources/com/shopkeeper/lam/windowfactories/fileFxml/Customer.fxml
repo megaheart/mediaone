@@ -11,7 +11,7 @@
 <children>
 <FlowPane hgap="150.0" layoutY="-6.0" prefHeight="286.0" prefWidth="517.0" vgap="10.0" AnchorPane.topAnchor="-6.0">
    <children>
-      <Button fx:id="button1" mnemonicParsing="false" opacity="0.8" text="Xem sản phẩm">
+      <Button fx:id="button1" mnemonicParsing="false" onAction="#openViewProduct" opacity="0.8" text="Xem sản phẩm">
                <FlowPane.margin>
                   <Insets left="30.0" top="40.0" />
                </FlowPane.margin>
@@ -22,7 +22,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-      <Button fx:id="button2" mnemonicParsing="false" opacity="0.8" prefHeight="50.0" prefWidth="158.0" text="Phản hồi            ">
+      <Button fx:id="button2" mnemonicParsing="false" onAction="#openSendFeedBack" opacity="0.8" prefHeight="50.0" prefWidth="158.0" text="Phản hồi            ">
                <FlowPane.margin>
                   <Insets right="30.0" top="40.0" />
                </FlowPane.margin>

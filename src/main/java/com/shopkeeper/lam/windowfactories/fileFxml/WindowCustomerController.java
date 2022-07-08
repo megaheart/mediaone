@@ -2,6 +2,7 @@ package com.shopkeeper.lam.windowfactories.fileFxml;
 
 import com.shopkeeper.lam.models.Person;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -12,7 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
-public class WindowCustomerController implements Initializable {
+public class WindowCustomerController  {
     @FXML
     AnchorPane anchorPane1;
     @FXML
@@ -20,10 +21,11 @@ public class WindowCustomerController implements Initializable {
     @FXML
     Button button2;
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void openViewProduct(ActionEvent event) {
 
     }
+    public void openSendFeedBack(ActionEvent event) {
 
+    }
 
 }
