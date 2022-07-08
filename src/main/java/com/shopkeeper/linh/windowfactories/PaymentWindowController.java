@@ -6,20 +6,22 @@ import com.shopkeeper.lam.models.MusicInfo;
 import com.shopkeeper.lam.models.ProductInfo;
 import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.models.SaleBill;
-import com.shopkeeper.linh.windowfactories.payment.CustomerComboBoxOptions;
-import com.shopkeeper.linh.windowfactories.payment.SaleBillListCell;
-import com.shopkeeper.linh.windowfactories.payment.SaleBillListOrder;
-import com.shopkeeper.linh.windowfactories.payment.SaleBillObservableList;
+import com.shopkeeper.linh.windowfactories.payment.*;
 import com.shopkeeper.linh.windowfactories.utilities.ComboBoxOption;
 import com.shopkeeper.linh.windowfactories.utilities.ComboBoxOptionList;
 import com.shopkeeper.linh.windowfactories.utilities.CustomerToStringCell;
 import com.shopkeeper.linh.windowfactories.utilities.DefaultListCell;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -30,6 +32,8 @@ import javafx.util.Callback;
 import java.time.LocalDate;
 
 public class PaymentWindowController {
+    @FXML
+    private AnchorPane mainContainer;
     //region SaleBill Filter Panel
     @FXML
     private TextField filterSubnameTxtBox;
@@ -161,18 +165,113 @@ public class PaymentWindowController {
         customerCombobox.getSelectionModel().selectFirst();
     }
     //endregion
-    //region SaleBill Editing Panel
+    //region SaleBill Viewing Panel
     @FXML
-    private AnchorPane saleBillEditingPane;
+    private Text saleBillNoteTxt;
+    @FXML
+    private Text saleBillCustomerNameTxt;
+    @FXML
+    private Text saleBillCustomerPhoneNumberTxt;
+    @FXML
+    private ToggleButton saleBillNoteBtn;
+    @FXML
+    private AnchorPane saleBillViewingPane;
+    @FXML
+    private ListView<SaleBillItem> saleBillItemListView;
+    @FXML
+    private Text totalPriceTxt;
+    private  SalebillEditingPanelController editingPanelController;
     private void initializeSaleBillDisplayer(){
-        saleBillEditingPane.setVisible(false);
+        saleBillViewingPane.setVisible(false);
+        saleBillNoteBtn.selectedProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue){
+                saleBillNoteTxt.setText(currentNote);
+                saleBillNoteBtn.setText("Thu gọn");
+            }
+            else{
+                saleBillNoteTxt.setText(currentNote.substring(0, 70) + "...");
+                saleBillNoteBtn.setText("Xem thêm");
+            }
+        });
+        saleBillItemListView.setCellFactory(new Callback<ListView<SaleBillItem>, ListCell<SaleBillItem>>() {
+            @Override
+            public ListCell<SaleBillItem> call(ListView<SaleBillItem> param) {
+                return new SaleBillItemListCell();
+            }
+        });
+
     }
-    private void displaySaleBill(SaleBill saleBill){
-        if(saleBill == null) {
-            saleBillEditingPane.setVisible(false);
+    private String currentNote;
+    private void displaySaleBillNote(String note){
+        currentNote = note;
+        if(note.length() > 70) {
+            saleBillNoteTxt.setText(note.substring(0, 70) + "...");
+            saleBillNoteBtn.setVisible(true);
+            saleBillNoteBtn.setSelected(false);
+            saleBillNoteBtn.setText("Xem thêm");
+
             return;
         }
-        saleBillEditingPane.setVisible(true);
+        else{
+            saleBillNoteTxt.setText(note);
+            saleBillNoteBtn.setVisible(false);
+        }
+    }
+    private SaleBill oldSaleBill = null;
+    private ChangeListener<String> saleBillNoteChangeListener = new ChangeListener<String>() {
+        @Override
+        public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+            displaySaleBillNote(newValue);
+        }
+    };
+    public String priceToString(double price){
+        StringBuilder sb = new StringBuilder(String.valueOf((long) price));
+        for(int i = sb.length() - 3; i > 0; i-=3){
+            sb.insert(i, '.');
+        }
+        return sb.toString();
+    }
+    public ObservableList<SaleBillItem> getSaleBillItem(SaleBill saleBill){
+        ObservableList<SaleBillItem> output = FXCollections.observableArrayList();
+        for (var p: DatabaseAdapter.getDbAdapter().getItems(saleBill)) {
+            SaleBillItem saleBillItem = null;
+            for (var s: output) {
+                if(s.getProductInfo() == p.getProductInfo()){
+                    saleBillItem = s;
+                    break;
+                }
+            }
+            if(saleBillItem == null){
+                output.add(new SaleBillItem(p.getProductInfo(), 1));
+            }
+            else{
+
+                saleBillItem.setAmount(saleBillItem.getAmount() + 1);
+            }
+        }
+        return output;
+    }
+    private ObservableList<SaleBillItem> currentSaleBillItems;
+    private void displaySaleBill(SaleBill saleBill){
+        if(saleBill == oldSaleBill) return;
+        if(oldSaleBill != null){
+            oldSaleBill.noteProperty().removeListener(saleBillNoteChangeListener);
+            saleBillCustomerNameTxt.textProperty().unbind();
+            saleBillCustomerPhoneNumberTxt.textProperty().unbind();
+        }
+        if(saleBill == null) {
+            saleBillViewingPane.setVisible(false);
+            return;
+        }
+        displaySaleBillNote(saleBill.noteProperty().get());
+        saleBill.noteProperty().addListener(saleBillNoteChangeListener);
+        saleBillViewingPane.setVisible(true);
+        currentSaleBillItems = getSaleBillItem(saleBill);
+        saleBillItemListView.setItems(currentSaleBillItems);
+        totalPriceTxt.setText(priceToString(saleBill.getPrice()));
+        saleBillCustomerNameTxt.textProperty().bind(saleBill.getCustomer().nameProperty());
+        saleBillCustomerPhoneNumberTxt.textProperty().bind(saleBill.getCustomer().phoneNumberProperty());
+        oldSaleBill = saleBill;
     }
     //endregion
     //region SaleBill List
@@ -204,6 +303,14 @@ public class PaymentWindowController {
                 salebill.setPrice(salebill.getPrice() + x.getSaleValue());
             }
         }
+    }
+    @FXML
+    private void createNewSaleBill(){
+        editingPanelController.openPanel(null);
+    }
+    @FXML
+    private void editSaleBill(){
+        editingPanelController.openPanel(saleBillListView.getSelectionModel().getSelectedItem());
     }
     private void initializeSaleBillList(){
         deleteSaleBillBtn.setVisible(false);
@@ -237,11 +344,25 @@ public class PaymentWindowController {
         saleBillListView.setItems(saleBillList);
         saleBillListView.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             deleteSaleBillBtn.setVisible(newValue != null);
+            displaySaleBill(newValue);
+            saleBillToolbar.setVisible(newValue != null);
         });
         orderCombobox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             saleBillList.setOrder(newValue.getValue());
         });
+        saleBillToolbar.setVisible(false);
+
+        editingPanelController = SalebillEditingPanelController.getController();
+        var editingPanel = editingPanelController.getContainer();
+        AnchorPane.setBottomAnchor(editingPanel, 0.0);
+        AnchorPane.setLeftAnchor(editingPanel, 0.0);
+        AnchorPane.setRightAnchor(editingPanel, 0.0);
+        AnchorPane.setTopAnchor(editingPanel, 0.0);
+        mainContainer.getChildren().add(editingPanel);
+        editingPanel.setVisible(false);
+        //
     }
+
     //endregion
     public PaymentWindowController() {
 
