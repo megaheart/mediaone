@@ -1,17 +1,12 @@
 package com.shopkeeper.linh.windowfactories.payment;
 
-import com.shopkeeper.linh.models.Feedback;
 import com.shopkeeper.linh.models.SaleBill;
-import com.shopkeeper.linh.windowfactories.feedback.FeedbackListViewItemController;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.BorderPane;
 
-public class SaleBillListCell extends ListCell<SaleBill> {
-    private SaleBillListItemController controller = null;
+public class SaleBillItemListCell extends ListCell<SaleBillItem> {
+    private SaleBillItemListCellController controller;
     @Override
-    public void updateItem(SaleBill data, boolean empty)
+    public void updateItem(SaleBillItem data, boolean empty)
     {
         super.updateItem(data, empty);
         if (empty || data == null) {
@@ -21,7 +16,7 @@ public class SaleBillListCell extends ListCell<SaleBill> {
             return;
         }
         if(controller == null){
-            controller = SaleBillListItemController.getController();
+            controller = SaleBillItemListCellController.getController();
         }
         controller.setDataContext(data);
         setGraphic(controller.getContainer());
