@@ -13,6 +13,7 @@ public class DataSeeder {
         new testCategory().insertCategory();
         new testPublisher().insertPublisher();
         new testPerson().insertPerson();
+        new testImportBill().insert();
 
         new com.shopkeeper.minh.test().insertOtherBills();
         //load 2
@@ -24,8 +25,9 @@ public class DataSeeder {
         new com.shopkeeper.minh.test().insertShift();
         new com.shopkeeper.minh.test().insertAttendances();
         new com.shopkeeper.minh.test().insertAttendancesJune();
-        //load 3
 
+        //load 3
+        new testProduct().insert();
         //load 4
         FeedbackSeeder.SeedData();
     }
