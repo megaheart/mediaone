@@ -4,6 +4,7 @@ import com.shopkeeper.mediaone.windowfactories.WindowFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class CustomerWindowFactory extends WindowFactory {
@@ -25,7 +26,7 @@ public class CustomerWindowFactory extends WindowFactory {
             Parent root = FXMLLoader.load(this.getClass().getResource("Customer.fxml"));
             stage.setTitle("Customer");
             stage.setResizable(false);
-
+            stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("87247676_p0_master1200.jpg"))));
             scene  = new Scene(root);
         }
         catch (Exception e){
