@@ -22,7 +22,7 @@ public class WindowManagerOption extends WindowFactory  {
         Stage stage = new Stage();
         Scene scene = null;
         try {
-        Parent root = FXMLLoader.load(this.getClass().getResource("ManagerChoose.fxml"));
+        Parent root = FXMLLoader.load(this.getClass().getResource("Manager.fxml"));
         stage.setTitle("Manager");
         stage.setResizable(false);
 

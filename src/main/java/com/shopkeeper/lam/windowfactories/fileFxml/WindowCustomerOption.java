@@ -22,7 +22,7 @@ public class WindowCustomerOption extends WindowFactory {
         Stage stage = new Stage();
         Scene scene = null;
         try {
-            Parent root = FXMLLoader.load(this.getClass().getResource("CustomerTheme.fxml"));
+            Parent root = FXMLLoader.load(this.getClass().getResource("Customer.fxml"));
             stage.setTitle("Customer");
             stage.setResizable(false);
 
