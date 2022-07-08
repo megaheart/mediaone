@@ -23,18 +23,6 @@ public class testProduct {
         var books = adapter.getAllBookInfos();
 
 
-        Product f1 = new Product(musics.get(0), ProductState.IMPORTING, null, null, 0, 0,
-                "xnxx", "A18");
-        Product f2 = new Product(musics.get(0), ProductState.ORDERED, importBills.get(0), null, 0, 0,
-                "vlxx", "B3");
-        Product f3 = new Product(films.get(0), ProductState.READY, null, saleBills.get(1), 0, 0,
-                "bacxyz", "C2");
-        Product f4 = new Product(films.get(0), ProductState.RETURNED, importBills.get(2), saleBills.get(2), 0, 0,
-                "genksx", "D4");
-        Product f5 = new Product(books.get(0), ProductState.SOLD, importBills.get(3), saleBills.get(2), 0, 0,
-                "hello", "E6");
-        Product f6 = new Product(books.get(0), ProductState.IMPORTING, null, null, 0, 0,
-                "ahihi", "F1");
 
 
         Product[] product = new Product[180];
