@@ -22,9 +22,10 @@ public class DataSeeder {
         new testMusicInfo().insert();
         new testFilmInfo().insert();
 
-        new com.shopkeeper.minh.test().insertShift();
-        new com.shopkeeper.minh.test().insertAttendances();
-        new com.shopkeeper.minh.test().insertAttendancesJune();
+//        new com.shopkeeper.minh.test().insertShift();
+//        new com.shopkeeper.minh.test().insertAttendances(4);
+//        new com.shopkeeper.minh.test().insertAttendances(5);
+//        new com.shopkeeper.minh.test().insertStaffBills();
 
         //load 3
         new testProduct().insert();

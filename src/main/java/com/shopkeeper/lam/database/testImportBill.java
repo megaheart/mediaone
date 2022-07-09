@@ -1,11 +1,14 @@
 package com.shopkeeper.lam.database;
 
+import com.shopkeeper.linh.seeders.DataSeeder;
+import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.minh.models.ImportBill;
 
 import java.time.LocalDate;
 
 public class testImportBill {
     public void insert() throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
         ImportBill[] bookBills = new ImportBill[20];
         ImportBill[] filmBills = new ImportBill[20];
         ImportBill[] musicBills = new ImportBill[20];
@@ -76,9 +79,15 @@ public class testImportBill {
         bookBills[18] = new ImportBill("Sách Chạm tới giấc mơ", 50000, LocalDate.of(2021,9,16), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
         bookBills[19] = new ImportBill("Sách Đắc nhân tâm", 50000, LocalDate.of(2021,6,21), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
 
-
-
-
+        for(var x:musicBills){
+            adapter.insertImportBill(x);
+        }
+        for(var x:bookBills){
+            adapter.insertImportBill(x);
+        }
+        for(var x:filmBills){
+            adapter.insertImportBill(x);
+        }
 
     }
 }

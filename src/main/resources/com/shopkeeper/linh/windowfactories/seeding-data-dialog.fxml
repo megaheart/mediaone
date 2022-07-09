@@ -7,8 +7,8 @@
 
 <AnchorPane prefHeight="200.0" prefWidth="400.0" stylesheets="@general-styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.linh.windowfactories.SeedingDataDialogController">
    <children>
-      <Text layoutX="68.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 50;" text="" />
-      <Text layoutX="118.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đang gieo dữ liệu...">
+      <Text layoutX="47.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 50;" text="" />
+      <Text layoutX="97.0" layoutY="85.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đang tạo dữ liệu mẫu...">
          <font>
             <Font size="25.0" />
          </font>
