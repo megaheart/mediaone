@@ -20,7 +20,7 @@ public class testMusicInfo {
         var categories = adapter.getAllCategories();
         var people = adapter.getAllPeople();
         var publishers = adapter.getAllPublishers();
-        MusicInfo[] m = new MusicInfo[30];
+        MusicInfo[] m = new MusicInfo[20];
         m[0] = new MusicInfo("Lạc Trôi", "Lạc trôi là một bài hát của nam ca sĩ kiêm sáng tác nhạc Sơn Tùng M-TP được trích từ album phòng thu đầu tiên của anh, m-tp M-TP (2017). Nó được phát hành với vai trò là đĩa đơn mở đường trong album. Bài hát được sáng tác và thể hiện bởi chính Sơn Tùng với sự đồng hỗ trợ của nhà sản xuất Triple D. Ca khúc được phát hành lần đầu tiên trên hệ thống YouTube vào lúc ngày 1 tháng 1 năm 2017 giờ Việt Nam[1] và được phát hành trên hệ thống cửa hàng iTunes bởi công ty M-TP Entertainment và bởi Nhac.vn. Đây là ca khúc đầu tiên của Sơn Tùng M-TP trong năm 2017 cũng như ca khúc đầu tiên của Sơn Tùng sau khi rời khỏi WePro Entertainment và người quản lý cũ Nguyễn Quang Huy.",
                 categories.get(0),
                 LocalDate.of(2017, 1, 1), 500000, publishers.get(17), 5,
