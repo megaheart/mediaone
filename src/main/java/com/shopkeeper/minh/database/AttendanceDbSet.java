@@ -120,6 +120,11 @@ public class AttendanceDbSet {
             return false;
         }
 
+        for (Attendance x: readOnlyCache.getAttendances()){
+            if (x.getTime().isEqual(attendance.getTime())){
+                return false;
+            }
+        }
 
         if (!readOnlyCache.getStaffs().containsAll(attendance.getStaffsWork())){
             System.err.println("One Staff in which output of attendance.getStaffsWork() is not in DbAdapter's cache");
