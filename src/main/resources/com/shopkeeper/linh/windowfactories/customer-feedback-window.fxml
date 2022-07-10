@@ -51,7 +51,7 @@
                         <Insets left="6.0" right="6.0" />
                      </HBox.margin>
                   </Text>
-                  <Pane fx:id="targetPane" />
+                  <Pane fx:id="targetPane" maxWidth="280.0" prefWidth="280.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT">

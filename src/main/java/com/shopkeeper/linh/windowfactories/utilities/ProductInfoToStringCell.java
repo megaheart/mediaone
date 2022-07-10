@@ -11,13 +11,13 @@ public class ProductInfoToStringCell<T extends ProductInfo> extends ListCell<T> 
     @Override
     public void updateItem(T data, boolean empty)
     {
-        super.updateItem(data, empty);
+
         if (empty || data == null) {
             setText(null);
             setGraphic(null);
             return;
         }
-
+        super.updateItem(data, empty);
         setText(String.format("%s [%d]",
                 data.getTitle(),
                 data.getProductInfoId()
