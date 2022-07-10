@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class PublisherManager {
-    private PublisherManager manager;
-
-    public PublisherManager getManager() {
+    private static PublisherManager manager;
+    private PublisherManager(){}
+    public static PublisherManager getManager() {
 
         if (manager == null){
             manager = new PublisherManager();

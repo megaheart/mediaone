@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class CategoryManager {
-    private CategoryManager manager;
-
-    public CategoryManager getManager() {
+    private static CategoryManager manager;
+    private CategoryManager(){}
+    public static CategoryManager getManager() {
         if (manager == null){
             manager = new CategoryManager();
         }

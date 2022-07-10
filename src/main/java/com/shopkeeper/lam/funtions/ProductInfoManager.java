@@ -10,9 +10,32 @@ import java.util.Collections;
 
 public class ProductInfoManager {
     private static ProductInfoManager manager;
-    private ObservableList<BookInfo> listBookInfo;
-    private ObservableList<MusicInfo> listMusicInfo;
-    private ObservableList<FilmInfo> listFilmInfo;
+    private ObservableList<BookInfo> listBookInfo = DatabaseAdapter.getDbAdapter().getAllBookInfos();
+    private ObservableList<MusicInfo> listMusicInfo = DatabaseAdapter.getDbAdapter().getAllMusicInfos();
+    private ObservableList<FilmInfo> listFilmInfo = DatabaseAdapter.getDbAdapter().getAllFilmInfos();
+
+
+
+    public void addMusicInfo(MusicInfo musicInfo) {
+        listMusicInfo.add(musicInfo);
+    }
+    public void addBookInfo(BookInfo bookInfo) {
+        listBookInfo.add(bookInfo);
+    }
+    public void addFilmInfo(FilmInfo filmInfo) {
+        listFilmInfo.add(filmInfo);
+    }
+    public void setListBookInfo(ObservableList<BookInfo> listBookInfo) {
+        this.listBookInfo = listBookInfo;
+    }
+
+    public void setListMusicInfo(ObservableList<MusicInfo> listMusicInfo) {
+        this.listMusicInfo = listMusicInfo;
+    }
+
+    public void setListFilmInfo(ObservableList<FilmInfo> listFilmInfo) {
+        this.listFilmInfo = listFilmInfo;
+    }
 
     public ObservableList<BookInfo> getListBookInfo() {
         return listBookInfo;
