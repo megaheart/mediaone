@@ -289,7 +289,16 @@ public class PaymentWindowController {
     @FXML
     private void deleteSaleBill(){
         var selectedItem = saleBillListView.getSelectionModel().getSelectedItem();
-        DatabaseAdapter.getDbAdapter().deleteSaleBill(selectedItem);
+        var adapter = DatabaseAdapter.getDbAdapter();
+        if(adapter.getItems(selectedItem).size() > 0){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Không thể xoá hoá đơn");
+            alert.setHeaderText("Không thể xoá hoá đơn do hoá đơn đã được thanh toán.");
+            alert.setContentText("Chỉ xoá được hoá đơn rỗng");
+            alert.showAndWait();
+            return;
+        }
+        adapter.deleteSaleBill(selectedItem);
         saleBillListView.getSelectionModel().clearSelection();
         deleteSaleBillBtn.setVisible(false);
     }

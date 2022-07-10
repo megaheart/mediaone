@@ -64,7 +64,7 @@
                   </Text>
                </children>
             </AnchorPane>
-            <Button mnemonicParsing="false" onAction="#remove" style="-fx-font-family: &quot;Material Icons&quot;;" GridPane.columnIndex="4">
+            <Button fx:id="removeBtn" mnemonicParsing="false" onAction="#remove" style="-fx-font-family: &quot;Material Icons&quot;;" GridPane.columnIndex="4">
                <graphic>
                   <Text strokeMiterLimit="0.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 16;" text="" />
                </graphic>

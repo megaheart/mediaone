@@ -19,7 +19,6 @@ public class CustomerToStringCell extends ListCell<Customer> {
     @Override
     public void updateItem(Customer data, boolean empty)
     {
-        super.updateItem(data, empty);
         if (empty || data == null) {
             if(oldData != null) {
                 oldData.nameProperty().removeListener(titleChangeListener);
@@ -29,6 +28,7 @@ public class CustomerToStringCell extends ListCell<Customer> {
             setGraphic(null);
             return;
         }
+        super.updateItem(data, empty);
         if(data == oldData) return;
         if(oldData != null) {
             oldData.nameProperty().removeListener(titleChangeListener);

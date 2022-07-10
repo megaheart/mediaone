@@ -29,6 +29,7 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws Exception {
 
         PaymentWindowFactory.getFactory().openWindow();
+        //CustomerFeedbackWindowFactory.getFactory().openWindow();
         //javafx.application.Platform.exit();
     }
 

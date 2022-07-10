@@ -8,17 +8,29 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 public class SaleBillItem {
     public SaleBillItem(ProductInfo productInfo){
         this.productInfo = productInfo;
         products = FXCollections.observableArrayList();
+        productSet = new TreeSet<>(new ProductComparatorForSortedSet());
+        //unmodifiedProducts = FXCollections.unmodifiableObservableList(products);
     }
     private ProductInfo productInfo;
     private ObservableList<Product> products;
-
+    private SortedSet<Product> productSet;
+    //private ObservableList<Product> unmodifiedProducts;
     public ObservableList<Product> getProducts() {
         return products;
+    }
+    public boolean addProduct(Product product) {
+        if(productSet.add(product)){
+            products.add(product);
+            return true;
+        }
+        return false;
     }
 //    private IntegerProperty index = new SimpleIntegerProperty();
 //
@@ -51,7 +63,8 @@ public class SaleBillItem {
     }
     public SaleBillItem clone(){
         var x = new SaleBillItem(productInfo);
-        x.products = FXCollections.observableArrayList(this.products);
+        x.products.addAll(this.products);
+        x.productSet.addAll(this.products);
         return x;
     }
 }

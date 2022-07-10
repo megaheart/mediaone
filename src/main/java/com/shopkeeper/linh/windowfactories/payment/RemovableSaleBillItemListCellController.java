@@ -2,18 +2,20 @@ package com.shopkeeper.linh.windowfactories.payment;
 
 import com.shopkeeper.lam.models.Product;
 import com.shopkeeper.lam.models.ProductInfo;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
 
 public class RemovableSaleBillItemListCellController {
-    public static RemovableSaleBillItemListCellController getController(SaleBillItemRemoveListener listener){
+    public static RemovableSaleBillItemListCellController getController(SaleBillItemRemoveListener listener, BooleanProperty removable){
         FXMLLoader fxmlLoader = new FXMLLoader(RemovableSaleBillItemListCellController.class.getResource("removable-salebill-item-list-item.fxml"));
 
         Parent template;
@@ -22,6 +24,7 @@ public class RemovableSaleBillItemListCellController {
             template = fxmlLoader.load();
             RemovableSaleBillItemListCellController controller = fxmlLoader.getController();
             controller.listener = listener;
+            controller.bindRemovable(removable);
             return controller;
         }
         catch (IOException e)
@@ -42,10 +45,6 @@ public class RemovableSaleBillItemListCellController {
     private Text amountTxt;
     @FXML
     private Text priceTxt;
-    public void setProductInfo(ProductInfo productInfo){
-        productInfoNameTxt.setText(productInfo.getTitle());
-        pricePerProductTxt.setText(priceToString(productInfo.getCurrentSalePrice()));
-    }
     public String priceToString(double price){
         StringBuilder sb = new StringBuilder(String.valueOf((long) price));
         for(int i = sb.length() - 3; i > 0; i-=3){
@@ -67,7 +66,8 @@ public class RemovableSaleBillItemListCellController {
             oldItem.getProducts().removeListener(listChangeListener);
         }
         if(item != null) {
-            setProductInfo(item.getProductInfo());
+            productInfoNameTxt.setText(item.getProductInfo().getTitle());
+            pricePerProductTxt.setText(priceToString(item.getPrice()));
             amountTxt.setText(String.valueOf(item.getAmount()));
             priceTxt.setText(priceToString(item.getPrice()));
             item.getProducts().addListener(listChangeListener);
@@ -77,5 +77,10 @@ public class RemovableSaleBillItemListCellController {
     public SaleBillItemRemoveListener listener = null;
     public void remove(){
         listener.remove(oldItem);
+    }
+    @FXML
+    private Button removeBtn;
+    public void bindRemovable(BooleanProperty removable){
+        removeBtn.visibleProperty().bind(removable);
     }
 }

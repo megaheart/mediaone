@@ -156,9 +156,9 @@
                               </Text>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#saveChange" prefWidth="148.0" text="Lưu">
+                        <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveChange" prefWidth="148.0" text="Lưu">
                            <graphic>
-                              <Text fill="#1db107" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 16;" text="">
+                              <Text fx:id="saveBtnIconTxt" fill="#076db0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 16;" text="">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -266,14 +266,14 @@
                   </ScrollPane>
                </center>
                <top>
-                  <AnchorPane prefHeight="86.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <AnchorPane fx:id="addSaleBillItemPanel" prefHeight="86.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="46.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                            <children>
-                              <ComboBox fx:id="productInfoComboBox" prefWidth="150.0" />
+                              <ComboBox fx:id="productInfoComboBox" prefWidth="150.0" promptText="Chọn loại sản phẩm" />
                               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng:">
                                  <HBox.margin>
                                     <Insets left="20.0" />
@@ -301,7 +301,7 @@
                                     <Insets />
                                  </HBox.margin>
                                  <padding>
-                                    <Insets top="14.0" />
+                                    <Insets top="11.0" />
                                  </padding>
                               </AnchorPane>
                               <Button mnemonicParsing="false" onAction="#addSaleBillItem" text="Thêm">
@@ -314,6 +314,7 @@
                               </Button>
                            </children>
                         </HBox>
+                        <ComboBox fx:id="feedbackAboutCombobox" prefWidth="150.0" promptText="Chọn danh mục" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="20.0" />
                      </children>
                   </AnchorPane>
                </top>

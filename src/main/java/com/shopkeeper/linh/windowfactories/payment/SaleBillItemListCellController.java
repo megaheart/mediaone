@@ -38,10 +38,6 @@ public class SaleBillItemListCellController {
     private Text amountTxt;
     @FXML
     private Text priceTxt;
-    public void setProductInfo(ProductInfo productInfo){
-        productInfoNameTxt.setText(productInfo.getTitle());
-        pricePerProductTxt.setText(priceToString(productInfo.getCurrentSalePrice()));
-    }
     public String priceToString(double price){
         StringBuilder sb = new StringBuilder(String.valueOf((long) price));
         for(int i = sb.length() - 3; i > 0; i-=3){
@@ -51,7 +47,8 @@ public class SaleBillItemListCellController {
     }
     public void setDataContext(SaleBillItem item){
         if(item == null) return;
-        setProductInfo(item.getProductInfo());
+        productInfoNameTxt.setText(item.getProductInfo().getTitle());
+        pricePerProductTxt.setText(priceToString(item.getPrice()));
         amountTxt.setText(String.valueOf(item.getAmount()));
         priceTxt.setText(priceToString(item.getPrice()));
     }
