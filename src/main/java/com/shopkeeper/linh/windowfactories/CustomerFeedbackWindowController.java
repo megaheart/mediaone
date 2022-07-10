@@ -298,6 +298,7 @@ public class CustomerFeedbackWindowController {
                     targetPane.getChildren().clear();
                     targetPane.getChildren().add(musicInfosCombobox);
                     feedbackRatePane.setVisible(true);
+                    musicInfosCombobox.setMaxWidth(280);
                 }
                 case FilmInfo -> {
                     filmInfosCombobox.getSelectionModel().clearSelection();
@@ -305,6 +306,7 @@ public class CustomerFeedbackWindowController {
                     targetPane.getChildren().clear();
                     targetPane.getChildren().add(filmInfosCombobox);
                     feedbackRatePane.setVisible(true);
+                    filmInfosCombobox.setMaxWidth(280);
                 }
                 case BookInfo -> {
                     bookInfosCombobox.getSelectionModel().clearSelection();
@@ -312,6 +314,7 @@ public class CustomerFeedbackWindowController {
                     targetPane.getChildren().clear();
                     targetPane.getChildren().add(bookInfosCombobox);
                     feedbackRatePane.setVisible(true);
+                    bookInfosCombobox.setMaxWidth(280);
                 }
                 case Staff -> {
                     staffsComboBox.getSelectionModel().clearSelection();
@@ -319,6 +322,7 @@ public class CustomerFeedbackWindowController {
                     targetPane.getChildren().clear();
                     targetPane.getChildren().add(staffsComboBox);
                     feedbackRatePane.setVisible(false);
+                    staffsComboBox.setMaxWidth(280);
                 }
                 case Product -> {
                     otherTargetTxt.setText("");
@@ -326,6 +330,7 @@ public class CustomerFeedbackWindowController {
                     targetPane.getChildren().clear();
                     targetPane.getChildren().add(otherTargetTxt);
                     feedbackRatePane.setVisible(false);
+                    otherTargetTxt.setMaxWidth(280);
                 }
                 case Service -> {
                     otherTargetTxt.setText("");
@@ -333,6 +338,7 @@ public class CustomerFeedbackWindowController {
                     targetPane.getChildren().clear();
                     targetPane.getChildren().add(otherTargetTxt);
                     feedbackRatePane.setVisible(false);
+                    otherTargetTxt.setMaxWidth(280);
                 }
                 default -> {
                     targetPane.getChildren().clear();

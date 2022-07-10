@@ -22,7 +22,7 @@ public class CustomerManagerWindowFactory extends WindowFactory {
         URL location = FeedbackWindowFactory.class.getResource("customer-manager-window.fxml");
         FXMLLoader fxmlLoader = new FXMLLoader(location);
         Scene scene = null;
-        stage.setTitle("Quản lý phản hồi");
+        stage.setTitle("Quản lý khách hàng");
         stage.setResizable(false);
         try {
             scene = new Scene(fxmlLoader.load());

@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
@@ -33,7 +34,7 @@
                </padding>
                <children>
                   <Label text="Tiêu đề:" />
-                  <TextField fx:id="titleTxt" prefHeight="26.0" prefWidth="485.0" promptText="Nhập tên hoá đơn">
+                  <TextField fx:id="titleTxt" prefHeight="26.0" prefWidth="396.0" promptText="Nhập tên hoá đơn">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -69,7 +70,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </RadioButton>
-                        <TextField fx:id="customerNameTxt" prefWidth="305.0" promptText="Tên khách hàng">
+                        <TextField fx:id="customerNameTxt" prefWidth="274.0" promptText="Tên khách hàng">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -89,7 +90,7 @@
                               <Insets right="10.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField fx:id="phoneNumberTxt" prefWidth="342.0" promptText="0xxxxxxxxxxx/84xxxxxxxxx">
+                        <TextField fx:id="phoneNumberTxt" prefWidth="313.0" promptText="0xxxxxxxxxxx/84xxxxxxxxx">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -124,7 +125,7 @@
                         <Insets />
                      </VBox.margin>
                   </Label>
-                  <TextArea fx:id="noteTxt" prefHeight="150.0" prefWidth="200.0" promptText="Miêu tả chi tiết thông tin về vấn đề/góp ý/đề xuất/phản hồi" wrapText="true">
+                  <TextArea fx:id="noteTxt" prefHeight="150.0" promptText="Miêu tả chi tiết thông tin về vấn đề/góp ý/đề xuất/phản hồi" wrapText="true">
                      <VBox.margin>
                         <Insets />
                      </VBox.margin>
@@ -155,9 +156,9 @@
                               </Text>
                            </graphic>
                         </Button>
-                        <Button mnemonicParsing="false" onAction="#saveChange" prefWidth="148.0" text="Lưu">
+                        <Button fx:id="saveBtn" mnemonicParsing="false" onAction="#saveChange" prefWidth="148.0" text="Lưu">
                            <graphic>
-                              <Text fill="#1db107" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 16;" text="">
+                              <Text fx:id="saveBtnIconTxt" fill="#076db0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 16;" text="">
                                  <font>
                                     <Font size="16.0" />
                                  </font>
@@ -173,26 +174,149 @@
             </VBox>
          </center>
          <left>
-            <BorderPane prefWidth="434.0" BorderPane.alignment="CENTER">
+            <BorderPane prefWidth="464.0" stylesheets="@../general-styles.css" BorderPane.alignment="CENTER">
                <center>
                   <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="546.0" prefWidth="430.0">
+                           <children>
+                              <VBox style="-fx-border-radius: 2; -fx-border-color: gray; -fx-border-width: 1;" AnchorPane.leftAnchor="8.0">
+                                 <children>
+                                    <GridPane>
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="0.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="0.0" prefWidth="40.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="1.7976931348623157E308" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mặt hàng">
+                                             <GridPane.margin>
+                                                <Insets left="12.0" />
+                                             </GridPane.margin>
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                          </Text>
+                                          <AnchorPane GridPane.columnIndex="1">
+                                             <children>
+                                                <Text fx:id="pricePerProductTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Đơn giá" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane GridPane.columnIndex="2">
+                                             <children>
+                                                <Text fx:id="amountTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane GridPane.columnIndex="3">
+                                             <children>
+                                                <Text fx:id="priceTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Thành tiền" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="0.0">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </GridPane>
+                                    <ListView fx:id="saleBillItemListView" prefHeight="490.0" prefWidth="444.0" />
+                                    <HBox>
+                                       <children>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Tổng tiền:">
+                                             <font>
+                                                <Font size="14.0" />
+                                             </font>
+                                             <HBox.margin>
+                                                <Insets left="215.0" right="5.0" />
+                                             </HBox.margin>
+                                          </Text>
+                                          <AnchorPane maxWidth="1.7976931348623157E308" prefWidth="121.0">
+                                             <children>
+                                                <Text fx:id="totalPriceTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="15.000.000" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="4.0">
+                                                   <font>
+                                                      <Font name="Consolas" size="15.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                                 <padding>
+                                    <Insets bottom="4.0" top="4.0" />
+                                 </padding>
+                              </VBox>
+                           </children></AnchorPane>
                     </content>
                   </ScrollPane>
                </center>
                <top>
-                  <GridPane BorderPane.alignment="CENTER">
-                    <columnConstraints>
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    </columnConstraints>
-                    <rowConstraints>
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    </rowConstraints>
-                  </GridPane>
+                  <AnchorPane fx:id="addSaleBillItemPanel" prefHeight="86.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="40.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <children>
+                              <ComboBox fx:id="productInfoComboBox" prefWidth="150.0" promptText="Chọn loại sản phẩm" />
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Số lượng:">
+                                 <HBox.margin>
+                                    <Insets left="20.0" />
+                                 </HBox.margin>
+                              </Text>
+                              <TextField fx:id="amountTxtBox" prefWidth="56.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </TextField>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="/">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <AnchorPane prefWidth="66.0">
+                                 <children>
+                                    <Text fx:id="maxAmountTxtBox" strokeType="OUTSIDE" strokeWidth="0.0" text="0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets top="11.0" />
+                                 </padding>
+                              </AnchorPane>
+                              <Button mnemonicParsing="false" onAction="#addSaleBillItem" text="Thêm">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 16;" text="" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ComboBox fx:id="feedbackAboutCombobox" prefWidth="150.0" promptText="Chọn danh mục" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="20.0" />
+                     </children>
+                  </AnchorPane>
                </top>
             </BorderPane>
          </left>
