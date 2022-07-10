@@ -242,11 +242,12 @@ public class PaymentWindowController {
                 }
             }
             if(saleBillItem == null){
-                output.add(new SaleBillItem(p.getProductInfo(), 1));
+                saleBillItem = new SaleBillItem(p.getProductInfo());
+                saleBillItem.getProducts().add(p);
+                output.add(saleBillItem);
             }
             else{
-
-                saleBillItem.setAmount(saleBillItem.getAmount() + 1);
+                saleBillItem.getProducts().add(p);
             }
         }
         return output;
@@ -304,13 +305,14 @@ public class PaymentWindowController {
             }
         }
     }
+
     @FXML
     private void createNewSaleBill(){
-        editingPanelController.openPanel(null);
+        editingPanelController.openPanel(null, null);
     }
     @FXML
     private void editSaleBill(){
-        editingPanelController.openPanel(saleBillListView.getSelectionModel().getSelectedItem());
+        editingPanelController.openPanel(saleBillListView.getSelectionModel().getSelectedItem(), currentSaleBillItems);
     }
     private void initializeSaleBillList(){
         deleteSaleBillBtn.setVisible(false);

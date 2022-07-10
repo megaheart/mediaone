@@ -1,14 +1,19 @@
 package com.shopkeeper.linh.windowfactories.payment;
 
+import com.shopkeeper.lam.models.ProductInfo;
 import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.windowfactories.utilities.CustomerToStringCell;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
 
 import java.io.IOException;
@@ -28,6 +33,9 @@ public class SalebillEditingPanelController {
         {
             throw new RuntimeException(e);
         }
+    }
+    public SalebillEditingPanelController(){
+        this.saleBillItems = FXCollections.observableArrayList();
     }
     public AnchorPane getContainer(){
         return container;
@@ -50,8 +58,13 @@ public class SalebillEditingPanelController {
     private TextField phoneNumberTxt;
     @FXML
     private TextArea noteTxt;
+    @FXML
+    private Text totalPriceTxt;
     private SaleBill saleBill = null;
-    public void openPanel(SaleBill saleBill){
+    private ObservableList<SaleBillItem> saleBillItems;
+    private ObservableList<SaleBillItem> saleBillItemsDataContext;
+    public void openPanel(SaleBill saleBill, ObservableList<SaleBillItem> saleBillItems){
+        this.saleBillItemsDataContext = saleBillItems;
         this.saleBill = saleBill;
         resetPanel();
         container.setVisible(true);
@@ -81,6 +94,12 @@ public class SalebillEditingPanelController {
             chooseOldCustomerBtn.setSelected(true);
             chooseNewCustomerBtn.setSelected(false);
             phoneNumberTxt.setText(saleBill.getCustomer().getPhoneNumber());
+        }
+        saleBillItems.clear();
+        if(saleBillItemsDataContext != null){
+            for(var x : saleBillItemsDataContext){
+                saleBillItems.add(x.clone());
+            }
         }
     }
     @FXML
@@ -182,6 +201,36 @@ public class SalebillEditingPanelController {
             alert.showAndWait();
         }
     }
+    @FXML
+    private ComboBox<ProductInfo> productInfoComboBox;
+    @FXML
+    private TextField amountTxtBox;
+    @FXML
+    private Text maxAmountTxtBox;
+    @FXML
+    private void addSaleBillItem(){
+        int amount;
+        try {
+            amount = Integer.parseInt(amountTxtBox.getText());
+        }catch (NumberFormatException e){
+            amount = 0;
+        }
+        if(amount < 1){
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Số lượng không hợp lệ");
+            alert.setHeaderText("Số lượng không hợp lệ");
+            alert.setContentText("Số lượng phải là một số nguyên dương (>=0)");
+            alert.showAndWait();
+        }
+    }
+    @FXML
+    private ListView<SaleBillItem> saleBillItemListView;
+    private final SaleBillItemRemoveListener listener = new SaleBillItemRemoveListener() {
+        @Override
+        public void remove(SaleBillItem item) {
+            saleBillItems.remove(item);
+        }
+    };
     public void initialize()
     {
         customerCombobox.disableProperty().bind(chooseOldCustomerBtn.selectedProperty().not());
@@ -214,5 +263,12 @@ public class SalebillEditingPanelController {
                 phoneNumberTxt.setText("");
             }
         });
+        saleBillItemListView.setCellFactory(new Callback<ListView<SaleBillItem>, ListCell<SaleBillItem>>() {
+            @Override
+            public ListCell<SaleBillItem> call(ListView<SaleBillItem> param) {
+                return new RemovableSaleBillItemListCell(listener);
+            }
+        });
+        saleBillItemListView.setItems(saleBillItems);
     }
 }
