@@ -121,12 +121,10 @@ public class AttendanceDbSet {
         }
 
         for (Attendance x: readOnlyCache.getAttendances()){
-            if (x.getTime().equals(attendance.getTime())){
-                System.err.println("attendance has already been in DbAdapter's cache or its time matches another attendance");
+            if (x.getTime().isEqual(attendance.getTime())){
                 return false;
             }
         }
-
 
         if (!readOnlyCache.getStaffs().containsAll(attendance.getStaffsWork())){
             System.err.println("One Staff in which output of attendance.getStaffsWork() is not in DbAdapter's cache");
