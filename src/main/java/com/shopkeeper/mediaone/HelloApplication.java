@@ -30,11 +30,11 @@ import java.util.Arrays;
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        //ManagerWindowFactory.getFactory().openWindow();
-        //CustomerWindowFactory.getFactory().openWindow();
+        ManagerWindowFactory.getFactory().openWindow();
+        CustomerWindowFactory.getFactory().openWindow();
         //javafx.application.Platform.exit();
-        DataSeeder.SeedData();
-        javafx.application.Platform.exit();
+        //DataSeeder.SeedData();
+        //javafx.application.Platform.exit();
     }
 
     public static void main(String[] args) {

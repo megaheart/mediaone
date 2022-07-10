@@ -2,6 +2,7 @@ package com.shopkeeper.lam.windowfactories.fileFxml;
 
 import com.shopkeeper.linh.models.Feedback;
 import com.shopkeeper.linh.seeders.DataSeeder;
+import com.shopkeeper.linh.windowfactories.CustomerManagerWindowFactory;
 import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
 import com.shopkeeper.linh.windowfactories.PaymentWindowFactory;
 import com.shopkeeper.linh.windowfactories.SeedingDataDialogController;
@@ -49,7 +50,7 @@ public class WindowManagerController  {
         AccountantWindowFactory.getFactory().openWindow();
     }
     public void openCustomerManager(ActionEvent event){
-        CustomerWindowFactory.getFactory().openWindow();
+        CustomerManagerWindowFactory.getFactory().openWindow();
     }
     public void setDataSeed(ActionEvent event){
         try {
