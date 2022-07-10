@@ -12,7 +12,7 @@ import javafx.beans.value.ObservableValue;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
-public abstract class ProductInfo implements IReferencedCounter {
+public  class ProductInfo implements IReferencedCounter {
     private int productInfoId;
     private String title;
     private String description;

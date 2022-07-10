@@ -16,7 +16,7 @@ public class ProductInfoManager {
 
 
 
-    public void addMusicInfo(MusicInfo musicInfo) {
+   /* public void addMusicInfo(MusicInfo musicInfo) {
         listMusicInfo.add(musicInfo);
     }
     public void addBookInfo(BookInfo bookInfo) {
@@ -24,7 +24,7 @@ public class ProductInfoManager {
     }
     public void addFilmInfo(FilmInfo filmInfo) {
         listFilmInfo.add(filmInfo);
-    }
+    }*/
     public void setListBookInfo(ObservableList<BookInfo> listBookInfo) {
         this.listBookInfo = listBookInfo;
     }

@@ -80,7 +80,7 @@ public class testImportBill {
         bookBills[18] = new ImportBill("Sách Chạm tới giấc mơ", 50000, LocalDate.of(2021,9,16), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
         bookBills[19] = new ImportBill("Sách Đắc nhân tâm", 50000, LocalDate.of(2021,6,21), true, "3 sách", "Nhà xuất bản tổng hợp TPHCM");
 
-        var adapter = DatabaseAdapter.getDbAdapter();
+
         for(var x : bookBills){
             adapter.insertImportBill(x);
         }
