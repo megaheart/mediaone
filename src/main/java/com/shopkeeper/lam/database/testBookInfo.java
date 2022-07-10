@@ -120,7 +120,6 @@ public class testBookInfo {
             adapter.insertBookInfo(x);
         }
 
-
     }
     public void update() throws Exception{
         var adapter = DatabaseAdapter.getDbAdapter();

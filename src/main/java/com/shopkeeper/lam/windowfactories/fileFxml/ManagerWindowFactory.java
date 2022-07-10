@@ -1,18 +1,20 @@
 package com.shopkeeper.lam.windowfactories.fileFxml;
 
 import com.shopkeeper.mediaone.windowfactories.WindowFactory;
+import com.shopkeeper.vu.windowfactories.AccountantWindowFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-public class WindowCustomerOption extends WindowFactory {
-    private static WindowCustomerOption factory = new WindowCustomerOption();
+public class ManagerWindowFactory extends WindowFactory  {
+    private static ManagerWindowFactory factory = new ManagerWindowFactory();
 
-    public static WindowCustomerOption getFactory() {
+    public static ManagerWindowFactory getFactory() {
         return factory;
     }
-    public WindowCustomerOption(){
+    public ManagerWindowFactory(){
         {
             currentWindow = null;
         }
@@ -22,11 +24,11 @@ public class WindowCustomerOption extends WindowFactory {
         Stage stage = new Stage();
         Scene scene = null;
         try {
-            Parent root = FXMLLoader.load(this.getClass().getResource("Customer.fxml"));
-            stage.setTitle("Customer");
-            stage.setResizable(false);
-
-            scene  = new Scene(root);
+        Parent root = FXMLLoader.load(this.getClass().getResource("Manager.fxml"));
+        stage.setTitle("Manager");
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("87247676_p0_master1200.jpg"))));
+        scene  = new Scene(root);
         }
         catch (Exception e){
             System.err.println(e.getMessage());

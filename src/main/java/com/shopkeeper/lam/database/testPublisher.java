@@ -47,10 +47,7 @@ public class testPublisher {
         for(Publisher pi : p){
             adapter.insertPublisher(pi);
         }
-        System.out.println("----------<><><><><>----------");
-        for(var x :adapter.getAllPublishers()){
-            System.out.println(x);
-        }
+
     }
     public void updatePublisher() throws Exception{
         var adapter = DatabaseAdapter.getDbAdapter();
