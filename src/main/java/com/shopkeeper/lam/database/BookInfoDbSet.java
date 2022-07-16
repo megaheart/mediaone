@@ -56,6 +56,7 @@ public class BookInfoDbSet {
         int index;
         while (rs.next()) {
             productInfo = new BookInfo();
+            productInfo.setNumberOfProduct(0);
             productInfo.setProductInfoId(rs.getInt("productInfoId"));
             productInfo.setTitle(rs.getString("title"));
             productInfo.setDescription(rs.getString("description"));
