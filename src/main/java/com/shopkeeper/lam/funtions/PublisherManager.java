@@ -8,9 +8,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class PublisherManager {
-    private PublisherManager manager;
+    private static PublisherManager manager;
 
-    public PublisherManager getManager() {
+    public static PublisherManager getManager() {
 
         if (manager == null){
             manager = new PublisherManager();
@@ -55,7 +55,7 @@ public class PublisherManager {
     }
 
     //find the name of publisher by the subName,ignore the space at start and end
-    public ArrayList<Publisher> findAdvanceBy(String subName) throws Exception {
+    public ArrayList<Publisher> findAdvanceBy(String subName) {
         ArrayList<Publisher> publishers=new ArrayList<>();
         var adapter = DatabaseAdapter.getDbAdapter();
         for(Publisher publisher:adapter.getAllPublishers()){
