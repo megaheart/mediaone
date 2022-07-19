@@ -148,8 +148,6 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-//                parent.getShowedProducts().add(res);
-//                parent.initShow(parent.getShowedProducts());
 
 
             }
@@ -182,8 +180,6 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-//                parent.getShowedProducts().add(res);
-//                parent.initShow(parent.getShowedProducts());
             }
             case "music"->{
                 ArrayList<Person> musicians = new ArrayList<>();
@@ -206,8 +202,6 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-//                parent.getShowedProducts().add(res);
-//                parent.initShow(parent.getShowedProducts());
 
             }
             default -> throw new IllegalStateException("Unexpected value: " + temp);
