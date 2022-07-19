@@ -32,7 +32,7 @@ public class AddProductPage extends Controller implements Initializable {
     DatePicker releaseDate;
     @FXML
     ListView<String> musiciansList, actorsListView, authorsListView;
-    private final ProductInfo productInfo = new ProductInfo();
+    private ProductInfo productInfo ;
 
     private final ObservableList<String> authorsName = FXCollections.observableArrayList();
     private final ObservableList<String> musicianName = FXCollections.observableArrayList();
@@ -40,25 +40,38 @@ public class AddProductPage extends Controller implements Initializable {
     public boolean check(){
 
         var x = productInfo;
-        if(left.getText().equals("") ||name.getText().equals("") || price.getText().equals("")
-        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") )
-            return false;
         return(x.getPublisher()!= null &&x.getTitle()!=null &&x.getReleaseDate()!=null
         &&x.getAward()!=null && x.getCategory()!=null);
     }
-    public void getInfo(){
+    public void getInfo() throws Exception {
+        if(name.getText().equals("")
+                || price.getText().equals("")
+                || left.getText().equals("")
+                || description.getText().equals("")
+                || rating.getText().equals("")
+                || award.getText().equals(""))
+            return;
         var check = type.getValue();
         if(check == null) {
             return;
         }
-        if(!name.getText().equals("")) productInfo.setTitle(name.getText());
-        if(!price.getText().equals(""))productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
-        if(!left.getText().equals(""))productInfo.setNumberOfProduct(Integer.parseInt(left.getText()));
-        if(!description.getText().equals(""))productInfo.setDescription(description.getText());
-        if(!rating.getText().equals(""))productInfo.setRating(Integer.parseInt(rating.getText()));
-        if(!award.getText().equals(""))productInfo.setAward(new ArrayList<> (Arrays.asList(award.getText().split("\n")))   );
-        productInfo.setReleaseDate(releaseDate.getValue());
-//        productInfo1.setPublisher
+        Category category = null;
+        for(var x: CategoryManager.getManager().getAll()){
+            if(x.getName().equals(categoryComboBox.getValue())){
+                category= x;
+                break;
+            }
+        }
+        Publisher publisher = null;
+        for(var x: PublisherManager.getManager().getAll()){
+            if(x.getName().equals(publisherComboBox.getValue())){
+                publisher = x;
+                break;
+            }
+        }
+        productInfo = new ProductInfo(name.getText(),description.getText(),category, releaseDate.getValue(),
+                Integer.parseInt(price.getText()),publisher,
+                Integer.parseInt(rating.getText()),new ArrayList<> (Arrays.asList(award.getText().split("\n"))));
     }
 
     public void setAddAuthorButton(){
@@ -135,8 +148,8 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-                parent.getShowedProducts().add(res);
-                parent.initShow(parent.getShowedProducts());
+//                parent.getShowedProducts().add(res);
+//                parent.initShow(parent.getShowedProducts());
 
 
             }
@@ -169,8 +182,8 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-                parent.getShowedProducts().add(res);
-                parent.initShow(parent.getShowedProducts());
+//                parent.getShowedProducts().add(res);
+//                parent.initShow(parent.getShowedProducts());
             }
             case "music"->{
                 ArrayList<Person> musicians = new ArrayList<>();
@@ -193,8 +206,8 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-                parent.getShowedProducts().add(res);
-                parent.initShow(parent.getShowedProducts());
+//                parent.getShowedProducts().add(res);
+//                parent.initShow(parent.getShowedProducts());
 
             }
             default -> throw new IllegalStateException("Unexpected value: " + temp);

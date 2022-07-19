@@ -136,6 +136,7 @@ public class CategoryPage extends Controller implements Initializable {
             category.setName(nameTextField.getText());
             category.setDescription(descriptionTextArea.getText());
             CategoryManager.getManager().add(category);
+            this.category= category;
         }
         if(mode.equals("edit")){
             this.category.setName(nameTextField.getText());
