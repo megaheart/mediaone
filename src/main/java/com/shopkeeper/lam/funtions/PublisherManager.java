@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class PublisherManager {
     private static PublisherManager manager;
-
+    private PublisherManager(){}
     public static PublisherManager getManager() {
 
         if (manager == null){
@@ -55,7 +55,7 @@ public class PublisherManager {
     }
 
     //find the name of publisher by the subName,ignore the space at start and end
-    public ArrayList<Publisher> findAdvanceBy(String subName) {
+    public ArrayList<Publisher> findAdvanceBy(String subName) throws Exception {
         ArrayList<Publisher> publishers=new ArrayList<>();
         var adapter = DatabaseAdapter.getDbAdapter();
         for(Publisher publisher:adapter.getAllPublishers()){

@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class CategoryManager {
     private static CategoryManager manager;
-
+    private CategoryManager(){}
     public static CategoryManager getManager() {
         if (manager == null){
             manager = new CategoryManager();
