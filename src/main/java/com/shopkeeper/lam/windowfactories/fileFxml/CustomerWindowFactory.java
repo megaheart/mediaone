@@ -14,9 +14,7 @@ public class CustomerWindowFactory extends WindowFactory {
         return factory;
     }
     public CustomerWindowFactory(){
-        {
-            currentWindow = null;
-        }
+        currentWindow = null;
     }
     @Override
     public Stage createWindow()  {

@@ -139,12 +139,16 @@ public class CustomerManagerWindowController {
     }
     @FXML
     private void deleteCustomer(){
-        if(!DatabaseAdapter.getDbAdapter().deleteCustomer(customerListView.getSelectionModel().getSelectedItem())){
+        var selectedCustomer = customerListView.getSelectionModel().getSelectedItem();
+        if(selectedCustomer.countTimesToBeReferenced() > 0){
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Không thể xoá phần tử này");
             alert.setHeaderText("Không thể xoá phần tử này");
             alert.setContentText("Phần tử này đã được sử dụng trong một hoá đơn nào đó.");
             alert.showAndWait();
+        }
+        else {
+            DatabaseAdapter.getDbAdapter().deleteCustomer(selectedCustomer);
         }
     }
     @FXML
