@@ -127,6 +127,7 @@ public class ControllerWMWF implements Initializable {
     private ObservableList<Product> listProductVip;
     private ObservableList<ImportBill> listimport;
     private ObservableList<OtherBill> list;
+    private ObservableList<OtherBill> list1;
     private String[] hieuluc = {"true","flase"};
     private String[] type = {"Music","Book","Film"};
 
@@ -135,18 +136,22 @@ public class ControllerWMWF implements Initializable {
         comboBox_kieuproduct.getItems().addAll(type);
         comboBox_tfother.getItems().addAll(hieuluc);
         comboBox_tfimport.getItems().addAll(hieuluc);
+        comboBox_kieuproduct.getSelectionModel().selectFirst();
+        comboBox_tfimport.getSelectionModel().selectFirst();
+        comboBox_tfother.getSelectionModel().selectFirst();
+
     }
     // Other Bill
+
     public  void setBt_timkiemother() throws Exception {
+        var adapter = DatabaseAdapter.getDbAdapter();
         try{
             listOtherBill = FXCollections.observableArrayList();
-            var adapter = DatabaseAdapter.getDbAdapter();
             list = adapter.getAllOtherBills();
             for (OtherBill c:list) {
-                if(c.getName().equals(textField_nameother.getText())){
-                    listOtherBill.add(c);
-                }
-                if(c.getTime().equals(date_other.getValue())){
+                String v= c.getName();
+                String s = textField_nameother.getText();
+                if(v.indexOf(s)>=0){
                     listOtherBill.add(c);
                 }
             }
@@ -224,10 +229,9 @@ public class ControllerWMWF implements Initializable {
             var adapter = DatabaseAdapter.getDbAdapter();
             listimport = adapter.getAllImportBills();
             for (ImportBill c:listimport) {
-                if(c.getName().equals(textField_nameimport.getText())){
-                    listImportBill.add(c);
-                }
-                if(c.getTime().equals(date_import.getValue())){
+                String d = c.getName();
+                String e = textField_nameimport.getText();
+                if(d.indexOf(e)>=0){
                     listImportBill.add(c);
                 }
             }
@@ -315,16 +319,15 @@ public class ControllerWMWF implements Initializable {
     // QUan ly Product
     public void setBt_timkiemproduct() throws Exception {
         String b = String.valueOf(comboBox_kieuproduct.getValue());
-        if(b.equals(null)){
+        if(b.equals("Book")){
             try{
                 var adapter =DatabaseAdapter.getDbAdapter();
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
-                    if(a.getProductId()==Integer.valueOf(textField_idproduct.getText())){
-                        listProductVip.add(a);
-                    }
-                    if(a.getTrialFilename().equals(textField_nameother.getText())){
+                    String d = a.getTrialFilename();
+                    String e = textField_nameoproduct.getText();
+                    if(d.indexOf(e)>=0&& a.getProductInfo() instanceof  BookInfo){
                         listProductVip.add(a);
                     }
                 }
@@ -348,8 +351,11 @@ public class ControllerWMWF implements Initializable {
                 var adapter =DatabaseAdapter.getDbAdapter();
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
+
                 for (Product a: listProduct) {
-                    if(a.getProductInfo() instanceof MusicInfo){
+                    String d = a.getTrialFilename();
+                    String e = textField_nameoproduct.getText();
+                    if(d.indexOf(e)>=0&&a.getProductInfo() instanceof MusicInfo){
                         listProductVip.add(a);
                     }
                 }
@@ -375,32 +381,9 @@ public class ControllerWMWF implements Initializable {
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
-                    if(a.getProductInfo() instanceof FilmInfo){
-                        listProductVip.add(a);
-                    }
-                }
-                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
-                cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
-                cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
-                cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
-                cl_importproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("importCost"));
-                cl_placementproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("placement"));
-                tableView_product.setItems(listProductVip);
-            }
-            catch (Exception e){
-                Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
-                a.setTitle("Thông báo khẩn");
-                a.setHeaderText(null);
-                a.show();
-            }
-        }
-        else {
-            try{
-                var adapter =DatabaseAdapter.getDbAdapter();
-                listProductVip = FXCollections.observableArrayList();
-                listProduct = adapter.getAllProducts();
-                for (Product a: listProduct) {
-                    if(a.getProductInfo() instanceof BookInfo){
+                    String d = a.getTrialFilename();
+                    String e = textField_nameoproduct.getText();
+                    if(d.indexOf(e)>=0&&a.getProductInfo() instanceof FilmInfo){
                         listProductVip.add(a);
                     }
                 }

@@ -96,7 +96,6 @@ public class ControllerAccountantWindowFactory implements Initializable {
 
     }
     public  void oa_phantich() throws Exception {
-
         LocalDate day1 = date_day1.getValue();
         LocalDate day2 = date_day2.getValue();
         if(day1.isAfter(day2)){
