@@ -12,7 +12,7 @@ import javafx.beans.value.ObservableValue;
 import java.security.InvalidParameterException;
 import java.util.*;
 import java.time.*;
-public abstract class ProductInfo implements IReferencedCounter {
+public  class ProductInfo implements IReferencedCounter {
     private int productInfoId;
     private String title;
     private String description;
@@ -39,7 +39,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         productInfoId=0;
         this.title = "Unknown";
         this.description = "Unknown";
-        this.category = DatabaseAdapter.getDbAdapter().getAllCategories().get(36);
+        this.category = DatabaseAdapter.getDbAdapter().getAllCategories().get(0);
         this.releaseDate = LocalDate.now();
         this.currentSalePrice = 999999;
         this.publisher = DatabaseAdapter.getDbAdapter().getAllPublishers().get(0);
@@ -51,7 +51,7 @@ public abstract class ProductInfo implements IReferencedCounter {
         productInfoId=0;
         this.title = title;
         this.description = description;
-        this.category = DatabaseAdapter.getDbAdapter().getAllCategories().get(36);
+        this.category = DatabaseAdapter.getDbAdapter().getAllCategories().get(0);
         this.releaseDate = releaseDate;
         this.currentSalePrice = currentSalePrice;
         this.publisher = DatabaseAdapter.getDbAdapter().getAllPublishers().get(0);

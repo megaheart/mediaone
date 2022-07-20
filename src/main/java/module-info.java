@@ -28,4 +28,15 @@ opens com.shopkeeper.lam.windowfactories.fileFxml to javafx.fxml;
     opens com.shopkeeper.vu.windowfactories to javafx.fxml;
     opens com.shopkeeper.minh.models to javafx.base;
     opens com.shopkeeper.lam.models to javafx.base;
+
+
+    opens com.shopkeeper.hung.windowfactories to javafx.fxml;
+    exports com.shopkeeper.hung.windowfactories;
+    exports com.shopkeeper.hung.windowfactories.fxml;
+    opens com.shopkeeper.hung.windowfactories.fxml to javafx.fxml;
+
+    requires org.xerial.sqlitejdbc;
+    requires com.jfoenix;
+    exports com.shopkeeper.lam.models;
+
 }
