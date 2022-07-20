@@ -237,7 +237,7 @@
             </VBox>
         </top>
         <center>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #ffffff; -fx-view-order: 9999;" BorderPane.alignment="CENTER">
+            <ScrollPane hbarPolicy="NEVER" style="-fx-background-color: #ffffff; -fx-view-order: 9999;" BorderPane.alignment="CENTER">
                 <content>
                     <AnchorPane fx:id="saleBillViewingPane">
                   <children>
