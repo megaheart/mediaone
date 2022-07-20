@@ -10,11 +10,6 @@ public final class BookInfo extends ProductInfo{
     private ArrayList<Person> authors;//tac gia
     private int numberOfPage;//so trang cua sach
 
-
-
-
-
-
     public BookInfo(){
 
         super();

@@ -51,37 +51,5 @@ public class testPerson {
 
 
     }
-    public void updatePerson() throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllPeople()){
-            System.out.println(x);
-        }
-        var y=adapter.getAllPeople().get(3);
-        y.setName("Kujou Sara");
-        y.setDescription("tuong quan Inazuma");
 
-        adapter.updatePerson(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllPeople() ){
-            System.out.println(x);
-        }
-    }
-    public void deletePeople() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllPeople()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-        var y = adapter.getAllPeople().get(3);
-        adapter.deletePerson(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllPeople()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-    }
 }
