@@ -60,10 +60,10 @@ public class CartPage extends Controller implements Initializable {
     }
 
     private void addListOfCart() throws Exception {
+        boughtProducts.getItems().clear();
         ObservableList<Label> labels =FXCollections.observableArrayList();
         for(Pair<ProductInfo, Integer> x: CustomerPage.getMain().getChosenProduct()){
             labels.add(cartLabel(x.getKey(),x. getValue()));
-
         }
         labels.sort(((o1, o2) -> Integer.compare(o1.getText().toLowerCase().compareTo(o2.getText().toLowerCase()),0)));
         boughtProducts.setItems(labels);
