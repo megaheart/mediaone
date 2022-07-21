@@ -1,5 +1,6 @@
 package com.shopkeeper.lam.windowfactories.fileFxml;
 
+import com.shopkeeper.hung.windowfactories.MainPage;
 import com.shopkeeper.linh.models.Feedback;
 import com.shopkeeper.linh.seeders.DataSeeder;
 import com.shopkeeper.linh.windowfactories.CustomerManagerWindowFactory;
@@ -32,7 +33,7 @@ public class WindowManagerController  {
     @FXML
     Button productManager,staffManager,feedbackManager,stockManager,paymentManager,revenueManager,dataSeed,customer;
     public void openProductManager(ActionEvent event){
-
+        MainPage.getMain().start(new Stage());
     }
     public void openStaffManager(ActionEvent event){
         StaffWindowFactory.getFactory().openWindow();
