@@ -18,7 +18,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancestor" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CProductPage">
+<AnchorPane fx:id="ancestor" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CustomerProductPage">
    <TextField fx:id="searchName" layoutX="27.0" layoutY="23.0" prefHeight="30.0" prefWidth="250.0" promptText="Name" style="-fx-background-radius: 10;" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="325.0" AnchorPane.topAnchor="10.0">
       <font>
          <Font name="Times New Roman" size="16.0" />
