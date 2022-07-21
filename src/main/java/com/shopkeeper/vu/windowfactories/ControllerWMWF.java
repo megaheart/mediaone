@@ -101,8 +101,6 @@ public class ControllerWMWF implements Initializable {
     @FXML
     private TableView tableView_product;
     @FXML
-    private TableColumn<Product, String> cl_nameproduct;
-    @FXML
     private TableColumn<Product, Integer> cl_idproduct;
     @FXML
     private TableColumn<Product, ProductInfo> cl_typeproduct;
@@ -331,7 +329,7 @@ public class ControllerWMWF implements Initializable {
                         listProductVip.add(a);
                     }
                 }
-                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
+
                 cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
                 cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
                 cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
@@ -357,9 +355,10 @@ public class ControllerWMWF implements Initializable {
                     String e = textField_nameoproduct.getText();
                     if(d.indexOf(e)>=0&&a.getProductInfo() instanceof MusicInfo){
                         listProductVip.add(a);
+                        a.getProductInfo().getTitle();
                     }
                 }
-                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
+
                 cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
                 cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
                 cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
@@ -387,7 +386,6 @@ public class ControllerWMWF implements Initializable {
                         listProductVip.add(a);
                     }
                 }
-                cl_nameproduct.setCellValueFactory(new PropertyValueFactory<Product, String>("trialFilename"));
                 cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
                 cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
                 cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));

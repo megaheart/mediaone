@@ -113,12 +113,11 @@
                         <TextField fx:id="textField_idproduct" layoutX="247.0" layoutY="70.0" prefHeight="30.0" prefWidth="150.0" />
                         <TableView fx:id="tableView_product" layoutY="238.0" prefHeight="402.0" prefWidth="723.0">
                           <columns>
-                            <TableColumn fx:id="cl_nameproduct" prefWidth="150.0" text="Tên" />
                             <TableColumn fx:id="cl_idproduct" prefWidth="100.0" text="ID" />
                               <TableColumn fx:id="cl_priceproduct" prefWidth="150.0" text="Giá bán " />
                               <TableColumn fx:id="cl_stateproduct" prefWidth="98.0" text="Trạng thái" />
                               <TableColumn fx:id="cl_importproduct" prefWidth="115.0" text="Giá nhập" />
-                              <TableColumn fx:id="cl_placementproduct" prefWidth="109.0" text="Vị trí" />
+                              <TableColumn fx:id="cl_placementproduct" prefWidth="245.0" text="Vị trí" />
                           </columns>
                         </TableView>
                         <Button fx:id="bt_timkiemproduct" layoutX="8.0" layoutY="137.0" mnemonicParsing="false" onAction="#setBt_timkiemproduct" text="Tìm kiếm" textFill="#0d973f">
