@@ -49,36 +49,5 @@ public class testPublisher {
         }
 
     }
-    public void updatePublisher() throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllPublishers()){
-            System.out.println(x);
-        }
-        var y=adapter.getAllPublishers().get(2);
-        y.setName("Bo giao duc");
-        y.setDescription("ko biet noi gi");
-        adapter.updatePublisher(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllPublishers() ){
-            System.out.println(x);
-        }
-    }
-    public void deletePublisher() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllPublishers()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-        var y = adapter.getAllPublishers().get(2);
-        adapter.deletePublisher(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllPublishers()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-    }
+
 }

@@ -49,7 +49,7 @@ public class testCategory {
         Category x35 = new Category("Sách truyền cảm hứng","Nhiều cuốn sách về self-help liên quan đến các bài học thành công trong kinh doanh hoặc bí quyết kinh doanh hiện đang đứng dầu trong các danh sách Best Sellers của thị trường này.");
         Category x36 = new Category("Tiểu sử, tự truyện và hồi ký","Đây là các thể loại sách phi hư cấu dùng để kể những câu chuyện về cuộc đời của một người.");
 
-        Category x37 = new Category("Unkown","Bằng cách nào đó,chúng tôi không biết được thể loại là gì");
+        Category x37 = new Category("Unknown","Bằng cách nào đó,chúng tôi không biết được thể loại là gì");
 
 
 
@@ -95,37 +95,6 @@ public class testCategory {
 
 
     }
-    public void updateCategory() throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllCategories()){
-            System.out.println(x);
-        }
-        var y=adapter.getAllCategories().get(1);
-        y.setName("anime");
-        y.setDescription("hay nhat the gioi");
-        adapter.updateCategory(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllCategories() ){
-            System.out.println(x);
-        }
-    }
-    public void deleteCategories() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllCategories()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-        var y = adapter.getAllCategories().get(1);
-        adapter.deleteCategory(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllCategories()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-    }
+
 
 }

@@ -29,6 +29,7 @@ public class ManagerWindowFactory extends WindowFactory  {
         stage.setResizable(false);
         stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("87247676_p0_master1200.jpg"))));
         scene  = new Scene(root);
+
         }
         catch (Exception e){
             System.err.println(e.getMessage());
@@ -39,6 +40,8 @@ public class ManagerWindowFactory extends WindowFactory  {
             return null;
         }
         stage.setScene(scene);
+        stage.setX(200);
+        stage.setY(200);
         return stage;
     }
 
