@@ -744,7 +744,7 @@ public class StaffWindowController {
         String endMinuteTxt = filterShiftEndMinute.getText();
 
         int startHour = 0;
-        int startMinute = 1;
+        int startMinute = 0;
         int endHour = 23;
         int endMinute = 59;
 
