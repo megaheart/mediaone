@@ -65,6 +65,7 @@ public class CartPage extends Controller implements Initializable {
             labels.add(cartLabel(x.getKey(),x. getValue()));
 
         }
+        labels.sort(((o1, o2) -> Integer.compare(o1.getText().toLowerCase().compareTo(o2.getText().toLowerCase()),0)));
         boughtProducts.setItems(labels);
     }
     public void setPayFunction() throws Exception {
