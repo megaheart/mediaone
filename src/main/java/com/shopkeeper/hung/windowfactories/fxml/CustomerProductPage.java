@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-public class CProductPage extends Controller implements Initializable {
+public class CustomerProductPage extends Controller implements Initializable {
     @FXML
     AnchorPane ancestor;
     @FXML
