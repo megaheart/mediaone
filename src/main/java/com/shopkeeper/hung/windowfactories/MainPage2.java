@@ -6,9 +6,12 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import java.util.Objects;
 
 public class MainPage2 extends Application {
     private static final MainPage2 mainPage  = new MainPage2();
@@ -52,6 +55,8 @@ public class MainPage2 extends Application {
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("Customer");
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("customer.png"))));
 //            stage.initStyle(StageStyle.TRANSPARENT);
             stage.show();
         }catch(Exception e){
