@@ -11,7 +11,7 @@ public class WarehouseManagerWindowFactory extends WindowFactory {
     public  static WarehouseManagerWindowFactory getFactory(){
         return factory;
     }
-    private WarehouseManagerWindowFactory(){
+    public WarehouseManagerWindowFactory(){
         currentWindow = null;
     }
     @Override
