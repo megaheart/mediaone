@@ -1,6 +1,6 @@
 package com.shopkeeper.hung.windowfactories;
 
-import com.shopkeeper.hung.windowfactories.fxml.MainPageController;
+import com.shopkeeper.hung.windowfactories.fxml.ManagerPageController;
 import com.shopkeeper.lam.models.ProductInfo;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
@@ -48,7 +48,7 @@ public class ManagerPage extends Application {
         try{
             FXMLLoader loader = new FXMLLoader(getClass().getResource("fxml/main-page.fxml"));
             Scene scene = new Scene(loader.load());
-            MainPageController controller = loader.getController();
+            ManagerPageController controller = loader.getController();
             controller.setRoot(loader.getRoot());
 
 

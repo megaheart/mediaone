@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainPageController extends Controller implements Initializable{
+public class ManagerPageController extends Controller implements Initializable{
     public JFXButton customerButton1;
     @FXML
     AnchorPane ancestor;
