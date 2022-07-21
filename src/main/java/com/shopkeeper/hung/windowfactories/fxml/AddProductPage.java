@@ -22,7 +22,7 @@ public class AddProductPage extends Controller implements Initializable {
     @FXML
     AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
     @FXML
-    TextField name,price, rating, left, pageNumber, timeMusic, timeFilm;
+    TextField name,price, rating, pageNumber, timeMusic, timeFilm;
     @FXML
     TextArea award, description;
     @FXML
@@ -40,7 +40,7 @@ public class AddProductPage extends Controller implements Initializable {
     public boolean check(){
 
         var x = productInfo;
-        if(left.getText().equals("") ||name.getText().equals("") || price.getText().equals("")
+        if(name.getText().equals("") || price.getText().equals("")
         ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") )
             return false;
         return(x.getPublisher()!= null &&x.getTitle()!=null &&x.getReleaseDate()!=null
@@ -53,7 +53,6 @@ public class AddProductPage extends Controller implements Initializable {
         }
         if(!name.getText().equals("")) productInfo.setTitle(name.getText());
         if(!price.getText().equals(""))productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
-        if(!left.getText().equals(""))productInfo.setNumberOfProduct(Integer.parseInt(left.getText()));
         if(!description.getText().equals(""))productInfo.setDescription(description.getText());
         if(!rating.getText().equals(""))productInfo.setRating(Integer.parseInt(rating.getText()));
         if(!award.getText().equals(""))productInfo.setAward(new ArrayList<> (Arrays.asList(award.getText().split("\n")))   );
@@ -158,12 +157,13 @@ public class AddProductPage extends Controller implements Initializable {
                 if(director.getName() ==null)
                     return;
 
-                int mins =Integer.parseInt(timeFilm.getText());
+//                int mins =Integer.parseInt(timeFilm.getText());
 
                 FilmInfo res=  new FilmInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
                         ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
                         productInfo.getRating(),productInfo.getAward(),director,actors,
-                        LocalTime.of(mins/60, mins%60)
+                        LocalTime.parse(timeFilm.getText())
+//                        LocalTime.of(mins/60, mins%60)
                         );
                 res.setNumberOfProduct(productInfo.getNumberOfProduct());
                 ProductInfoManager.getManager().add(res);
@@ -183,12 +183,14 @@ public class AddProductPage extends Controller implements Initializable {
                         return;
                     musicians.add(dbMusicians.get(index));
                 }
-                int mins =Integer.parseInt(timeMusic.getText());
+//                int mins =Integer.parseInt(timeMusic.getText());
 
                 MusicInfo res=  new MusicInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
                 ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
                         productInfo.getRating(),productInfo.getAward(),
-                        musicians,LocalTime.of(mins/60, mins%60));
+                        musicians,LocalTime.parse(timeMusic.getText())
+//                        LocalTime.of(mins/60, mins%60)
+                );
                 res.setNumberOfProduct(productInfo.getNumberOfProduct());
                 ProductInfoManager.getManager().add(res);
                 ProductPage parent =(ProductPage) this.getParent();
