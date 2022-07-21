@@ -291,6 +291,13 @@ public class StaffManager {
             }
         }
 
+        for (DeletedInfo info: BillManager.getManager().deletedBills){
+            if (info.getId() == staff.getStaffId()){
+                if (latestPay == null) latestPay = info.getTime().plusDays(1);
+                else if (latestPay.isBefore(info.getTime())) latestPay = info.getTime().plusDays(1);
+            }
+        }
+
         if (latestPay != null) return latestPay;
 
         for (Attendance attendance: attendances){
