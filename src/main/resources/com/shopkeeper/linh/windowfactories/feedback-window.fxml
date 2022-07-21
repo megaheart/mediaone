@@ -161,33 +161,51 @@
                                  <Insets left="20.0" right="20.0" />
                              </padding>
                          </GridPane>
-
-                         <HBox alignment="CENTER_LEFT" prefHeight="44.0" prefWidth="200.0" style="-fx-background-color: e6e6e6; -fx-view-order: 333; -fx-border-width: 0 0 1 0; -fx-border-color: #989898;">
-                           <children>
-                              <Label text="Sắp xếp theo: ">
-                                 <graphic>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 18px;" text="">
-                                       <font>
-                                          <Font size="18.0" />
-                                       </font>
-                                    </Text>
-                                 </graphic>
-                              </Label>
-                              <ComboBox fx:id="orderCombobox" prefWidth="150.0">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </ComboBox>
-                              <Button mnemonicParsing="false" onMouseClicked="#openFilterPanel" text="Tìm kiếm/Lọc">
-                                 <graphic>
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
-                                 </graphic>
-                              </Button>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" />
-                           </padding>
-                        </HBox>
+                        <BorderPane style="-fx-background-color: #e6e6e6; -fx-view-order: 333; -fx-border-width: 0 0 1 0; -fx-border-color: #989898;">
+                           <left>
+      
+                               <HBox alignment="CENTER_LEFT" prefHeight="44.0" style="-fx-background-color: #e6e6e6; -fx-view-order: 333; -fx-border-width: 0 0 1 0; -fx-border-color: #989898;" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Label text="Sắp xếp theo: ">
+                                       <graphic>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;; -fx-font-size: 18px;" text="">
+                                             <font>
+                                                <Font size="18.0" />
+                                             </font>
+                                          </Text>
+                                       </graphic>
+                                    </Label>
+                                    <ComboBox fx:id="orderCombobox" prefWidth="150.0">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                    <Button mnemonicParsing="false" onMouseClicked="#openFilterPanel" text="Tìm kiếm/Lọc">
+                                       <graphic>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                    </Button>
+                                    <Button mnemonicParsing="false" text="Xóa mọi phản hồi không hữu dụng" visible="false">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                              </HBox>
+                           </left>
+                           <center>
+                              <HBox fx:id="feedbackToolbar" alignment="CENTER_RIGHT" visible="false" BorderPane.alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="markAsUsefulBtn" mnemonicParsing="false" onMouseClicked="#markSelectedFeedbackAsUserful" text="Đánh dấu hữu dụng" />
+                                 </children>
+                                 <padding>
+                                    <Insets right="20.0" />
+                                 </padding>
+                              </HBox>
+                           </center></BorderPane>
                      </children>
                   </VBox>
                </top>
@@ -205,7 +223,7 @@
                                        <children>
                                           <Text fx:id="feedbackHeaderDisplayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Nước rửa chân: Gây nẻ da tay" wrappingWidth="386.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.8000000000000114" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                              <font>
-                                                <Font size="22.0" />
+                                                <Font size="20.0" />
                                              </font>
                                           </Text>
                                        </children>
@@ -215,7 +233,7 @@
                                     </AnchorPane>
                                     <Text fx:id="feedbackTargetDisplayer" strokeType="OUTSIDE" strokeWidth="0.0" text="Về: Sản phẩm mã 58695321" wrappingWidth="386.0">
                                        <font>
-                                          <Font name="System Italic" size="14.0" />
+                                          <Font name="System Italic" size="16.0" />
                                        </font>
                                        <VBox.margin>
                                           <Insets bottom="16.0" top="6.0" />
@@ -236,7 +254,7 @@
             </BorderPane>
          </content>
     </Tab>
-      <Tab text="Thống kê">
+      <Tab closable="false" disable="true" text="Thống kê">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
         </content>

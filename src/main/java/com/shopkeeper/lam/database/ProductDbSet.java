@@ -1,5 +1,6 @@
 package com.shopkeeper.lam.database;
 import com.shopkeeper.linh.models.Customer;
+import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import com.shopkeeper.mediaone.database.DbAdapterCache;
 import com.shopkeeper.mediaone.database.ReadOnlyDbAdapterCache;
 import javafx.collections.ObservableList;
@@ -48,12 +49,15 @@ public class ProductDbSet {
             product = new Product();
             product.setProductId(rs.getInt("productId"));
             product.setState(ProductState.valueOf(rs.getString("state")));
+
+
             //ProductInfo
             int productInfoId = rs.getInt("productInfoId");
             switch (rs.getString("productInfoType")){
                 case "Music":
                     for(var x : readOnlyCache.getMusicInfos()){
                         if(x.getProductInfoId() == productInfoId){
+                            if(product.getState().equals(ProductState.READY)){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
                             product.setProductInfo(x);
                             x.increaseTimesToBeReferenced();
                             break;
@@ -63,6 +67,7 @@ public class ProductDbSet {
                 case "Book":
                     for(var x : readOnlyCache.getBookInfos()){
                         if(x.getProductInfoId() == productInfoId){
+                            if(product.getState().equals(ProductState.READY)){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
                             product.setProductInfo(x);
                             x.increaseTimesToBeReferenced();
                             break;
@@ -72,6 +77,7 @@ public class ProductDbSet {
                 case "Film":
                     for(var x : readOnlyCache.getFilmInfos()){
                         if(x.getProductInfoId() == productInfoId){
+                            if(product.getState().equals(ProductState.READY)){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
                             product.setProductInfo(x);
                             x.increaseTimesToBeReferenced();
                             break;
@@ -89,12 +95,16 @@ public class ProductDbSet {
             }
             //SaleBill
             int saleBillId = rs.getInt("saleBillId");
+
             for(var b : readOnlyCache.getSaleBills()){
                 if(b.getBillId() == saleBillId){
                     product.setSaleBill(b);
                     break;
                 }
             }
+            //numberOfProduct
+
+
             product.setSaleValue(rs.getDouble("saleValue"));
             product.setImportCost(rs.getDouble("importCost"));
             product.setTrialFilename(rs.getString("trialFilename"));

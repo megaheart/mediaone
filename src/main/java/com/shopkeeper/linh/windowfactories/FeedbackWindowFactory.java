@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class FeedbackWindowFactory  extends WindowFactory {
     private static FeedbackWindowFactory factory = new FeedbackWindowFactory();
@@ -18,7 +19,8 @@ public class FeedbackWindowFactory  extends WindowFactory {
     @Override
     protected Stage createWindow() {
         Stage stage = new Stage();
-        FXMLLoader fxmlLoader = new FXMLLoader(FeedbackWindowFactory.class.getResource("feedback-window.fxml"));
+        URL location = FeedbackWindowFactory.class.getResource("feedback-window.fxml");
+        FXMLLoader fxmlLoader = new FXMLLoader(location);
         Scene scene = null;
         stage.setTitle("Quản lý phản hồi");
         stage.setResizable(false);
@@ -45,6 +47,7 @@ public class FeedbackWindowFactory  extends WindowFactory {
 
     @Override
     public Stage closeWindow() {
+        if(currentWindow == null) return null;
         currentWindow.hide();
         return currentWindow;
     }

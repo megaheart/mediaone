@@ -8,16 +8,6 @@
 <?import javafx.scene.text.Text?>
 
 <BorderPane fx:id="container" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="68.0" prefWidth="420.0" style="-fx-border-color: gray; -fx-border-width: 0 0 1 0; -fx-border-style: dashed inside;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.linh.windowfactories.feedback.FeedbackListViewItemController">
-   <top>
-      <Text fx:id="titleTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Title of feedback" BorderPane.alignment="BOTTOM_LEFT">
-         <BorderPane.margin>
-            <Insets bottom="5.0" left="16.0" top="7.0" />
-         </BorderPane.margin>
-         <font>
-            <Font size="16.0" />
-         </font>
-      </Text>
-   </top>
    <left>
       <Text fx:id="timeTxt" fill="#484848" strokeType="OUTSIDE" strokeWidth="0.0" text="24/04/2022" BorderPane.alignment="TOP_LEFT">
          <BorderPane.margin>
@@ -79,4 +69,23 @@
          </children>
       </HBox>
    </center>
+   <top>
+      <HBox maxWidth="420.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text fx:id="titleTxt" strokeType="OUTSIDE" strokeWidth="0.0" text="Title of feedbackyy yy x xxx x xxx xxx xxx xx xxx...">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Text>
+            <Text fx:id="readMark" fill="#5e5e5e" strokeType="OUTSIDE" strokeWidth="0.0" text="(đã đọc)">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </Text>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="4.0" left="16.0" top="6.0" />
+         </BorderPane.margin>
+      </HBox>
+   </top>
 </BorderPane>

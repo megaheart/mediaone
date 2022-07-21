@@ -47,6 +47,16 @@ public class test {
         adapter.insertOtherBill(x3);
         adapter.insertOtherBill(x4);
         adapter.insertOtherBill(x5);
+        adapter.insertOtherBill(x6);
+        adapter.insertOtherBill(x7);
+        adapter.insertOtherBill(x8);
+        adapter.insertOtherBill(x9);
+        adapter.insertOtherBill(x10);
+        adapter.insertOtherBill(x11);
+        adapter.insertOtherBill(x12);
+        adapter.insertOtherBill(x13);
+        adapter.insertOtherBill(x14);
+        adapter.insertOtherBill(x15);
 
 
     }
@@ -90,7 +100,6 @@ public class test {
         double workHours;
         LocalDate from;
         for (Staff staff: staffs){
-            int extra = random.nextInt(10);
             from = StaffManager.getManager().getFrom(staff);
             workHours = StaffManager.getManager().getWorkHours(staff);
             staffBill = new StaffBill("Lương tháng 4 cho " + staff.getName(), 20 * workHours, LocalDate.of(2022, 4, 30), true, "Không có ghi chú",
