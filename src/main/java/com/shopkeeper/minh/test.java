@@ -97,10 +97,14 @@ public class test {
         ObservableList<Staff> staffs = adapter.getAllStaffs();
         StaffBill staffBill = null;
         Random random = new Random(0);
+        double workHours;
+        LocalDate from;
         for (Staff staff: staffs){
             int extra = random.nextInt(10);
-            staffBill = new StaffBill("Lương tháng 4 cho " + staff.getName(), 20 * (150 + extra), LocalDate.of(2022, 4, 30), true, "Không có ghi chú",
-                    LocalDate.of(2022, 4, 1), staff, 20, 150 + extra);
+            from = StaffManager.getManager().getFrom(staff);
+            workHours = StaffManager.getManager().getWorkHours(staff);
+            staffBill = new StaffBill("Lương tháng 4 cho " + staff.getName(), 20 * workHours, LocalDate.of(2022, 4, 30), true, "Không có ghi chú",
+                    from, staff, 20, workHours);
             adapter.insertStaffBill(staffBill);
         }
     }
