@@ -133,9 +133,9 @@ public class FeedbackWindowController {
         }
         String subName = filterSubnameTxtBox.getText();
         if(subName != null && (subName = subName.trim()).length() != 0){
-            final String _subName = subName;
+            final String _subName = subName.toLowerCase();
             filteredList = filteredList.filtered(feedback -> {
-                return feedback.getTitle().toLowerCase().contains(_subName.toLowerCase());
+                return feedback.getTitle().toLowerCase().contains(_subName);
             });
         }
         String targetName = filterTargetNameTxt.getText().toLowerCase();
