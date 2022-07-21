@@ -135,8 +135,7 @@ public class CustomerProductPage extends Controller implements Initializable {
         if(numberTextField.getText().equals(""))
             return;
         int num =Integer.parseInt(numberTextField.getText());
-        System.out.println("So san pham con lai trong kho: " + productInfo.getNumberOfProduct());
-        if(num<productInfo.getNumberOfProduct())
+        if(num<=productInfo.getNumberOfProduct())
             CustomerPage.getMain().addProductToCart(productInfo, Integer.parseInt(numberTextField.getText()));
         else{
             Alert alert = new Alert(Alert.AlertType.ERROR);
