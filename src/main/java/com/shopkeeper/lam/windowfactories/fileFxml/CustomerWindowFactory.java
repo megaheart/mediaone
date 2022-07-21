@@ -35,6 +35,8 @@ public class CustomerWindowFactory extends WindowFactory {
             stage.close();
             return null;
         }
+        stage.setY(200);
+        stage.setX(800);
         stage.setScene(scene);
         return stage;
     }

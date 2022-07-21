@@ -214,47 +214,5 @@ public class testProduct {
 
 
     }
-    public void update() throws Exception{
-        var adapter = DatabaseAdapter.getDbAdapter();
-        var importBills = adapter.getAllImportBills();
-        var saleBills = adapter.getAllSaleBills();
-        var musics = adapter.getAllMusicInfos();
-        var films = adapter.getAllFilmInfos();
-        var books = adapter.getAllBookInfos();
-        for(var x : adapter.getAllProducts()){
-            System.out.println(x);
-        }
-        var m2 = adapter.getAllProducts().get(5);
-        m2.setSaleBill(saleBills.get(4));
-        m2.setImportCost(68);
-        m2.setSaleValue(69);
-        m2.setTrialFilename("jdsbnfn");
-        m2.setPlacement("CC2");
-        m2.setProductInfo(musics.get(0));
-        m2.setState(ProductState.RETURNED);
-        m2.setImportBill(importBills.get(4));
-        adapter.updateProduct(m2);
-        System.out.println("----------<><><><><>----------");
-        for(var x : adapter.getAllProducts()){
-            System.out.println(x);
-        }
-    }
-    public void delete() throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var x:adapter.getAllProducts()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-        var y = adapter.getAllProducts().get(5);
-        adapter.deleteProduct(y);
-        System.out.println("----------<><><><><>----------");
-        for(var x:adapter.getAllProducts()){
-            //Nếu như các ô đã triển khai override thuộc tính toString() cho
-            // của ô rồi thì viết thế này
-            System.out.println(x);
-            //Còn nếu không các ô phải in từng thuộc tính 1 ra
-        }
-    }
+
 }
