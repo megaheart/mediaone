@@ -57,16 +57,16 @@ public class CustomerManagerWindowController {
 
         String subName = filterSubnameTxtBox.getText();
         if(subName != null && (subName = subName.trim()).length() != 0){
-            final String _subName = subName;
+            final String _subName = subName.toLowerCase();
             filteredList = filteredList.filtered(customer -> {
-                return customer.getName().contains(_subName);
+                return customer.getName().toLowerCase().contains(_subName);
             });
         }
         String location = filterLocationTxt.getText();
         if(location != null && (location = location.trim()).length() != 0){
-            final String _location = location;
+            final String _location = location.toLowerCase();
             filteredList = filteredList.filtered(customer -> {
-                return customer.getDefaultLocation().contains(_location);
+                return customer.getDefaultLocation().toLowerCase().contains(_location);
             });
         }
         String phoneNumber = filterPhoneNumberTxt.getText();

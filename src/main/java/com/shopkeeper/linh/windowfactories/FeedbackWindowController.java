@@ -135,10 +135,10 @@ public class FeedbackWindowController {
         if(subName != null && (subName = subName.trim()).length() != 0){
             final String _subName = subName;
             filteredList = filteredList.filtered(feedback -> {
-                return feedback.getTitle().contains(_subName);
+                return feedback.getTitle().toLowerCase().contains(_subName.toLowerCase());
             });
         }
-        String targetName = filterTargetNameTxt.getText();
+        String targetName = filterTargetNameTxt.getText().toLowerCase();
         if(targetName != null && (targetName = targetName.trim()).length() != 0){
             try {
                 long id = Long.parseLong(targetName);
@@ -176,27 +176,27 @@ public class FeedbackWindowController {
                     switch (feedback.getFeedbackAbout()){
                         case Staff:
                             try{
-                                return feedback.getStaffTarget().getName().contains(_targetName);
+                                return feedback.getStaffTarget().getName().toLowerCase().contains(_targetName);
                             }
                             catch (Exception e){
                                 throw new RuntimeException(e);
                             }
                         case ProductInfo:
                             try{
-                                return feedback.getProductInfoTarget().getTitle().contains(_targetName);
+                                return feedback.getProductInfoTarget().getTitle().toLowerCase().contains(_targetName);
                             }
                             catch (Exception e){
                                 throw new RuntimeException(e);
                             }
                         case  Product:
                             try{
-                                return feedback.getProductTarget().getProductInfo().getTitle().contains(_targetName);
+                                return feedback.getProductTarget().getProductInfo().getTitle().toLowerCase().contains(_targetName);
                             }
                             catch (Exception e){
                                 throw new RuntimeException(e);
                             }
                         case Service:
-                            return feedback.getTitle().contains(_targetName);
+                            return feedback.getTitle().toLowerCase().contains(_targetName);
                     }
                     return false;
                 });
