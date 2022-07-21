@@ -41,8 +41,14 @@ public class AddProductPage extends Controller implements Initializable {
 
         var x = productInfo;
         if(name.getText().equals("") || price.getText().equals("")
-        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") )
+        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") ) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("TRY AGAIN");
+            alert.setHeaderText("WRONG INPUT");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
             return false;
+        }
         return(x.getPublisher()!= null &&x.getTitle()!=null &&x.getReleaseDate()!=null
         &&x.getAward()!=null && x.getCategory()!=null);
     }
@@ -132,6 +138,7 @@ public class AddProductPage extends Controller implements Initializable {
                 res.setNumberOfProduct(productInfo.getNumberOfProduct());
 
                 ProductInfoManager.getManager().add(res);
+
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
                 parent.getShowedProducts().add(res);
@@ -183,6 +190,7 @@ public class AddProductPage extends Controller implements Initializable {
                         return;
                     musicians.add(dbMusicians.get(index));
                 }
+
 //                int mins =Integer.parseInt(timeMusic.getText());
 
                 MusicInfo res=  new MusicInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
