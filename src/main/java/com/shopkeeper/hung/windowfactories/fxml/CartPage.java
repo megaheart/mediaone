@@ -1,5 +1,6 @@
 package com.shopkeeper.hung.windowfactories.fxml;
 
+import com.shopkeeper.hung.windowfactories.CustomerPage;
 import com.shopkeeper.hung.windowfactories.ManagerPage;
 import com.shopkeeper.hung.windowfactories.icons.Icon;
 import com.shopkeeper.lam.models.BookInfo;
@@ -60,14 +61,15 @@ public class CartPage extends Controller implements Initializable {
 
     private void addListOfCart() throws Exception {
         ObservableList<Label> labels =FXCollections.observableArrayList();
-        for(Pair<ProductInfo, Integer> x: ManagerPage.getMain().getChosenProduct()){
+        for(Pair<ProductInfo, Integer> x: CustomerPage.getMain().getChosenProduct()){
             labels.add(cartLabel(x.getKey(),x. getValue()));
 
         }
+        labels.sort(((o1, o2) -> Integer.compare(o1.getText().toLowerCase().compareTo(o2.getText().toLowerCase()),0)));
         boughtProducts.setItems(labels);
     }
     public void setPayFunction() throws Exception {
-        ManagerPage.getMain().pay();
+        CustomerPage.getMain().pay();
         this.reload();
     }
 
@@ -92,9 +94,9 @@ public class CartPage extends Controller implements Initializable {
     }
 
     public void setRemoveFunction() throws Exception {
-        for(Pair<ProductInfo, Integer> x: ManagerPage.getMain().getChosenProduct()){
+        for(Pair<ProductInfo, Integer> x: CustomerPage.getMain().getChosenProduct()){
             if(x.getKey().getProductInfoId() == productInfo.getProductInfoId()){
-                ManagerPage.getMain().getChosenProduct().remove(x);
+                CustomerPage.getMain().getChosenProduct().remove(x);
                 reload();
                 return;
             }

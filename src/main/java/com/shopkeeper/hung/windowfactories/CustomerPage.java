@@ -35,10 +35,10 @@ public class CustomerPage extends Application {
     public void addProductToCart(ProductInfo productInfo, Integer integer){
         reqs[requestNumber-1].addProductToCart(productInfo, integer);
     }
-    private int getNumberOfRequest(){
+    public int getNumberOfRequest(){
         return this.requestNumber;
     }
-    private ObservableList<Pair<ProductInfo , Integer >> getRequest(int i){
+    public ObservableList<Pair<ProductInfo , Integer >> getRequest(int i){
         return reqs[i-1].getChosenProduct();
     }
 
