@@ -11,6 +11,8 @@ public class PaymentRequest {
         for( var x: chosenProduct){
             ProductInfo temp= x.getKey();
             if(temp.getProductInfoId() == productInfo.getProductInfoId()) {
+                if(x.getValue()+amount>productInfo.getNumberOfProduct())
+                    return;
                 chosenProduct.add(new Pair<>(productInfo,x.getValue()+amount));
                 chosenProduct.remove(x);
                 chosenProduct.sort((o1, o2) -> Integer.compare(o1.getKey().getTitle().compareTo(o2.getKey().getTitle()), 0));
