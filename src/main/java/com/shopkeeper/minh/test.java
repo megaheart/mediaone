@@ -100,7 +100,6 @@ public class test {
         double workHours;
         LocalDate from;
         for (Staff staff: staffs){
-            int extra = random.nextInt(10);
             from = StaffManager.getManager().getFrom(staff);
             workHours = StaffManager.getManager().getWorkHours(staff);
             staffBill = new StaffBill("Lương tháng 4 cho " + staff.getName(), 20 * workHours, LocalDate.of(2022, 4, 30), true, "Không có ghi chú",
