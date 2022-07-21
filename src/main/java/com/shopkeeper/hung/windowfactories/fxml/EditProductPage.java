@@ -22,7 +22,7 @@ public class EditProductPage extends Controller implements Initializable {
 @FXML
 AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
     @FXML
-    TextField name,price, rating, left, pageNumber, timeMusic, timeFilm;
+    TextField name,price, rating, pageNumber, timeMusic, timeFilm;
     @FXML
     TextArea award, description;
     @FXML
@@ -38,7 +38,7 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
     private final ObservableList<String> musicianName = FXCollections.observableArrayList();
     private final ObservableList<String> actorsName = FXCollections.observableArrayList();
     public boolean check(){
-        if(left.getText().equals("") ||name.getText().equals("") || price.getText().equals("")
+        if(name.getText().equals("") || price.getText().equals("")
                 ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") )
             return false;
         var x = productInfo;
@@ -48,7 +48,6 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
     public void getInfo(){
         if(!name.getText().equals("")) productInfo.setTitle(name.getText());
         if(!price.getText().equals(""))productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
-        if(!left.getText().equals(""))productInfo.setNumberOfProduct(Integer.parseInt(left.getText()));
         if(!description.getText().equals(""))productInfo.setDescription(description.getText());
         if(!rating.getText().equals(""))productInfo.setRating(Integer.parseInt(rating.getText()));
         if(!award.getText().equals(""))productInfo.setAward(new ArrayList<>(Arrays.asList(award.getText().split("\n")))   );
@@ -231,7 +230,6 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
         releaseDate.setValue(productInfo.getReleaseDate());
         rating.setText((int)productInfo.getRating()+"");
         categoryComboBox.setValue(productInfo.getCategory().getName());
-        left.setText(productInfo.getNumberOfProduct()+"");
 
         StringBuilder s= new StringBuilder();
         for(var x: productInfo.getAward())

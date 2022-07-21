@@ -13,13 +13,13 @@ import javafx.util.Pair;
 
 import java.util.Objects;
 
-public class MainPage extends Application {
-    private static final MainPage mainPage  = new MainPage();
+public class ManagerPage extends Application {
+    private static final ManagerPage mainPage  = new ManagerPage();
 
-    public static MainPage getMain(){
+    public static ManagerPage getMain(){
         return mainPage;
     }
-    public MainPage(){
+    public ManagerPage(){
         for(int i=0;i<20;i++)
             reqs[i]=new PaymentRequest();
     }
