@@ -121,7 +121,7 @@ public class ProductPage extends Controller implements Initializable {
     }
 
     public void sortByName(){
-        showedProducts.sort((o1, o2) -> Integer.compare(o1.getTitle().compareTo(o2.getTitle()), 0));
+        showedProducts.sort((o1, o2) -> Integer.compare(o1.getTitle().toLowerCase().compareTo(o2.getTitle().toLowerCase()), 0));
         initShow(showedProducts);
     }
 

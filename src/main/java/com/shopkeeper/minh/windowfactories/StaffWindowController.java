@@ -4,6 +4,8 @@ import com.shopkeeper.linh.models.Staff;
 import com.shopkeeper.linh.models.StaffState;
 import com.shopkeeper.linh.windowfactories.utilities.ComboBoxOption;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
+import com.shopkeeper.minh.functions.BillManager;
+import com.shopkeeper.minh.functions.DeletedInfo;
 import com.shopkeeper.minh.functions.StaffManager;
 import com.shopkeeper.minh.models.Attendance;
 import com.shopkeeper.minh.models.Shift;
@@ -742,7 +744,7 @@ public class StaffWindowController {
         String endMinuteTxt = filterShiftEndMinute.getText();
 
         int startHour = 0;
-        int startMinute = 1;
+        int startMinute = 0;
         int endHour = 23;
         int endMinute = 59;
 
@@ -1957,7 +1959,10 @@ public class StaffWindowController {
         }
 
         var adapter = DatabaseAdapter.getDbAdapter();
+        BillManager.getManager().deletedBills.add(new DeletedInfo(staffBill.getStaff().getStaffId(), staffBill.getTime()));
         adapter.deleteStaffBill(staffBill);
+
+
 
         // Display
         result2.setText("Xóa thành công.");

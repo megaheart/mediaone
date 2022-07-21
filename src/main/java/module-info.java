@@ -17,7 +17,7 @@ module com.shopkeeper.mediaone {
     opens com.shopkeeper.linh.windowfactories.feedback to javafx.fxml;
     opens com.shopkeeper.linh.windowfactories to javafx.fxml;
     opens com.shopkeeper.linh.windowfactories.customer to javafx.fxml;
-opens com.shopkeeper.lam.windowfactories.fileFxml to javafx.fxml;
+    opens com.shopkeeper.lam.windowfactories.fileFxml to javafx.fxml;
     opens com.shopkeeper.linh.windowfactories.payment to javafx.fxml;
     opens com.shopkeeper.minh.windowfactories to javafx.fxml;
     opens com.shopkeeper.minh.windowfactories.shift to javafx.fxml;
@@ -38,5 +38,4 @@ opens com.shopkeeper.lam.windowfactories.fileFxml to javafx.fxml;
     requires org.xerial.sqlitejdbc;
     requires com.jfoenix;
     exports com.shopkeeper.lam.models;
-
 }

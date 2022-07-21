@@ -1,6 +1,8 @@
 package com.shopkeeper.lam.windowfactories.fileFxml;
 
+import com.shopkeeper.hung.windowfactories.CustomerPage;
 import com.shopkeeper.lam.models.Person;
+import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.windowfactories.CustomerFeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import javafx.event.ActionEvent;
@@ -13,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class WindowCustomerController  {
     @FXML
@@ -23,7 +26,7 @@ public class WindowCustomerController  {
     Button button2;
 
     public void openViewProduct(ActionEvent event) {
-
+        CustomerPage.getMain().start(new Stage());
     }
     public void openSendFeedBack(ActionEvent event) {
         CustomerFeedbackWindowFactory.getFactory().openWindow();

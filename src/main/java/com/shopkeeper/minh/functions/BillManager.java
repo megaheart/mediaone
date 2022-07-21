@@ -11,15 +11,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 
-
 import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class BillManager {
+    public ArrayList<DeletedInfo> deletedBills;
     private static BillManager manager;
 
-    private BillManager() {}
+    private BillManager() {
+        deletedBills = new ArrayList<>();
+    }
 
     public static BillManager getManager(){
         if (manager == null){

@@ -1,6 +1,7 @@
 package com.shopkeeper.hung.windowfactories.fxml;
 
-import com.shopkeeper.hung.windowfactories.MainPage;
+import com.shopkeeper.hung.windowfactories.CustomerPage;
+import com.shopkeeper.hung.windowfactories.ManagerPage;
 import com.shopkeeper.lam.funtions.CategoryManager;
 import com.shopkeeper.lam.funtions.PersonManager;
 import com.shopkeeper.lam.funtions.ProductInfoManager;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.ResourceBundle;
 
-public class CProductPage extends Controller implements Initializable {
+public class CustomerProductPage extends Controller implements Initializable {
     @FXML
     AnchorPane ancestor;
     @FXML
@@ -81,10 +82,10 @@ public class CProductPage extends Controller implements Initializable {
             showProductPane.getChildren().add(controller.getRoot());
             controller.setLocation((int)index/2,index%2);
             controller.setType2();
-            controller.getButton().setOnMousePressed(new EventHandler<MouseEvent>() {
+            controller.getButton().setOnMousePressed(new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if(mouseEvent.getClickCount() == 2){
+                    if (mouseEvent.getClickCount() == 2) {
                         System.out.println("Double clicked");
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("product-detail-page.fxml"));
                         try {
@@ -102,8 +103,7 @@ public class CProductPage extends Controller implements Initializable {
                         detailController.setType2();
                         Controller parentController = controller.getParent();
                         parentController.add(detailController);
-                    }
-                    else{
+                    } else {
                         setInfo(productInfo, controller);
                     }
                 }
@@ -122,7 +122,10 @@ public class CProductPage extends Controller implements Initializable {
     TextField numberTextField;
     public void setInfo(ProductInfo productInfo, ProductBriefInfoPage briefInfoPage){
         this.productInfo = productInfo;
-        ratingLabel.setText((int)productInfo.getRating()+" / 5");
+        if(productInfo.getNumberOfProduct()!=0)
+            ratingLabel.setText("remaining: " + productInfo.getNumberOfProduct() +" left");
+        else
+            ratingLabel.setText("Out of stock");
         imageView.setImage(briefInfoPage.getImage());
         nameLabel.setText(productInfo.getTitle());
         priceLabel.setText((int)productInfo.getCurrentSalePrice()/1000+",000 VND");
@@ -132,8 +135,15 @@ public class CProductPage extends Controller implements Initializable {
         if(numberTextField.getText().equals(""))
             return;
         int num =Integer.parseInt(numberTextField.getText());
-        if(num<productInfo.getNumberOfProduct())
-            MainPage.getMain().addProductToCart(productInfo, Integer.parseInt(numberTextField.getText()));
+        if(num<=productInfo.getNumberOfProduct())
+            CustomerPage.getMain().addProductToCart(productInfo, Integer.parseInt(numberTextField.getText()));
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Not enough amount of this product");
+            alert.setHeaderText("Results: Cant this product to cart with this amount");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
+        }
     }
     public void searchByTitle(){
         String s= searchName.getText().toLowerCase();
@@ -148,11 +158,11 @@ public class CProductPage extends Controller implements Initializable {
     }
 
     public void initShow(ObservableList<ProductInfo> productInfos){
-        showProductPane.getChildren().clear();
-        for(int i=0; i<productInfos.size();i++){
-            initItem(productInfos.get(i), i);
-        }
-//        pagination.setPageFactory(this::setPage);
+//        showProductPane.getChildren().clear();
+//        for(int i=0; i<productInfos.size();i++){
+//            initItem(productInfos.get(i), i);
+//        }
+        pagination.setPageFactory(this::setPage);
     }
 
     public void reload(){
@@ -272,13 +282,18 @@ public class CProductPage extends Controller implements Initializable {
     @FXML
     Pagination pagination;
     public AnchorPane setPage(Integer page){
-        pagination.setPageCount((int)Math.ceil(showedProducts.size()/3.0));
+
+        pagination.setPageCount((int)Math.ceil(showedProducts.size()/2.0));
         AnchorPane anchorPane = new AnchorPane();
+        if(showedProducts.size()==0){
+            pagination.setPageCount(0);
+            return anchorPane;
+        }
         anchorPane.setPrefSize(720,360);
-        for(int i=0;i<3;i++){
-            if(page*3+i>=showedProducts.size())
+        for(int i=0;i<2;i++){
+            if(page*2+i>=showedProducts.size())
                 break;
-            ProductInfo productInfo = showedProducts.get(page*3+i);
+            ProductInfo productInfo = showedProducts.get(page*2+i);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("product-brief-info-page.fxml"));
             try {
                 loader.load();
@@ -290,6 +305,33 @@ public class CProductPage extends Controller implements Initializable {
             anchorPane.getChildren().add(controller.getRoot());
             controller.setLocation(0, i);
             controller.setParent(this);
+            controller.setType2();
+            controller.getButton().setOnMousePressed(new EventHandler<>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        System.out.println("Double clicked");
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("product-detail-page.fxml"));
+                        try {
+                            loader.load();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        ProductDetailPage detailController = loader.getController();
+                        try {
+                            detailController.setProductInfo(productInfo);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        detailController.setRoot(loader.getRoot());
+                        detailController.setType2();
+                        Controller parentController = controller.getParent();
+                        parentController.add(detailController);
+                    } else {
+                        setInfo(productInfo, controller);
+                    }
+                }
+            });
         }
         return anchorPane;
     }
@@ -298,9 +340,10 @@ public class CProductPage extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         this.setRoot(ancestor);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setContent(showProductPane);
+//        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+//        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        scrollPane.setContent(showProductPane);
+        pagination.setPageFactory(this::setPage);
 
         try {
             setComboBox();
@@ -308,7 +351,6 @@ public class CProductPage extends Controller implements Initializable {
             throw new RuntimeException(e);
         }
 
-//        creatTest();
         reload();
     }
 }

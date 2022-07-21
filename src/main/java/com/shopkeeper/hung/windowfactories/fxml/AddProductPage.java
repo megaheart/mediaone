@@ -22,7 +22,7 @@ public class AddProductPage extends Controller implements Initializable {
     @FXML
     AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
     @FXML
-    TextField name,price, rating, left, pageNumber, timeMusic, timeFilm;
+    TextField name,price, rating, pageNumber, timeMusic, timeFilm;
     @FXML
     TextArea award, description;
     @FXML
@@ -32,7 +32,7 @@ public class AddProductPage extends Controller implements Initializable {
     DatePicker releaseDate;
     @FXML
     ListView<String> musiciansList, actorsListView, authorsListView;
-    private ProductInfo productInfo ;
+    private final ProductInfo productInfo = new ProductInfo();
 
     private final ObservableList<String> authorsName = FXCollections.observableArrayList();
     private final ObservableList<String> musicianName = FXCollections.observableArrayList();
@@ -40,38 +40,38 @@ public class AddProductPage extends Controller implements Initializable {
     public boolean check(){
 
         var x = productInfo;
+        if(name.getText().equals("") || price.getText().equals("")
+        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") ) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("TRY AGAIN");
+            alert.setHeaderText("WRONG INPUT");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
+            return false;
+        }
         return(x.getPublisher()!= null &&x.getTitle()!=null &&x.getReleaseDate()!=null
         &&x.getAward()!=null && x.getCategory()!=null);
     }
-    public void getInfo() throws Exception {
-        if(name.getText().equals("")
-                || price.getText().equals("")
-                || left.getText().equals("")
-                || description.getText().equals("")
-                || rating.getText().equals("")
-                || award.getText().equals(""))
-            return;
+    public void getInfo(){
         var check = type.getValue();
         if(check == null) {
             return;
         }
-        Category category = null;
-        for(var x: CategoryManager.getManager().getAll()){
-            if(x.getName().equals(categoryComboBox.getValue())){
-                category= x;
-                break;
-            }
+        if(!name.getText().equals("")) productInfo.setTitle(name.getText());
+        try{
+            if (!price.getText().equals("")) productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Dont understand this value");
+            alert.setHeaderText("Error input price");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
         }
-        Publisher publisher = null;
-        for(var x: PublisherManager.getManager().getAll()){
-            if(x.getName().equals(publisherComboBox.getValue())){
-                publisher = x;
-                break;
-            }
-        }
-        productInfo = new ProductInfo(name.getText(),description.getText(),category, releaseDate.getValue(),
-                Integer.parseInt(price.getText()),publisher,
-                Integer.parseInt(rating.getText()),new ArrayList<> (Arrays.asList(award.getText().split("\n"))));
+        if(!description.getText().equals(""))productInfo.setDescription(description.getText());
+        if(!rating.getText().equals(""))productInfo.setRating(Integer.parseInt(rating.getText()));
+        if(!award.getText().equals(""))productInfo.setAward(new ArrayList<> (Arrays.asList(award.getText().split("\n")))   );
+        productInfo.setReleaseDate(releaseDate.getValue());
+//        productInfo1.setPublisher
     }
 
     public void setAddAuthorButton(){
@@ -146,10 +146,11 @@ public class AddProductPage extends Controller implements Initializable {
                 res.setNumberOfProduct(productInfo.getNumberOfProduct());
 
                 ProductInfoManager.getManager().add(res);
+
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
-//                parent.getShowedProducts().add(res);
-//                parent.initShow(parent.getShowedProducts());
+                parent.getShowedProducts().add(res);
+                parent.initShow(parent.getShowedProducts());
 
 
             }
@@ -171,19 +172,31 @@ public class AddProductPage extends Controller implements Initializable {
                 if(director.getName() ==null)
                     return;
 
-                int mins =Integer.parseInt(timeFilm.getText());
+//                int mins =Integer.parseInt(timeFilm.getText());
 
-                FilmInfo res=  new FilmInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
-                        ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
-                        productInfo.getRating(),productInfo.getAward(),director,actors,
-                        LocalTime.of(mins/60, mins%60)
-                        );
-                res.setNumberOfProduct(productInfo.getNumberOfProduct());
-                ProductInfoManager.getManager().add(res);
-                ProductPage parent =(ProductPage) this.getParent();
-                parent.reload();
-//                parent.getShowedProducts().add(res);
-//                parent.initShow(parent.getShowedProducts());
+                try{
+                    FilmInfo res = new FilmInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
+                            , productInfo.getReleaseDate(), productInfo.getCurrentSalePrice(), productInfo.getPublisher(),
+                            productInfo.getRating(), productInfo.getAward(), director, actors,
+                            LocalTime.parse(timeFilm.getText())
+
+//                        LocalTime.of(mins/60, mins%60)
+                    );
+                    res.setNumberOfProduct(productInfo.getNumberOfProduct());
+                    ProductInfoManager.getManager().add(res);
+                    ProductPage parent =(ProductPage) this.getParent();
+                    parent.reload();
+                    parent.getShowedProducts().add(res);
+                    parent.initShow(parent.getShowedProducts());
+                }catch(Exception e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Maybe at time format, minutes : seconds");
+                    alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                    alert.showAndWait();
+                    return;
+                };
+
             }
             case "music"->{
                 ArrayList<Person> musicians = new ArrayList<>();
@@ -196,18 +209,30 @@ public class AddProductPage extends Controller implements Initializable {
                         return;
                     musicians.add(dbMusicians.get(index));
                 }
-                int mins =Integer.parseInt(timeMusic.getText());
+
+//                int mins =Integer.parseInt(timeMusic.getText());
 
                 MusicInfo res=  new MusicInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
                 ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
                         productInfo.getRating(),productInfo.getAward(),
-                        musicians,LocalTime.of(mins/60, mins%60));
-                res.setNumberOfProduct(productInfo.getNumberOfProduct());
-                ProductInfoManager.getManager().add(res);
-                ProductPage parent =(ProductPage) this.getParent();
-                parent.reload();
-//                parent.getShowedProducts().add(res);
-//                parent.initShow(parent.getShowedProducts());
+                        musicians,LocalTime.parse(timeMusic.getText())
+//                        LocalTime.of(mins/60, mins%60)
+                );
+                try{
+                    res.setNumberOfProduct(productInfo.getNumberOfProduct());
+                    ProductInfoManager.getManager().add(res);
+                    ProductPage parent = (ProductPage) this.getParent();
+                    parent.reload();
+                    parent.getShowedProducts().add(res);
+                    parent.initShow(parent.getShowedProducts());
+                }catch(Exception e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Maybe at time format, minutes : seconds");
+                    alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                    alert.showAndWait();
+                    return;
+                }
 
             }
             default -> throw new IllegalStateException("Unexpected value: " + temp);

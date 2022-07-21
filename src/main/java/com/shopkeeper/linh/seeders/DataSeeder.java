@@ -25,8 +25,8 @@ public class DataSeeder {
 
         new com.shopkeeper.minh.test().insertShift();
         new com.shopkeeper.minh.test().insertAttendances(4);
-        new com.shopkeeper.minh.test().insertAttendances(5);
         new com.shopkeeper.minh.test().insertStaffBills();
+        new com.shopkeeper.minh.test().insertAttendances(5);
 
         //load 3
         new testProduct().insert();
