@@ -7,6 +7,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -122,7 +123,11 @@ public class Feedback {
     }
 
     public void setIsUseful(boolean isUseful) {
-        this.isUseful = isUseful;
+        if(this.isUseful != isUseful){
+            this.isUseful = isUseful;
+            if(propertyChangeListener != null)
+                propertyChangeListener.changed(null, "", "isUseful");
+        }
     }
 
     public LocalDate getTime() {
@@ -132,7 +137,18 @@ public class Feedback {
     public void setTime(LocalDate time) {
         this.time = time;
     }
+    public boolean isRead() {
+        return isRead;
+    }
 
+    public void setRead(boolean read) {
+        if(isRead != read){
+            isRead = read;
+            if(propertyChangeListener != null)
+                propertyChangeListener.changed(null, "", "isRead");
+        }
+    }
+    public ChangeListener<String> propertyChangeListener = null;
     private StringProperty title = new SimpleStringProperty();
     private StringProperty description = new SimpleStringProperty();;
     private FeedbackAbout feedbackAbout;
@@ -144,10 +160,15 @@ public class Feedback {
     private Staff staffTarget;
     private boolean isUseful;
     private LocalDate time;
+    private boolean isRead;
+
+
+
     public Feedback(){
         feedbackId = 0;
         feedbackAbout = FeedbackAbout.Service;
         feedbackType = FeedbackType.Suggestions;
+        this.isRead = false;
     }
     public Feedback(String title, String description, FeedbackType feedbackType, boolean isUseful, LocalDate time){
         feedbackId = 0;
@@ -157,6 +178,7 @@ public class Feedback {
         this.feedbackType = feedbackType;
         this.isUseful = isUseful;
         this.time = time;
+        this.isRead = false;
     }
     public Feedback(String title, String description, FeedbackType feedbackType, Product productTarget, boolean isUseful, LocalDate time){
         feedbackId = 0;
@@ -167,7 +189,7 @@ public class Feedback {
         this.isUseful = isUseful;
         this.time = time;
         this.productTarget = productTarget;
-
+        this.isRead = false;
     }
     public Feedback(String title, String description, FeedbackType feedbackType, ProductInfo productInfoTarget, int productInfoRating, boolean isUseful, LocalDate time){
         feedbackId = 0;
@@ -179,6 +201,7 @@ public class Feedback {
         this.time = time;
         this.productInfoTarget = productInfoTarget;
         this.productInfoRating = productInfoRating;
+        this.isRead = false;
     }
     public Feedback(String title, String description, FeedbackType feedbackType, Staff staffTarget, boolean isUseful, LocalDate time){
         feedbackId = 0;
@@ -189,6 +212,7 @@ public class Feedback {
         this.isUseful = isUseful;
         this.time = time;
         this.staffTarget = staffTarget;
+        this.isRead = false;
     }
 
     @Override
@@ -261,7 +285,8 @@ public class Feedback {
                 break;
         }
         sb.append("    isUseful: "); sb.append(getIsUseful());sb.append(",\n");
-        sb.append("    time: "); sb.append(getTime());sb.append("\n");
+        sb.append("    time: "); sb.append(getTime());sb.append(",\n");
+        sb.append("    isRead: "); sb.append(isRead());sb.append("\n");
         sb.append('}');
         return sb.toString();
     }
