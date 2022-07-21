@@ -150,11 +150,11 @@ public class CProductPage extends Controller implements Initializable {
     }
 
     public void initShow(ObservableList<ProductInfo> productInfos){
-        showProductPane.getChildren().clear();
-        for(int i=0; i<productInfos.size();i++){
-            initItem(productInfos.get(i), i);
-        }
-//        pagination.setPageFactory(this::setPage);
+//        showProductPane.getChildren().clear();
+//        for(int i=0; i<productInfos.size();i++){
+//            initItem(productInfos.get(i), i);
+//        }
+        pagination.setPageFactory(this::setPage);
     }
 
     public void reload(){
@@ -274,13 +274,18 @@ public class CProductPage extends Controller implements Initializable {
     @FXML
     Pagination pagination;
     public AnchorPane setPage(Integer page){
-        pagination.setPageCount((int)Math.ceil(showedProducts.size()/3.0));
+
+        pagination.setPageCount((int)Math.ceil(showedProducts.size()/2.0));
         AnchorPane anchorPane = new AnchorPane();
+        if(showedProducts.size()==0){
+            pagination.setPageCount(0);
+            return anchorPane;
+        }
         anchorPane.setPrefSize(720,360);
-        for(int i=0;i<3;i++){
-            if(page*3+i>=showedProducts.size())
+        for(int i=0;i<2;i++){
+            if(page*2+i>=showedProducts.size())
                 break;
-            ProductInfo productInfo = showedProducts.get(page*3+i);
+            ProductInfo productInfo = showedProducts.get(page*2+i);
             FXMLLoader loader = new FXMLLoader(getClass().getResource("product-brief-info-page.fxml"));
             try {
                 loader.load();
@@ -292,6 +297,33 @@ public class CProductPage extends Controller implements Initializable {
             anchorPane.getChildren().add(controller.getRoot());
             controller.setLocation(0, i);
             controller.setParent(this);
+            controller.setType2();
+            controller.getButton().setOnMousePressed(new EventHandler<>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    if (mouseEvent.getClickCount() == 2) {
+                        System.out.println("Double clicked");
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("product-detail-page.fxml"));
+                        try {
+                            loader.load();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        ProductDetailPage detailController = loader.getController();
+                        try {
+                            detailController.setProductInfo(productInfo);
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        detailController.setRoot(loader.getRoot());
+                        detailController.setType2();
+                        Controller parentController = controller.getParent();
+                        parentController.add(detailController);
+                    } else {
+                        setInfo(productInfo, controller);
+                    }
+                }
+            });
         }
         return anchorPane;
     }
@@ -300,9 +332,10 @@ public class CProductPage extends Controller implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         this.setRoot(ancestor);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollPane.setContent(showProductPane);
+//        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+//        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//        scrollPane.setContent(showProductPane);
+        pagination.setPageFactory(this::setPage);
 
         try {
             setComboBox();
@@ -310,7 +343,6 @@ public class CProductPage extends Controller implements Initializable {
             throw new RuntimeException(e);
         }
 
-//        creatTest();
         reload();
     }
 }
