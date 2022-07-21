@@ -285,7 +285,7 @@ public class StaffManager {
                 if (latestPay == null) latestPay = staffBill.getTime();
                 else
                 {
-                    if (latestPay.isAfter(staffBill.getTime()))
+                    if (latestPay.isBefore(staffBill.getTime()))
                     latestPay = staffBill.getTime();
                 }
             }
