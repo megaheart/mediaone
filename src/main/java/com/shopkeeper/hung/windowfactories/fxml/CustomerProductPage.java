@@ -138,6 +138,13 @@ public class CustomerProductPage extends Controller implements Initializable {
         System.out.println("So san pham con lai trong kho: " + productInfo.getNumberOfProduct());
         if(num<productInfo.getNumberOfProduct())
             CustomerPage.getMain().addProductToCart(productInfo, Integer.parseInt(numberTextField.getText()));
+        else{
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Not enough amount of this product");
+            alert.setHeaderText("Results: Cant this product to cart with this amount");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
+        }
     }
     public void searchByTitle(){
         String s= searchName.getText().toLowerCase();
