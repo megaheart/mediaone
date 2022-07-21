@@ -174,7 +174,7 @@ public class CustomerFeedbackWindowController {
             }
             case Service -> {
                 try{
-                    feedback.setFeedbackAbout(FeedbackAbout.Staff);
+                    feedback.setFeedbackAbout(FeedbackAbout.Service);
                     String serviceName = otherTargetTxt.getText();
                     if(serviceName != null && (serviceName = serviceName.trim()).length() > 0){
                         feedback.setTitle(serviceName + ": ");
