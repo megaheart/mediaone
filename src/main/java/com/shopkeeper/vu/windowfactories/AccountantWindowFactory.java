@@ -22,7 +22,7 @@ public class AccountantWindowFactory extends WindowFactory {
         try{
             Stage stage = new Stage();
             FXMLLoader fxmlLoader = new FXMLLoader(AccountantWindowFactory.class.getResource("AWF.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 1300, 700);
+            Scene scene = new Scene(fxmlLoader.load(), 1350, 700);
             stage.setTitle("Thống kê của hàng media");
             stage.getIcons().add(new Image(String.valueOf(AccountantWindowFactory.class.getResource("img.png"))));
             stage.setScene(scene);
