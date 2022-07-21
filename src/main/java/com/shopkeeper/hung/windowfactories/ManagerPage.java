@@ -6,17 +6,20 @@ import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
-public class MainPage extends Application {
-    private static final MainPage mainPage  = new MainPage();
+import java.util.Objects;
 
-    public static MainPage getMain(){
+public class ManagerPage extends Application {
+    private static final ManagerPage mainPage  = new ManagerPage();
+
+    public static ManagerPage getMain(){
         return mainPage;
     }
-    public MainPage(){
+    public ManagerPage(){
         for(int i=0;i<20;i++)
             reqs[i]=new PaymentRequest();
     }
@@ -52,6 +55,8 @@ public class MainPage extends Application {
             scene.setFill(Color.TRANSPARENT);
             stage.setScene(scene);
             stage.setResizable(false);
+            stage.setTitle("Manager");
+            stage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("manager.png"))));
 //            stage.initStyle(StageStyle.TRANSPARENT);
             stage.show();
         }catch(Exception e){

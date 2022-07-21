@@ -31,30 +31,12 @@
             </ImageView>
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="customerButton" alignment="BASELINE_LEFT" graphicTextGap="60.0" layoutY="350.0" onMousePressed="#setCProductButton" prefHeight="50.0" ripplerFill="#c92e86" text="Product" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="350.0">
-         <font>
-            <Font name="Times New Roman" size="20.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../icons/addproduct.png" />
-            </ImageView>
-         </graphic>
-      </JFXButton>
       <Label prefHeight="50.0" prefWidth="250.0" text="Manager View" textFill="#ff9c99" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <padding>
             <Insets left="60.0" />
          </padding>
          <font>
             <Font name="Times New Roman" size="30.0" />
-         </font>
-      </Label>
-      <Label prefHeight="50.0" text="Customer View" textFill="#ff9c99" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="300.0">
-         <padding>
-            <Insets left="60.0" />
-         </padding>
-         <font>
-            <Font size="25.0" />
          </font>
       </Label>
       <JFXButton fx:id="settingButton" layoutX="43.0" layoutY="520.0" prefHeight="50.0" prefWidth="50.0" text=" " AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="0.0" />
@@ -85,16 +67,6 @@
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <Image url="@../icons/person.png" />
-            </ImageView>
-         </graphic>
-      </JFXButton>
-      <JFXButton fx:id="customerButton1" alignment="BASELINE_LEFT" graphicTextGap="60.0" layoutX="10.0" layoutY="360.0" onMousePressed="#setCartPage" prefHeight="50.0" ripplerFill="#c92e86" text="Cart" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="400.0">
-         <font>
-            <Font name="Times New Roman" size="20.0" />
-         </font>
-         <graphic>
-            <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../icons/cart.png" />
             </ImageView>
          </graphic>
       </JFXButton>
