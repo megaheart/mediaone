@@ -36,9 +36,15 @@ public class ProductDetailPage extends Controller implements Initializable {
 
     public void setProductInfo(ProductInfo productInfo) throws Exception {
         this.productInfo=productInfo;
-        left.setText(productInfo.getNumberOfProduct()+" left");
+        if(productInfo.getNumberOfProduct() ==0)
+            left.setText("Out of stock");
+        else
+            left.setText(productInfo.getNumberOfProduct()+" left");
         name.setText("Title: " +productInfo.getTitle());
-        award.setText(productInfo.getAward().toString());
+        StringBuilder tmp= new StringBuilder();
+        for(var x: productInfo.getAward())
+            tmp.append(x).append('\n');
+        award.setText(tmp.toString());
         rating.setText("Rating: "+(int)productInfo.getRating()+" / 5");
         description.setText(productInfo.getDescription());
         if(productInfo.getCategory()==null)

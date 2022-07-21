@@ -96,6 +96,8 @@ public class CategoryPage extends Controller implements Initializable {
             Label label = categoryLabel(x);
             labels.add(label);
         }
+        labels.sort((o1,o2)->
+            Integer.compare(o1.getText().toLowerCase().compareTo(o2.getText().toLowerCase()), 0));
         categoryListView.setItems(labels);
     }
     private final ObservableList<ProductInfo> showedProducts = FXCollections.observableArrayList();
@@ -136,7 +138,6 @@ public class CategoryPage extends Controller implements Initializable {
             category.setName(nameTextField.getText());
             category.setDescription(descriptionTextArea.getText());
             CategoryManager.getManager().add(category);
-            this.category= category;
         }
         if(mode.equals("edit")){
             this.category.setName(nameTextField.getText());

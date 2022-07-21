@@ -81,10 +81,10 @@ public class CProductPage extends Controller implements Initializable {
             showProductPane.getChildren().add(controller.getRoot());
             controller.setLocation((int)index/2,index%2);
             controller.setType2();
-            controller.getButton().setOnMousePressed(new EventHandler<MouseEvent>() {
+            controller.getButton().setOnMousePressed(new EventHandler<>() {
                 @Override
                 public void handle(MouseEvent mouseEvent) {
-                    if(mouseEvent.getClickCount() == 2){
+                    if (mouseEvent.getClickCount() == 2) {
                         System.out.println("Double clicked");
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("product-detail-page.fxml"));
                         try {
@@ -102,8 +102,7 @@ public class CProductPage extends Controller implements Initializable {
                         detailController.setType2();
                         Controller parentController = controller.getParent();
                         parentController.add(detailController);
-                    }
-                    else{
+                    } else {
                         setInfo(productInfo, controller);
                     }
                 }
@@ -122,7 +121,10 @@ public class CProductPage extends Controller implements Initializable {
     TextField numberTextField;
     public void setInfo(ProductInfo productInfo, ProductBriefInfoPage briefInfoPage){
         this.productInfo = productInfo;
-        ratingLabel.setText((int)productInfo.getRating()+" / 5");
+        if(productInfo.getNumberOfProduct()!=0)
+            ratingLabel.setText("remaining: " + productInfo.getNumberOfProduct() +" left");
+        else
+            ratingLabel.setText("Out of stock");
         imageView.setImage(briefInfoPage.getImage());
         nameLabel.setText(productInfo.getTitle());
         priceLabel.setText((int)productInfo.getCurrentSalePrice()/1000+",000 VND");
