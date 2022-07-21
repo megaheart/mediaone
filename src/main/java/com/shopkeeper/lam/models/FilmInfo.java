@@ -1,8 +1,11 @@
 package com.shopkeeper.lam.models;
 
+import com.shopkeeper.mediaone.database.DatabaseAdapter;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class FilmInfo extends ProductInfo{
     private Person director;//đạo diễn
@@ -10,8 +13,13 @@ public final class FilmInfo extends ProductInfo{
     private LocalTime timeLimit;//thoi luong phim
 
     public FilmInfo(){
+
         super();
+        this.director = DatabaseAdapter.getDbAdapter().getAllPeople().get(0);
+        this.actors = new ArrayList<>(Arrays.asList(DatabaseAdapter.getDbAdapter().getAllPeople().get(0)));
+        this.timeLimit = LocalTime.of(2,0,20);
     }
+
 
     public FilmInfo(String title, String description, Category category,  LocalDate releaseDate, double currentSalePrice, Publisher publisher,  double rating, ArrayList<String> award,Person director,ArrayList<Person> actors,LocalTime timeLimit) {
         super(title, description, category, releaseDate, currentSalePrice, publisher, rating, award);

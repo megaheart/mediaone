@@ -3,6 +3,7 @@ package com.shopkeeper.linh.windowfactories;
 import com.shopkeeper.mediaone.windowfactories.WindowFactory;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class PaymentWindowFactory extends WindowFactory {
         Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(PaymentWindowFactory.class.getResource("payment-window.fxml"));
         Scene scene = null;
-        stage.setTitle("Quản lý phản hồi");
+        stage.setTitle("Quản lý hoá đơn bán hàng và thanh toán");
         stage.setResizable(false);
         try {
             scene = new Scene(fxmlLoader.load());
@@ -34,6 +35,7 @@ public class PaymentWindowFactory extends WindowFactory {
             return null;
         }
         stage.setScene(scene);
+        //stage.getIcons().add(new Image("file:C:\\Users\\linh2\\Downloads\\New folder\\home.png"));
         return stage;
     }
 

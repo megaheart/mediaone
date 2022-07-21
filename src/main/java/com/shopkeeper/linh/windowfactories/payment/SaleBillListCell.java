@@ -13,13 +13,13 @@ public class SaleBillListCell extends ListCell<SaleBill> {
     @Override
     public void updateItem(SaleBill data, boolean empty)
     {
+        super.updateItem(data, empty);
         if (empty || data == null) {
             if(this.controller != null) controller.setDataContext(null);
             setText(null);
             setGraphic(null);
             return;
         }
-        super.updateItem(data, empty);
         if(controller == null){
             controller = SaleBillListItemController.getController();
         }
