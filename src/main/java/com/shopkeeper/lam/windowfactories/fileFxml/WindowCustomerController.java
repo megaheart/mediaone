@@ -1,7 +1,8 @@
 package com.shopkeeper.lam.windowfactories.fileFxml;
 
-import com.shopkeeper.hung.windowfactories.MainPage;
+import com.shopkeeper.hung.windowfactories.CustomerPage;
 import com.shopkeeper.lam.models.Person;
+import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.windowfactories.CustomerFeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
 import javafx.event.ActionEvent;
@@ -25,7 +26,7 @@ public class WindowCustomerController  {
     Button button2;
 
     public void openViewProduct(ActionEvent event) {
-        MainPage.getMain().start(new Stage());
+        CustomerPage.getMain().start(new Stage());
     }
     public void openSendFeedBack(ActionEvent event) {
         CustomerFeedbackWindowFactory.getFactory().openWindow();

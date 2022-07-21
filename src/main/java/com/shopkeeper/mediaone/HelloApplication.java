@@ -3,6 +3,8 @@ package com.shopkeeper.mediaone;
 
 import com.shopkeeper.lam.database.*;
 import com.shopkeeper.lam.models.*;
+import com.shopkeeper.lam.windowfactories.fileFxml.CustomerWindowFactory;
+import com.shopkeeper.lam.windowfactories.fileFxml.ManagerWindowFactory;
 import com.shopkeeper.linh.models.*;
 import com.shopkeeper.linh.windowfactories.FeedbackWindowFactory;
 import com.shopkeeper.mediaone.database.DatabaseAdapter;
