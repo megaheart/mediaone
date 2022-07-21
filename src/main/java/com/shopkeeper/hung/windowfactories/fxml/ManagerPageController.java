@@ -9,7 +9,7 @@ import javafx.scene.layout.AnchorPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainPageController extends Controller implements Initializable{
+public class ManagerPageController extends Controller implements Initializable{
     public JFXButton customerButton1;
     @FXML
     AnchorPane ancestor;
@@ -18,7 +18,7 @@ public class MainPageController extends Controller implements Initializable{
     CategoryPage categoryPage;
     PublisherPage publisherPage;
     PersonPage personPage;
-    CProductPage cProductPage;
+    CustomerProductPage cProductPage;
     CartPage cartPage;
 
     public void setProductButton(){
@@ -94,7 +94,7 @@ public class MainPageController extends Controller implements Initializable{
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("c-product-page.fxml"));
             loader.load();
-            CProductPage controller = loader.getController();
+            CustomerProductPage controller = loader.getController();
             this.add(controller,250,100);
             cProductPage= controller;
         }catch(Exception e){

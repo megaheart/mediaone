@@ -122,16 +122,16 @@ public class PaymentWindowController {
 
         String subName = filterSubnameTxtBox.getText();
         if(subName != null && (subName = subName.trim()).length() != 0){
-            final String _subName = subName;
+            final String _subName = subName.toLowerCase();
             filteredList = filteredList.filtered(saleBill -> {
-                return saleBill.getName().contains(_subName);
+                return saleBill.getName().toLowerCase().contains(_subName);
             });
         }
         String subLocationString = filterLocationTxt.getText();
         if(subLocationString != null && (subLocationString = subLocationString.trim()).length() != 0){
-            final String _subLocationString = subLocationString;
+            final String _subLocationString = subLocationString.toLowerCase();
             filteredList = filteredList.filtered(saleBill -> {
-                return saleBill.getLocation().contains(_subLocationString);
+                return saleBill.getLocation().toLowerCase().contains(_subLocationString);
             });
         }
         saleBillList = new SaleBillObservableList(filteredList);

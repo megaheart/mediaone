@@ -20,6 +20,8 @@ import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ResourceBundle;
 
 public class ProductDetailPage extends Controller implements Initializable {
@@ -36,9 +38,15 @@ public class ProductDetailPage extends Controller implements Initializable {
 
     public void setProductInfo(ProductInfo productInfo) throws Exception {
         this.productInfo=productInfo;
-        left.setText(productInfo.getNumberOfProduct()+" left");
+        if(productInfo.getNumberOfProduct() ==0)
+            left.setText("Out of stock");
+        else
+            left.setText(productInfo.getNumberOfProduct()+" left");
         name.setText("Title: " +productInfo.getTitle());
-        award.setText(productInfo.getAward().toString());
+        StringBuilder tmp= new StringBuilder();
+        for(var x: productInfo.getAward())
+            tmp.append(x).append('\n');
+        award.setText(tmp.toString());
         rating.setText("Rating: "+(int)productInfo.getRating()+" / 5");
         description.setText(productInfo.getDescription());
         if(productInfo.getCategory()==null)
@@ -67,7 +75,7 @@ public class ProductDetailPage extends Controller implements Initializable {
         }
         if(productInfo instanceof MusicInfo){
             icon.setImage( Icon.getMusicIcon());
-            timeMusic.setText(((MusicInfo) productInfo).getTimeLimit()+" mins");
+            timeMusic.setText(((MusicInfo) productInfo).getTimeLimit().toString());
             StringBuilder s= new StringBuilder();
             for(var temp : ((MusicInfo) productInfo).getMusicians()){
                 if(temp==null)
