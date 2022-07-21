@@ -19,28 +19,6 @@ public class ManagerPage extends Application {
     public static ManagerPage getMain(){
         return mainPage;
     }
-    public ManagerPage(){
-        for(int i=0;i<20;i++)
-            reqs[i]=new PaymentRequest();
-    }
-    private PaymentRequest[] reqs  = new PaymentRequest[20];
-    private Integer requestNumber=1;
-    public ObservableList<Pair<ProductInfo, Integer>> getChosenProduct(){
-        return reqs[requestNumber-1].getChosenProduct();
-    }
-
-    public void pay(){
-        requestNumber++;
-    }
-    public void addProductToCart(ProductInfo productInfo, Integer integer){
-        reqs[requestNumber-1].addProductToCart(productInfo, integer);
-    }
-    private int getNumberOfRequest(){
-        return this.requestNumber;
-    }
-    private ObservableList<Pair<ProductInfo , Integer >> getRequest(int i){
-        return reqs[i-1].getChosenProduct();
-    }
 
 
     @Override

@@ -1,5 +1,6 @@
 package com.shopkeeper.hung.windowfactories.fxml;
 
+import com.shopkeeper.hung.windowfactories.CustomerPage;
 import com.shopkeeper.hung.windowfactories.ManagerPage;
 import com.shopkeeper.lam.funtions.CategoryManager;
 import com.shopkeeper.lam.funtions.PersonManager;
@@ -134,8 +135,9 @@ public class CustomerProductPage extends Controller implements Initializable {
         if(numberTextField.getText().equals(""))
             return;
         int num =Integer.parseInt(numberTextField.getText());
+        System.out.println("So san pham con lai trong kho: " + productInfo.getNumberOfProduct());
         if(num<productInfo.getNumberOfProduct())
-            ManagerPage.getMain().addProductToCart(productInfo, Integer.parseInt(numberTextField.getText()));
+            CustomerPage.getMain().addProductToCart(productInfo, Integer.parseInt(numberTextField.getText()));
     }
     public void searchByTitle(){
         String s= searchName.getText().toLowerCase();
