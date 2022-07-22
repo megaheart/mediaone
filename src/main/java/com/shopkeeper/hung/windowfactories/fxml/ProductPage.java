@@ -98,6 +98,11 @@ public class ProductPage extends Controller implements Initializable {
     }
 
     public void reload(){
+        publisherComboBox.setValue(null);
+        categoryComboBox.setValue(null);
+        searchName.setText("");
+        personComboBox.setValue(null);
+        categoryComboBox.setValue(null);
         initInfo();
         initShow(showedProducts);
     }
