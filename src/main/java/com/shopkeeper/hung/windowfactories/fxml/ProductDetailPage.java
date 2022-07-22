@@ -114,6 +114,8 @@ public class ProductDetailPage extends Controller implements Initializable {
         ProductPage parent =(ProductPage) this.getParent();
         parent.getShowedProducts().remove(productInfo);
         parent.initShow(parent.getShowedProducts());
+        parent.getTempProduct().remove(productInfo);
+        parent.getTempProduct().remove(productInfo);
         close();
     }
 

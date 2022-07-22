@@ -211,7 +211,7 @@ public class AddProductPage extends Controller implements Initializable {
                     parent.initShow(parent.getShowedProducts());
                 }catch(Exception e){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Maybe at time format, minutes : seconds");
+                    alert.setContentText("Maybe at time format,hours: minutes : seconds");
                     alert.setHeaderText("Error in input for product information");
 //            alert.setContentText("Connect to the database successfully!");
                     alert.showAndWait();
@@ -249,7 +249,7 @@ public class AddProductPage extends Controller implements Initializable {
                     parent.initShow(parent.getShowedProducts());
                 }catch(Exception e){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setContentText("Maybe at time format, minutes : seconds");
+                    alert.setContentText("Maybe at time format,hours: minutes : seconds");
                     alert.setHeaderText("Error in input for product information");
 //            alert.setContentText("Connect to the database successfully!");
                     alert.showAndWait();
