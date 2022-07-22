@@ -87,16 +87,8 @@ public class ProductPage extends Controller implements Initializable {
         }
     }
     public void searchByTitle(){
-        String s= searchName.getText().toLowerCase();
-        ObservableList<ProductInfo> temp =FXCollections.observableArrayList();
         setShowedProducts();
-        temp.addAll(showedProducts);
-        showedProducts.clear();
-        for(ProductInfo x : temp)
-            if(x.getTitle().toLowerCase().contains(s))
-                showedProducts.add(x);
         initShow(showedProducts);
-
     }
 
     public void initShow(ObservableList<ProductInfo> productInfos){
@@ -160,6 +152,9 @@ public class ProductPage extends Controller implements Initializable {
     public void setShowedProducts(){
         showedProducts.clear();
         for(var productInfo: tempProduct){
+            if(!searchName.getText().equals(""))
+                if(!productInfo.getTitle().toLowerCase().contains(searchName.getText().toLowerCase()))
+                    continue;
             if(!checkDate(productInfo))
                 continue;
             String category = categoryComboBox.getValue();
