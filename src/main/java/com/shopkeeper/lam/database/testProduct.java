@@ -99,7 +99,7 @@ public class testProduct {
         product[70] = new Product(films.get(3),ProductState.SOLD,importBills.get(23),saleBills.get(2),(int)importBills.get(23).getPrice()/3,150000,"link3","Không tồn tại");
         product[71] = new Product(films.get(3),ProductState.READY,importBills.get(23),null,(int)importBills.get(23).getPrice()/3,150000,"link3","B1");
         product[72] = new Product(films.get(4),ProductState.READY,importBills.get(24),null,(int)importBills.get(24).getPrice()/3,150000,"link3","Không tồn tại");
-        product[73] = new Product(films.get(4),ProductState.SOLD,importBills.get(24),saleBills.get(30),(int)importBills.get(24).getPrice()/3,150000,"link3","Không tồn tại");
+        product[73] = new Product(films.get(4),ProductState.SOLD,importBills.get(24),saleBills.get(28),(int)importBills.get(24).getPrice()/3,150000,"link3","Không tồn tại");
         product[74] = new Product(films.get(4),ProductState.READY,importBills.get(24),null,(int)importBills.get(24).getPrice()/3,150000,"link3","E2");
         product[75] = new Product(films.get(5),ProductState.READY,importBills.get(25),null,(int)importBills.get(25).getPrice()/3,100000,"link3","Không tồn tại");
         product[76] = new Product(films.get(5),ProductState.SOLD,importBills.get(25),saleBills.get(18),(int)importBills.get(25).getPrice()/3,100000,"link3","Không tồn tại");
@@ -144,7 +144,7 @@ public class testProduct {
         product[115] = new Product(films.get(18),ProductState.SOLD,importBills.get(38),saleBills.get(3),(int)importBills.get(38).getPrice()/3,200000,"link2","Không tồn tại");
         product[116] = new Product(films.get(18),ProductState.READY,importBills.get(38),null,(int)importBills.get(38).getPrice()/3,200000,"link2","A1");
         product[117] = new Product(films.get(19),ProductState.READY,importBills.get(39),null,(int)importBills.get(39).getPrice()/3,100000,"link1","Không tồn tại");
-        product[118] = new Product(films.get(19),ProductState.SOLD,importBills.get(39),saleBills.get(30),(int)importBills.get(39).getPrice()/3,100000,"link1","Không tồn tại");
+        product[118] = new Product(films.get(19),ProductState.SOLD,importBills.get(39),saleBills.get(23),(int)importBills.get(39).getPrice()/3,100000,"link1","Không tồn tại");
         product[119] = new Product(films.get(19),ProductState.READY,importBills.get(39),null,(int)importBills.get(39).getPrice()/3,100000,"link1","A2");
         product[120] = new Product(musics.get(0),ProductState.READY,importBills.get(40),null,(int)importBills.get(40).getPrice()/3,50000,"link4","E2");
         product[121] = new Product(musics.get(0),ProductState.SOLD,importBills.get(40),saleBills.get(25),(int)importBills.get(40).getPrice()/3,50000,"link4","Không tồn tại");
@@ -183,7 +183,7 @@ public class testProduct {
         product[154] = new Product(musics.get(11),ProductState.SOLD,importBills.get(51),saleBills.get(29),(int)importBills.get(51).getPrice()/3,50000,"link5","Không tồn tại");
         product[155] = new Product(musics.get(11),ProductState.IMPORTING,null,null,0,0,"link5","Không tồn tại");
         product[156] = new Product(musics.get(12),ProductState.READY,importBills.get(52),null,(int)importBills.get(52).getPrice()/3,50000,"link1","A2");
-        product[157] = new Product(musics.get(12),ProductState.SOLD,importBills.get(52),saleBills.get(30),(int)importBills.get(52).getPrice()/3,50000,"link1","Không tồn tại");
+        product[157] = new Product(musics.get(12),ProductState.SOLD,importBills.get(52),saleBills.get(29),(int)importBills.get(52).getPrice()/3,50000,"link1","Không tồn tại");
         product[158] = new Product(musics.get(12),ProductState.IMPORTING,null,null,0,0,"link1","Không tồn tại");
         product[159] = new Product(musics.get(13),ProductState.READY,importBills.get(53),null,(int)importBills.get(53).getPrice()/3,50000,"link1","B3");
         product[160] = new Product(musics.get(13),ProductState.SOLD,importBills.get(53),saleBills.get(10),(int)importBills.get(53).getPrice()/3,50000,"link1","Không tồn tại");
