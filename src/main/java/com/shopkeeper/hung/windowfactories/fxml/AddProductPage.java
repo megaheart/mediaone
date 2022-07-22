@@ -41,8 +41,14 @@ public class AddProductPage extends Controller implements Initializable {
 
         var x = productInfo;
         if(name.getText().equals("") || price.getText().equals("")
-        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") )
+        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") ) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("TRY AGAIN");
+            alert.setHeaderText("WRONG INPUT");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
             return false;
+        }
         return(x.getPublisher()!= null &&x.getTitle()!=null &&x.getReleaseDate()!=null
         &&x.getAward()!=null && x.getCategory()!=null);
     }
@@ -52,7 +58,15 @@ public class AddProductPage extends Controller implements Initializable {
             return;
         }
         if(!name.getText().equals("")) productInfo.setTitle(name.getText());
-        if(!price.getText().equals(""))productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
+        try{
+            if (!price.getText().equals("")) productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
+        }catch(Exception e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Dont understand this value");
+            alert.setHeaderText("Error input price");
+//            alert.setContentText("Connect to the database successfully!");
+            alert.showAndWait();
+        }
         if(!description.getText().equals(""))productInfo.setDescription(description.getText());
         if(!rating.getText().equals(""))productInfo.setRating(Integer.parseInt(rating.getText()));
         if(!award.getText().equals(""))productInfo.setAward(new ArrayList<> (Arrays.asList(award.getText().split("\n")))   );
@@ -132,6 +146,7 @@ public class AddProductPage extends Controller implements Initializable {
                 res.setNumberOfProduct(productInfo.getNumberOfProduct());
 
                 ProductInfoManager.getManager().add(res);
+
                 ProductPage parent =(ProductPage) this.getParent();
                 parent.reload();
                 parent.getShowedProducts().add(res);
@@ -159,18 +174,29 @@ public class AddProductPage extends Controller implements Initializable {
 
 //                int mins =Integer.parseInt(timeFilm.getText());
 
-                FilmInfo res=  new FilmInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
-                        ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
-                        productInfo.getRating(),productInfo.getAward(),director,actors,
-                        LocalTime.parse(timeFilm.getText())
+                try{
+                    FilmInfo res = new FilmInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
+                            , productInfo.getReleaseDate(), productInfo.getCurrentSalePrice(), productInfo.getPublisher(),
+                            productInfo.getRating(), productInfo.getAward(), director, actors,
+                            LocalTime.parse(timeFilm.getText())
+
 //                        LocalTime.of(mins/60, mins%60)
-                        );
-                res.setNumberOfProduct(productInfo.getNumberOfProduct());
-                ProductInfoManager.getManager().add(res);
-                ProductPage parent =(ProductPage) this.getParent();
-                parent.reload();
-                parent.getShowedProducts().add(res);
-                parent.initShow(parent.getShowedProducts());
+                    );
+                    res.setNumberOfProduct(productInfo.getNumberOfProduct());
+                    ProductInfoManager.getManager().add(res);
+                    ProductPage parent =(ProductPage) this.getParent();
+                    parent.reload();
+                    parent.getShowedProducts().add(res);
+                    parent.initShow(parent.getShowedProducts());
+                }catch(Exception e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Maybe at time format, minutes : seconds");
+                    alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                    alert.showAndWait();
+                    return;
+                };
+
             }
             case "music"->{
                 ArrayList<Person> musicians = new ArrayList<>();
@@ -183,6 +209,7 @@ public class AddProductPage extends Controller implements Initializable {
                         return;
                     musicians.add(dbMusicians.get(index));
                 }
+
 //                int mins =Integer.parseInt(timeMusic.getText());
 
                 MusicInfo res=  new MusicInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
@@ -191,12 +218,21 @@ public class AddProductPage extends Controller implements Initializable {
                         musicians,LocalTime.parse(timeMusic.getText())
 //                        LocalTime.of(mins/60, mins%60)
                 );
-                res.setNumberOfProduct(productInfo.getNumberOfProduct());
-                ProductInfoManager.getManager().add(res);
-                ProductPage parent =(ProductPage) this.getParent();
-                parent.reload();
-                parent.getShowedProducts().add(res);
-                parent.initShow(parent.getShowedProducts());
+                try{
+                    res.setNumberOfProduct(productInfo.getNumberOfProduct());
+                    ProductInfoManager.getManager().add(res);
+                    ProductPage parent = (ProductPage) this.getParent();
+                    parent.reload();
+                    parent.getShowedProducts().add(res);
+                    parent.initShow(parent.getShowedProducts());
+                }catch(Exception e){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setContentText("Maybe at time format, minutes : seconds");
+                    alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                    alert.showAndWait();
+                    return;
+                }
 
             }
             default -> throw new IllegalStateException("Unexpected value: " + temp);

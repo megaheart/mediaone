@@ -23,7 +23,7 @@ public class CustomerPage extends Application {
         for(int i=0;i<20;i++)
             reqs[i]=new PaymentRequest();
     }
-    private PaymentRequest[] reqs  = new PaymentRequest[20];
+    private final PaymentRequest[] reqs  = new PaymentRequest[20];
     private Integer requestNumber=1;
     public ObservableList<Pair<ProductInfo, Integer>> getChosenProduct(){
         return reqs[requestNumber-1].getChosenProduct();
@@ -35,10 +35,10 @@ public class CustomerPage extends Application {
     public void addProductToCart(ProductInfo productInfo, Integer integer){
         reqs[requestNumber-1].addProductToCart(productInfo, integer);
     }
-    private int getNumberOfRequest(){
+    public int getNumberOfRequest(){
         return this.requestNumber;
     }
-    private ObservableList<Pair<ProductInfo , Integer >> getRequest(int i){
+    public ObservableList<Pair<ProductInfo , Integer >> getRequest(int i){
         return reqs[i-1].getChosenProduct();
     }
 

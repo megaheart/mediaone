@@ -96,63 +96,91 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
 
         if(this.productInfo instanceof  BookInfo){
             ArrayList<Person> authors = new ArrayList<>();
-            var dbMusicians = PersonManager.getManager().getAll();
-            for(var x: authorsName){
-                int index=0;
-                while(index<dbMusicians.size() && !dbMusicians.get(index).getName().equals(x))
-                    index++;
-                if(index >=dbMusicians.size())
-                    return;
-                authors.add(dbMusicians.get(index));
-            }
-            ((BookInfo)productInfo).setAuthors(authors);
-            ((BookInfo) productInfo).setNumberOfPage(Integer.parseInt(pageNumber.getText()));
+            try{
+                var dbMusicians = PersonManager.getManager().getAll();
+                for (var x : authorsName) {
+                    int index = 0;
+                    while (index < dbMusicians.size() && !dbMusicians.get(index).getName().equals(x))
+                        index++;
+                    if (index >= dbMusicians.size())
+                        return;
+                    authors.add(dbMusicians.get(index));
+                }
+                ((BookInfo) productInfo).setAuthors(authors);
+                ((BookInfo) productInfo).setNumberOfPage(Integer.parseInt(pageNumber.getText()));
 
-            ProductInfoManager.getManager().update(this.productInfo);
+                ProductInfoManager.getManager().update(this.productInfo);
+            }catch(Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Maybe at time format, minutes : seconds");
+                alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                alert.showAndWait();
+                return;
+            }
 
         }
         if(productInfo instanceof  FilmInfo){
-            ArrayList<Person> actors = new ArrayList<>();
-            var dbMusicians = PersonManager.getManager().getAll();
-            Person director = new Person();
-            for(var x: actorsName){
-                int index=0;
-                while(index<dbMusicians.size() && !dbMusicians.get(index).getName().equals(x))
-                    index++;
-                if(index >=dbMusicians.size())
+            try{
+                ArrayList<Person> actors = new ArrayList<>();
+                var dbMusicians = PersonManager.getManager().getAll();
+                Person director = new Person();
+                for (var x : actorsName) {
+                    int index = 0;
+                    while (index < dbMusicians.size() && !dbMusicians.get(index).getName().equals(x))
+                        index++;
+                    if (index >= dbMusicians.size())
+                        return;
+                    actors.add(dbMusicians.get(index));
+                }
+                for (var x : dbMusicians)
+                    if (x.getName().equals(directorComboBox.getValue()))
+                        director = x;
+                if (director.getName() == null)
                     return;
-                actors.add(dbMusicians.get(index));
+
+                int mins = Integer.parseInt(timeFilm.getText());
+
+                ((FilmInfo) productInfo).setTimeLimit(LocalTime.of(mins / 60, mins % 60));
+                ((FilmInfo) productInfo).setActors(actors);
+                ((FilmInfo) productInfo).setDirector(director);
+                ProductInfoManager.getManager().update(productInfo);
             }
-            for(var x: dbMusicians)
-                if(x.getName().equals(directorComboBox.getValue()))
-                    director = x;
-            if( director.getName() ==null)
+            catch(Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Maybe at time format, minutes : seconds");
+                alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                alert.showAndWait();
                 return;
-
-            int mins =Integer.parseInt(timeFilm.getText());
-
-            ((FilmInfo) productInfo).setTimeLimit(LocalTime.of(mins/60, mins%60));
-            ((FilmInfo) productInfo).setActors(actors);
-            ((FilmInfo) productInfo).setDirector(director);
-            ProductInfoManager.getManager().update(productInfo);
+            }
         }
         if(productInfo instanceof MusicInfo){
-            ArrayList<Person> musicians = new ArrayList<>();
-            var dbMusicians = PersonManager.getManager().getAll();
-            for(var x: musicianName){
-                int index=0;
-                while(index<dbMusicians.size() && !dbMusicians.get(index).getName().equals(x))
-                    index++;
-                if(index >=dbMusicians.size())
-                    return;
-                musicians.add(dbMusicians.get(index));
+            try{
+                ArrayList<Person> musicians = new ArrayList<>();
+                var dbMusicians = PersonManager.getManager().getAll();
+                for (var x : musicianName) {
+                    int index = 0;
+                    while (index < dbMusicians.size() && !dbMusicians.get(index).getName().equals(x))
+                        index++;
+                    if (index >= dbMusicians.size())
+                        return;
+                    musicians.add(dbMusicians.get(index));
+                }
+
+                int mins = Integer.parseInt(timeMusic.getText());
+
+                ((MusicInfo) productInfo).setMusicians(musicians);
+                ((MusicInfo) productInfo).setTimeLimit(LocalTime.of(mins / 60, mins % 60));
+                ProductInfoManager.getManager().update(productInfo);
+            }catch(Exception e){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Maybe at time format, minutes : seconds");
+                alert.setHeaderText("Error in input for product information");
+//            alert.setContentText("Connect to the database successfully!");
+                alert.showAndWait();
+                return;
             }
-
-            int mins =Integer.parseInt(timeMusic.getText());
-
-            ((MusicInfo) productInfo).setMusicians(musicians);
-            ((MusicInfo) productInfo).setTimeLimit(LocalTime.of(mins/60,mins%60));
-            ProductInfoManager.getManager().update(productInfo);
         }
         ProductDetailPage parent =(ProductDetailPage) this.getParent();
         parent.setProductInfo(this.productInfo);
