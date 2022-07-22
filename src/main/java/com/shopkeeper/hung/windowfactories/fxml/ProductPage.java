@@ -39,6 +39,9 @@ public class ProductPage extends Controller implements Initializable {
     public ObservableList<ProductInfo> getShowedProducts(){
         return this.showedProducts;
     }
+    public ObservableList<ProductInfo> getTempProduct(){
+        return this.tempProduct;
+    }
 
     public void addProduct() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("add-product-page.fxml"));
