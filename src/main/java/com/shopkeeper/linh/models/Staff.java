@@ -13,6 +13,17 @@ import java.time.*;
 
 
 public class Staff implements IReferencedCounter {
+
+    private LocalDate latestPay;
+
+    public LocalDate getLatestPay(){
+        return latestPay;
+    }
+
+    public void setLatestPay(LocalDate latestPay) {
+        this.latestPay = latestPay;
+    }
+
     public long getStaffId() {
         return staffId;
     }
@@ -120,6 +131,7 @@ public class Staff implements IReferencedCounter {
     }
     public Staff(){
         staffId = 0;
+        latestPay = LocalDate.of(2000, 1, 1);
     }
     public Staff(String name, boolean isMale, LocalDate dateOfBirth, String email, String phoneNumber, String description, StaffState state){
         staffId = 0;
@@ -130,6 +142,7 @@ public class Staff implements IReferencedCounter {
         setPhoneNumber(phoneNumber);
         setDescription(description);
         setState(state);
+        latestPay = LocalDate.of(2000, 1, 1);
     }
 
     @Override
