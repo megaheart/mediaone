@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -13,6 +14,8 @@ public class ManagerPageController extends Controller implements Initializable{
     public JFXButton customerButton1;
     @FXML
     AnchorPane ancestor;
+    @FXML
+    ImageView background;
 
     ProductPage productPage;
     CategoryPage categoryPage;
@@ -25,6 +28,7 @@ public class ManagerPageController extends Controller implements Initializable{
         try{
             if(productPage!=null) {
 //                productPage.reload();
+                background.toFront();
                 productPage.toFront();
                 return;
             }
@@ -41,6 +45,7 @@ public class ManagerPageController extends Controller implements Initializable{
         try{
             if(categoryPage!=null) {
                 categoryPage.setReloadButton();
+                background.toFront();
                 categoryPage.toFront();
                 return;
             }
@@ -57,6 +62,7 @@ public class ManagerPageController extends Controller implements Initializable{
         try{
             if(publisherPage!=null) {
 //                publisherPage.setReloadButton();
+                background.toFront();
                 publisherPage.toFront();
                 return;
             }
@@ -73,6 +79,7 @@ public class ManagerPageController extends Controller implements Initializable{
         try{
             if(personPage!=null) {
 //                personPage.setReloadButton();
+                background.toFront();
                 personPage.toFront();
                 return;
             }
@@ -106,5 +113,7 @@ public class ManagerPageController extends Controller implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle){
         setRoot(ancestor);setProductButton();
+//        background.toFront();
+        setProductButton();
     }
 }
