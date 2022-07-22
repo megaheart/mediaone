@@ -32,46 +32,65 @@ public class AddProductPage extends Controller implements Initializable {
     DatePicker releaseDate;
     @FXML
     ListView<String> musiciansList, actorsListView, authorsListView;
-    private final ProductInfo productInfo = new ProductInfo();
+    private ProductInfo productInfo;
 
     private final ObservableList<String> authorsName = FXCollections.observableArrayList();
     private final ObservableList<String> musicianName = FXCollections.observableArrayList();
     private final ObservableList<String> actorsName = FXCollections.observableArrayList();
     public boolean check(){
-
-        var x = productInfo;
         if(name.getText().equals("") || price.getText().equals("")
-        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||description.getText().equals("") ) {
+        ||rating.getText().equals("") ||categoryComboBox.getValue().equals("")||award.getText().equals("")||
+                description.getText().equals("")  ) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("TRY AGAIN");
             alert.setHeaderText("WRONG INPUT");
-//            alert.setContentText("Connect to the database successfully!");
             alert.showAndWait();
             return false;
         }
-        return(x.getPublisher()!= null &&x.getTitle()!=null &&x.getReleaseDate()!=null
-        &&x.getAward()!=null && x.getCategory()!=null);
+        return true;
     }
     public void getInfo(){
-        var check = type.getValue();
-        if(check == null) {
-            return;
+        if(type.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("YOU MUST CHOOSE TYPE OF PRODUCT");
+            alert.setHeaderText("HASN'T CHOOSE TYPE");
+            alert.showAndWait();
         }
-        if(!name.getText().equals("")) productInfo.setTitle(name.getText());
         try{
-            if (!price.getText().equals("")) productInfo.setCurrentSalePrice(Integer.parseInt(price.getText()));
+            Publisher publisher = null;
+            for(Publisher temp : PublisherManager.getManager().getAll()){
+                if(temp.getName().equals(publisherComboBox.getValue()))
+                    publisher  = temp;
+            }
+            if(publisher == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("WRONG INPUT PUBLISHER");
+                alert.setHeaderText("Error input price");
+                alert.showAndWait();
+                return;
+            }
+            Category category = null;
+            for(Category temp : CategoryManager.getManager().getAll()){
+                if(temp.getName().equals(categoryComboBox.getValue())){
+                    category = temp;
+                }
+            }
+            if(category == null){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("WRONG INPUT CATEGORY");
+                alert.setHeaderText("Error input price");
+                alert.showAndWait();
+                return;
+            }
+            productInfo = new ProductInfo(name.getText(),description.getText(), category,
+                    releaseDate.getValue(), Integer.parseInt(price.getText()),publisher, Integer.parseInt(rating.getText()),
+                    new ArrayList<> (Arrays.asList(award.getText().split("\n"))));
         }catch(Exception e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setContentText("Dont understand this value");
             alert.setHeaderText("Error input price");
-//            alert.setContentText("Connect to the database successfully!");
             alert.showAndWait();
         }
-        if(!description.getText().equals(""))productInfo.setDescription(description.getText());
-        if(!rating.getText().equals(""))productInfo.setRating(Integer.parseInt(rating.getText()));
-        if(!award.getText().equals(""))productInfo.setAward(new ArrayList<> (Arrays.asList(award.getText().split("\n")))   );
-        productInfo.setReleaseDate(releaseDate.getValue());
-//        productInfo1.setPublisher
     }
 
     public void setAddAuthorButton(){
@@ -122,8 +141,8 @@ public class AddProductPage extends Controller implements Initializable {
         }
     }
     public void setDoneButton() throws Exception {
-        getInfo();
         if(!check()) return;
+        getInfo();
         if(type.getValue()==null)
             return;
         String temp= type.getValue().toLowerCase();
@@ -143,7 +162,6 @@ public class AddProductPage extends Controller implements Initializable {
                         ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
                         productInfo.getRating(),productInfo.getAward(),
                         authors,Integer.parseInt(pageNumber.getText()));
-                res.setNumberOfProduct(productInfo.getNumberOfProduct());
 
                 ProductInfoManager.getManager().add(res);
 
@@ -197,7 +215,7 @@ public class AddProductPage extends Controller implements Initializable {
 //            alert.setContentText("Connect to the database successfully!");
                     alert.showAndWait();
                     return;
-                };
+                }
 
             }
             case "music"->{
