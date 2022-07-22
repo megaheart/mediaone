@@ -1,6 +1,7 @@
 package com.shopkeeper.linh.windowfactories.payment;
 
 import com.shopkeeper.lam.models.ProductInfo;
+import com.shopkeeper.lam.models.ProductState;
 import com.shopkeeper.linh.models.Customer;
 import com.shopkeeper.linh.models.SaleBill;
 import com.shopkeeper.linh.windowfactories.feedback.FeedbackAboutForFilter;
@@ -208,8 +209,11 @@ public class SalebillEditingPanelController {
                         for(var product : item.getProducts()){
                             product.setSaleValue(item.getProductInfo().getCurrentSalePrice());
                             product.setSaleBill(newSaleBill);
+                            product.setState(ProductState.SOLD);
                             adapter.updateProduct(product);
                         }
+                        var pi = item.getProductInfo();
+                        pi.setNumberOfProduct(pi.getNumberOfProduct() - item.getAmount());
                     }
                     closePanel();
                 }
@@ -387,7 +391,7 @@ public class SalebillEditingPanelController {
                 for (var item : saleBillItems){
                     if(item.getProductInfo() == newValue){
                         saleBillItemOfCurrentProduct = item;
-                        return;
+                        break;
                     }
                 }
                 if(saleBillItemOfCurrentProduct == null)

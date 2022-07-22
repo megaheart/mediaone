@@ -41,6 +41,8 @@ public class FeedbackWindowController {
     @FXML
     private ComboBox<ComboBoxOption<Boolean>> beUsefulCombobox;
     @FXML
+    private ComboBox<ComboBoxOption<Boolean>> readCombobox;
+    @FXML
     private DatePicker filterFromDateBox;
     @FXML
     private DatePicker filterToDateBox;
@@ -66,6 +68,12 @@ public class FeedbackWindowController {
 //        LocalDate fromDate = filterFromDateBox.getValue();
 //        LocalDate toDate = filterToDateBox.getValue();
         FilteredList<Feedback> filteredList = new FilteredList<>(feedbackFullList);
+        if(!ComboBoxOption.isSelectAllOption(readCombobox.getValue())){
+            boolean isRead = readCombobox.getValue().getValue();
+            filteredList = filteredList.filtered(feedback -> {
+                return feedback.isRead() == isRead;
+            });
+        }
         if(!ComboBoxOption.isSelectAllOption(feedbackAboutCombobox.getValue())){
             switch (feedbackAboutCombobox.getValue().getValue()){
                 case Staff -> filteredList = filteredList.filtered(feedback -> {
@@ -248,6 +256,12 @@ public class FeedbackWindowController {
                 new ComboBoxOption<>(false, "Không hữu ích")
         ));
         beUsefulCombobox.getSelectionModel().selectFirst();
+        readCombobox.setItems(FXCollections.observableArrayList(
+                ComboBoxOption.SelectAllOption("Cả đã đọc và chưa đọc"),
+                new ComboBoxOption<>(true, "Đã đọc"),
+                new ComboBoxOption<>(false, "Chưa đọc")
+        ));
+        readCombobox.getSelectionModel().selectFirst();
     }
     //endregion
     //region Feedback Display

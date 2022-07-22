@@ -668,6 +668,7 @@ public class FeedbackDbSet {
         return true;
     }
     public boolean markAsRead(Feedback feedback) {
+        if(feedback == null) return false;
         if(feedback.isRead()) return true;
         feedback.setRead(true);
         String sql = "UPDATE feedbacks SET isRead=true WHERE feedbackId=" + feedback.getFeedbackId();
