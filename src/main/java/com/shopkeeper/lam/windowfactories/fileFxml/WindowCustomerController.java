@@ -25,10 +25,10 @@ public class WindowCustomerController  {
     @FXML
     Button button2;
 
-    public void openViewProduct(ActionEvent event) {
+    public void openViewProduct() {
         CustomerPage.getMain().start(new Stage());
     }
-    public void openSendFeedBack(ActionEvent event) {
+    public void openSendFeedBack() {
         CustomerFeedbackWindowFactory.getFactory().openWindow();
     }
 

@@ -24,7 +24,7 @@ public class CustomerWindowFactory extends WindowFactory {
             Parent root = FXMLLoader.load(this.getClass().getResource("Customer.fxml"));
             stage.setTitle("Customer");
             stage.setResizable(false);
-            stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("87247676_p0_master1200.jpg"))));
+            stage.getIcons().add(new Image(String.valueOf(this.getClass().getResource("edf5fa51c4cb365f054223f8b1a991f4.jpg"))));
             scene  = new Scene(root);
         }
         catch (Exception e){

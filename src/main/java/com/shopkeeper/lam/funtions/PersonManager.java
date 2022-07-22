@@ -32,32 +32,5 @@ public class PersonManager {
         var adapter = DatabaseAdapter.getDbAdapter();
         adapter.updatePerson(person);
     }
-    public Person findById(int id) throws Exception {
-        for (Person person : DatabaseAdapter.getDbAdapter().getAllPeople()){
-            if(person.getPersonId()==id){
-                return person;
-            }
-        }
-        return null;
-    }
-    public ArrayList<Person> findByName(String name) throws Exception {
-        ArrayList<Person> people = new ArrayList<>();
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for (Person person : adapter.getAllPeople()) {
-            if (person.getName().equalsIgnoreCase(name.trim())) {
-                people.add(person);
-            }
-        }
-        return people;
-    }
-    public ArrayList<Person> findByJob(JobOfPerson job) throws Exception {
-        ArrayList<Person> people = new ArrayList<>();
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for (Person person : adapter.getAllPeople()) {
-            if (person.getJob().equals(job)) {
-                people.add(person);
-            }
-        }
-        return people;
-    }
+
 }

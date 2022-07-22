@@ -20,7 +20,7 @@ public class PublisherManager {
 
     public ObservableList<Publisher> getAll() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
-        return DatabaseAdapter.getDbAdapter().getAllPublishers();
+        return adapter.getAllPublishers();
     }
     public void add(Publisher publisher) throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
@@ -31,38 +31,5 @@ public class PublisherManager {
         adapter.updatePublisher(publisher);
     }
 
-    // find publisher by id
-    public Publisher findById(int id) throws Exception {
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(Publisher publisher:adapter.getAllPublishers()){
-            if(publisher.getPublisherId()==id){
-                return publisher;
-            }
-        }
-        return null;
-    }
 
-    //find the publisher by name
-    public ArrayList<Publisher> findByName(String name) throws Exception {
-        ArrayList<Publisher> publishers = new ArrayList<>();
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(Publisher publisher:adapter.getAllPublishers()){
-            if(publisher.getName().equalsIgnoreCase(name.trim())){
-                publishers.add(publisher);
-            }
-        }
-        return publishers;
-    }
-
-    //find the name of publisher by the subName,ignore the space at start and end
-    public ArrayList<Publisher> findAdvanceBy(String subName) throws Exception {
-        ArrayList<Publisher> publishers=new ArrayList<>();
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(Publisher publisher:adapter.getAllPublishers()){
-            if(publisher.getName().toLowerCase().contains(subName.trim().toLowerCase())){
-                publishers.add(publisher);
-            }
-        }
-        return publishers;
-    }
 }

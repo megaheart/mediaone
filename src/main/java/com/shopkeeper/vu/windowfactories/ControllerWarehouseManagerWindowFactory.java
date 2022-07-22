@@ -14,7 +14,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class ControllerWMWF implements Initializable {
+public class ControllerWarehouseManagerWindowFactory implements Initializable {
     @FXML
     private DatePicker date_other;
     @FXML
@@ -141,7 +141,7 @@ public class ControllerWMWF implements Initializable {
     }
     // Other Bill
 
-    public  void setBt_timkiemother() throws Exception {
+    public  void findOtherBill() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         try{
             listOtherBill = FXCollections.observableArrayList();
@@ -169,7 +169,7 @@ public class ControllerWMWF implements Initializable {
         }
 
     }
-    public void setBt_resetother(){
+    public void resetOtherBill(){
         textField_nameother.setText(null);
         textField_noteother.setText(null);
         textField_priceother.setText(null);
@@ -177,7 +177,7 @@ public class ControllerWMWF implements Initializable {
         tableviewother.setItems(listOtherBill);
         System.out.println(listOtherBill);
     }
-    public void setBt_addother() throws Exception {
+    public void addOtherBill() throws Exception {
         try{
             var adapter = DatabaseAdapter.getDbAdapter();
             OtherBill a = new OtherBill();
@@ -196,13 +196,13 @@ public class ControllerWMWF implements Initializable {
             a.show();
         }
     }
-    public void setBt_removeother() throws Exception {
+    public void removeOtherBill() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         OtherBill a =(OtherBill) tableviewother.getSelectionModel().getSelectedItem();
         listOtherBill.removeAll(a);
         adapter.deleteOtherBill(a);
     }
-    public void setBt_fixother() throws Exception {
+    public void fixOtherBill() throws Exception {
         try{
             var adapter = DatabaseAdapter.getDbAdapter();
             OtherBill a = (OtherBill) tableviewother.getSelectionModel().getSelectedItem();
@@ -221,7 +221,7 @@ public class ControllerWMWF implements Initializable {
         }
     }
     // Import Bill
-    public  void setBt_timkiemimport() throws Exception {
+    public  void findImportBill() throws Exception {
         try{
             listImportBill = FXCollections.observableArrayList();
             var adapter = DatabaseAdapter.getDbAdapter();
@@ -251,7 +251,7 @@ public class ControllerWMWF implements Initializable {
         }
 
     }
-    public void setBt_resetimport(){
+    public void resetImportBill(){
         textField_nameimport.setText(null);
         textField_noteimport.setText(null);
         textField_priceimport.setText(null);
@@ -259,12 +259,12 @@ public class ControllerWMWF implements Initializable {
         listImportBill.clear();
         tableviewimport.setItems(listImportBill);
         try {
-            this.setBt_timkiemimport();
+            this.findImportBill();
         } catch (Exception e) {
             System.out.println(e.getMessage());;
         }
     }
-    public void setBt_addimport() throws Exception {
+    public void addImportBill() throws Exception {
         try{
             var adapter = DatabaseAdapter.getDbAdapter();
             ImportBill a = new ImportBill();
@@ -284,13 +284,13 @@ public class ControllerWMWF implements Initializable {
             a.show();
         }
     }
-    public void setBt_removeimport() throws Exception {
+    public void removeImportBill() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
         ImportBill a =(ImportBill) tableviewimport.getSelectionModel().getSelectedItem();
         listImportBill.removeAll(a);
         adapter.deleteImportBill(a);
     }
-    public void setBt_fiximport() throws Exception {
+    public void fixImportBill() throws Exception {
         try{
             var adapter = DatabaseAdapter.getDbAdapter();
             ImportBill a = (ImportBill) tableviewimport.getSelectionModel().getSelectedItem();
@@ -302,7 +302,7 @@ public class ControllerWMWF implements Initializable {
             a.setTime(date_import.getValue());
             adapter.updateImportBill(a);
             try {
-                this.setBt_resetimport();
+                this.resetImportBill();
             } catch (Exception e) {
                 System.out.println(e.getMessage());;
             }
@@ -315,21 +315,18 @@ public class ControllerWMWF implements Initializable {
         }
     }
     // QUan ly Product
-    public void setBt_timkiemproduct() throws Exception {
+    public void findProduct() throws Exception {
         String b = String.valueOf(comboBox_kieuproduct.getValue());
         if(b.equals("Book")){
             try{
-                var adapter =DatabaseAdapter.getDbAdapter();
+                var adapter = DatabaseAdapter.getDbAdapter();
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
-                    String d = a.getTrialFilename();
-                    String e = textField_nameoproduct.getText();
-                    if(d.indexOf(e)>=0&& a.getProductInfo() instanceof  BookInfo){
+                    if(a.getProductInfo() instanceof  BookInfo){
                         listProductVip.add(a);
                     }
                 }
-
                 cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
                 cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
                 cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));
@@ -349,11 +346,8 @@ public class ControllerWMWF implements Initializable {
                 var adapter =DatabaseAdapter.getDbAdapter();
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
-
                 for (Product a: listProduct) {
-                    String d = a.getTrialFilename();
-                    String e = textField_nameoproduct.getText();
-                    if(d.indexOf(e)>=0&&a.getProductInfo() instanceof MusicInfo){
+                    if(a.getProductInfo() instanceof MusicInfo){
                         listProductVip.add(a);
                         a.getProductInfo().getTitle();
                     }
@@ -380,9 +374,7 @@ public class ControllerWMWF implements Initializable {
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
-                    String d = a.getTrialFilename();
-                    String e = textField_nameoproduct.getText();
-                    if(d.indexOf(e)>=0&&a.getProductInfo() instanceof FilmInfo){
+                    if(a.getProductInfo() instanceof FilmInfo){
                         listProductVip.add(a);
                     }
                 }
@@ -401,14 +393,14 @@ public class ControllerWMWF implements Initializable {
             }
         }
     }
-    public void setBt_updateproduct() throws Exception {
+    public void updateProduct() throws Exception {
         var adapter = DatabaseAdapter.getDbAdapter();
 
         try{
             Product a = (Product) tableView_product.getSelectionModel().getSelectedItem();
             a.setSaleValue(Double.parseDouble(textField_priceproduct.getText()));
             adapter.updateProduct(a);
-            this.setBt_timkiemproduct();
+            this.findProduct();
         }
         catch (Exception e){
             Alert a = new Alert(Alert.AlertType.INFORMATION,"Vui lòng nhập lại dữ liệu",ButtonType.APPLY);
@@ -418,12 +410,12 @@ public class ControllerWMWF implements Initializable {
         }
     }
 
-    public void setBt_delete() throws Exception {
+    public void removeProduct() throws Exception {
         try{
             var adapter  =DatabaseAdapter.getDbAdapter();
             Product a = (Product) tableView_product.getSelectionModel().getSelectedItem();
             adapter.deleteProduct(a);
-            this.setBt_timkiemproduct();
+            this.findProduct();
         }catch (Exception e){
             Alert a = new Alert(Alert.AlertType.INFORMATION, "Vui lòng chọn để xóa",ButtonType.APPLY);
             a.setTitle("Thông báo");

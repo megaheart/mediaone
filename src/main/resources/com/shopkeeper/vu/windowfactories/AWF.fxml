@@ -52,15 +52,15 @@
                             <NumberAxis side="LEFT" />
                           </yAxis>
                         </LineChart>
-                        <Button layoutX="1119.0" layoutY="600.0" mnemonicParsing="false" onAction="#oa_phantich" text="Phân tích" textFill="#1e1bda">
+                        <Button layoutX="1119.0" layoutY="600.0" mnemonicParsing="false" onAction="#analysis" text="Phân tích" textFill="#1e1bda">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font></Button>
-                        <Button layoutX="956.0" layoutY="600.0" mnemonicParsing="false" onAction="#oa_all" text="Thống kê toàn bộ" textFill="#1e1bda">
+                        <Button layoutX="956.0" layoutY="600.0" mnemonicParsing="false" onAction="#listAll" text="Thống kê toàn bộ" textFill="#1e1bda">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font></Button>
-                        <Button fx:id="bt_xoa" layoutX="1217.0" layoutY="600.0" mnemonicParsing="false" onAction="#oa_xoa" text="Xóa" textFill="#bc1414">
+                        <Button layoutX="1217.0" layoutY="600.0" mnemonicParsing="false" onAction="#delete" text="Xóa" textFill="#bc1414">
                            <font>
                               <Font name="System Bold" size="16.0" />
                            </font></Button>
@@ -199,15 +199,15 @@
                            </children>
                         </GridPane>
                         <PieChart fx:id="pc22" layoutX="878.0" layoutY="40.0" prefHeight="358.0" prefWidth="405.0" />
-                        <Button layoutX="921.0" layoutY="610.0" mnemonicParsing="false" onAction="#bt_all1" text="Tất cả" textFill="#1a15b2">
+                        <Button layoutX="921.0" layoutY="610.0" mnemonicParsing="false" onAction="#listAll1" text="Tất cả" textFill="#1a15b2">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button layoutX="1011.0" layoutY="610.0" mnemonicParsing="false" onAction="#bt_pt1" text="Phân tích " textFill="#1a15b2">
+                        <Button layoutX="1011.0" layoutY="610.0" mnemonicParsing="false" onAction="#analysis1" text="Phân tích " textFill="#1a15b2">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button layoutX="1114.0" layoutY="610.0" mnemonicParsing="false" onAction="#bt_xoa1" text="Xóa" textFill="#c31d1d">
+                        <Button layoutX="1114.0" layoutY="610.0" mnemonicParsing="false" onAction="#delete1" text="Xóa" textFill="#c31d1d">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>

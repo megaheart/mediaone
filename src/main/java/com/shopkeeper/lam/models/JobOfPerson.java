@@ -13,5 +13,4 @@ public enum JobOfPerson {
    LEGEND,
    MOTIVATIONAL_SPEAKER,
    MOTIVATIONAL_AUTHOR
-   ;
 }

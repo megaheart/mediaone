@@ -50,14 +50,13 @@ public class ProductDbSet {
             product.setProductId(rs.getInt("productId"));
             product.setState(ProductState.valueOf(rs.getString("state")));
 
-
             //ProductInfo
             int productInfoId = rs.getInt("productInfoId");
             switch (rs.getString("productInfoType")){
                 case "Music":
                     for(var x : readOnlyCache.getMusicInfos()){
                         if(x.getProductInfoId() == productInfoId){
-                            if(product.getState().equals(ProductState.READY)){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
+                            if(product.getState()==ProductState.READY){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
                             product.setProductInfo(x);
                             x.increaseTimesToBeReferenced();
                             break;
@@ -67,7 +66,7 @@ public class ProductDbSet {
                 case "Book":
                     for(var x : readOnlyCache.getBookInfos()){
                         if(x.getProductInfoId() == productInfoId){
-                            if(product.getState().equals(ProductState.READY)){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
+                            if(product.getState()==ProductState.READY){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
                             product.setProductInfo(x);
                             x.increaseTimesToBeReferenced();
                             break;
@@ -77,7 +76,7 @@ public class ProductDbSet {
                 case "Film":
                     for(var x : readOnlyCache.getFilmInfos()){
                         if(x.getProductInfoId() == productInfoId){
-                            if(product.getState().equals(ProductState.READY)){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
+                            if(product.getState()==ProductState.READY){x.setNumberOfProduct(x.getNumberOfProduct() + 1);}
                             product.setProductInfo(x);
                             x.increaseTimesToBeReferenced();
                             break;

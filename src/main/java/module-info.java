@@ -38,4 +38,5 @@ module com.shopkeeper.mediaone {
     requires org.xerial.sqlitejdbc;
     requires com.jfoenix;
     exports com.shopkeeper.lam.models;
+
 }
