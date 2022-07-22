@@ -28,7 +28,8 @@ public class StaffDbSet {
                 +  "email       TEXT      NOT NULL,"
                 +  "phoneNumber TEXT      NOT NULL,"
                 +  "description TEXT      NOT NULL,"
-                +  "state       TEXT (40) NOT NULL"
+                +  "state       TEXT (40) NOT NULL,"
+                +  "latestPay   DATETIME NOT NULL"
                 +  ");";
         try (Statement stmt = conn.createStatement()) {
             // create a new table
@@ -42,7 +43,7 @@ public class StaffDbSet {
         return true;
     }
     public void load() throws Exception{
-        String sql = "SELECT staffId, name, isMale, dateOfBirth, email, phoneNumber, description, state FROM staffs";
+        String sql = "SELECT staffId, name, isMale, dateOfBirth, email, phoneNumber, description, state, latestPay FROM staffs";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
         Staff staff;
@@ -57,6 +58,7 @@ public class StaffDbSet {
             staff.setPhoneNumber(rs.getString("phoneNumber"));
             staff.setDescription(rs.getString("description"));
             staff.setState(StaffState.valueOf(rs.getString("state")));
+            staff.setLatestPay(LocalDate.parse(rs.getString("latestPay")));
             list.add(staff);
         }
 
@@ -67,7 +69,7 @@ public class StaffDbSet {
     //Return true if success, otherwise return false
     public boolean insert(Staff staff) {
         if(staff.getStaffId() != 0) return false;
-        String sql = "INSERT INTO staffs(name, isMale, dateOfBirth, email, phoneNumber, description, state) VALUES(?,?,DATE(?),?,?,?,?)";
+        String sql = "INSERT INTO staffs(name, isMale, dateOfBirth, email, phoneNumber, description, state, latestPay) VALUES(?,?,DATE(?),?,?,?,?, DATE(?))";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, staff.getName());
@@ -77,6 +79,7 @@ public class StaffDbSet {
             pstmt.setString(5, staff.getPhoneNumber());
             pstmt.setString(6, staff.getDescription());
             pstmt.setString(7, staff.getState().toString());
+            pstmt.setString(8, staff.getLatestPay().toString());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Creating staff failed, no rows affected.");
             //Auto set ID
@@ -100,7 +103,7 @@ public class StaffDbSet {
             System.err.println("staff is not in DbAdapter's cache");
             return false;
         }
-        String sql = "UPDATE staffs SET name=?,isMale=?,dateOfBirth=DATE(?),email=?,phoneNumber=?,description=?,state=? WHERE staffId=?";
+        String sql = "UPDATE staffs SET name=?,isMale=?,dateOfBirth=DATE(?),email=?,phoneNumber=?,description=?,state=?, latestPay=DATE(?) WHERE staffId=?";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
@@ -111,7 +114,8 @@ public class StaffDbSet {
             pstmt.setString(5, staff.getPhoneNumber());
             pstmt.setString(6, staff.getDescription());
             pstmt.setString(7, staff.getState().toString());
-            pstmt.setLong(8, staff.getStaffId());
+            pstmt.setString(8, staff.getLatestPay().toString());
+            pstmt.setLong(9, staff.getStaffId());
             int affected = pstmt.executeUpdate();
             if(affected == 0) throw new Exception("Staff (ID = " + staff.getStaffId() + ") does not exist in \"staffs\" table.");
 

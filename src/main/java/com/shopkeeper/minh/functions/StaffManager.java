@@ -273,6 +273,7 @@ public class StaffManager {
     }
 
     public LocalDate getFrom(Staff staff) throws Exception{
+        if (staff.getLatestPay().isAfter(LocalDate.of(2000, 1, 1))) return staff.getLatestPay();
         LocalDate from = LocalDate.now();
         var adapter = DatabaseAdapter.getDbAdapter();
         LocalDate latestPay = null;

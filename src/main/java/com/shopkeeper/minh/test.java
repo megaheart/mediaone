@@ -104,7 +104,10 @@ public class test {
             workHours = StaffManager.getManager().getWorkHours(staff);
             staffBill = new StaffBill("Lương tháng 4 cho " + staff.getName(), 20 * workHours, LocalDate.of(2022, 4, 30), true, "Không có ghi chú",
                     from, staff, 20, workHours);
+            staff.setLatestPay(LocalDate.of(2022, 4, 30));
+            adapter.updateStaff(staff);
             adapter.insertStaffBill(staffBill);
+
         }
     }
 

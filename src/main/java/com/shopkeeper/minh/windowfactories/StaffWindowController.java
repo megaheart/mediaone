@@ -588,11 +588,40 @@ public class StaffWindowController {
             return;
         }
 
-        if (staff.countTimesToBeReferenced() > 0){
+        int count = 0;
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+        for (Attendance attendance: adapter.getAllAttendances()){
+            if (attendance.getStaffsWork().contains(staff) || attendance.getStaffsAbsentee().contains(staff))
+                count += 1;
+        }
+
+        if (staff.countTimesToBeReferenced() > count){
             result.setText("Nhân viên này đang được một đối tượng khác tham chiếu tới, không thể xóa");
             initializeStaffList(FXCollections.observableArrayList(new ArrayList<Staff>()));
             return;
         }
+
+        for (Attendance attendance: adapter.getAllAttendances()){
+            if (attendance.getStaffsWork().contains(staff)) {
+                ArrayList<Staff> staffs = new ArrayList<>();
+                for (Staff workStaff: attendance.getStaffsWork()){
+                    if (workStaff.getStaffId() != staff.getStaffId()) staffs.add(workStaff);
+                }
+                attendance.setStaffsWork(staffs);
+                adapter.updateAttendance(attendance);
+            }
+
+            else if (attendance.getStaffsAbsentee().contains(staff)) {
+                ArrayList<Staff> staffs = new ArrayList<>();
+                for (Staff absentStaff: attendance.getStaffsAbsentee()){
+                    if (absentStaff.getStaffId() != staff.getStaffId()) staffs.add(absentStaff);
+                }
+                attendance.setStaffsAbsentee(staffs);
+                adapter.updateAttendance(attendance);
+            }
+        }
+
 
         StaffManager.getManager().remove(staff);
 
@@ -1894,6 +1923,80 @@ public class StaffWindowController {
     }
 
     @FXML
+    public void deleteStaffBill() throws Exception{
+        String note = filterNoteBill.getText();
+        String salaryTxt = filterSalary.getText();
+        String staffIdTxt = filterBillStaffId.getText();
+        String name = filterBillName.getText();
+        int billId;
+        String billIdTxt = filterBillId.getText();
+        boolean effected = filterEffected.getValue().getValue();
+
+        if (billIdTxt != null && !billIdTxt.isEmpty()){
+            try{
+                billId = Integer.parseInt(billIdTxt);
+            }
+            catch (Exception e){
+                result2.setText("Chỉ nhập số nguyên vào ID.");
+                initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+                return;
+            }
+        }
+        else {
+            result2.setText("Nhập ID của hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        StaffBill staffBill = StaffManager.getManager().findBillById(billId);
+
+        if (staffIdTxt != null && !staffIdTxt.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (salaryTxt != null && !salaryTxt.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (name != null && !name.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (note != null && !note.isEmpty()){
+            result2.setText("Chỉ nhập ID hóa đơn trước khi xóa.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+
+        if (staffBill == null){
+            result2.setText("Không tìm thấy.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        if (staffBill.getIsEffected()) {
+            result2.setText("Chỉ được xóa hóa đơn đã hết hiệu lực.");
+            initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
+            return;
+        }
+
+        var adapter = DatabaseAdapter.getDbAdapter();
+        BillManager.getManager().deletedBills.add(new DeletedInfo(staffBill.getStaff().getStaffId(), staffBill.getTime()));
+        adapter.deleteStaffBill(staffBill);
+
+        // Display
+        result2.setText("Xóa thành công.");
+        initializeStaffBillList(FXCollections.observableList(StaffManager.getManager().getStaffBillList()));
+        return;
+    }
+    @FXML
     public void punchIn() throws Exception{
         String note = filterNoteBill.getText();
         String salaryTxt = filterSalary.getText();
@@ -2039,6 +2142,9 @@ public class StaffWindowController {
             staffBill.setFrom(StaffManager.getManager().getFrom(staff));
             staffBill.setWorkHours(StaffManager.getManager().getWorkHours(staff));
             staffBill.setPrice(salary * staffBill.getWorkHours());
+
+            staff.setLatestPay(LocalDate.now());
+            adapter.updateStaff(staff);
 
             adapter.insertStaffBill(staffBill);
             newStaffBills.add(staffBill);
