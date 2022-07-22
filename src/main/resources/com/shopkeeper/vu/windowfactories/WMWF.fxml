@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.vu.windowfactories.ControllerWMWF">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.vu.windowfactories.ControllerWarehouseManagerWindowFactory">
    <children>
       <TabPane layoutX="14.0" prefHeight="705.0" prefWidth="1088.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -45,23 +45,23 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>
-                        <Button fx:id="bt_timkiemimport" layoutX="130.0" layoutY="205.0" mnemonicParsing="false" onAction="#setBt_timkiemimport" prefHeight="35.0" prefWidth="87.0" text="Tìm kiếm" textFill="#10863b">
+                        <Button fx:id="bt_timkiemimport" layoutX="130.0" layoutY="205.0" mnemonicParsing="false" onAction="#findImportBill" prefHeight="35.0" prefWidth="87.0" text="Tìm kiếm" textFill="#10863b">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_addimport" layoutX="250.0" layoutY="205.0" mnemonicParsing="false" onAction="#setBt_addimport" prefHeight="35.0" prefWidth="80.0" text="Thêm" textFill="#10863b">
+                        <Button fx:id="bt_addimport" layoutX="250.0" layoutY="205.0" mnemonicParsing="false" onAction="#addImportBill" prefHeight="35.0" prefWidth="80.0" text="Thêm" textFill="#10863b">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_fiximport" layoutX="370.0" layoutY="205.0" mnemonicParsing="false" onAction="#setBt_fiximport" prefHeight="35.0" prefWidth="80.0" text="Sửa" textFill="#10863b">
+                        <Button fx:id="bt_fiximport" layoutX="370.0" layoutY="205.0" mnemonicParsing="false" onAction="#fixImportBill" prefHeight="35.0" prefWidth="80.0" text="Sửa" textFill="#10863b">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_resetimport" layoutX="490.0" layoutY="205.0" mnemonicParsing="false" onAction="#setBt_resetimport" prefHeight="35.0" prefWidth="93.0" text="Cập nhật" textFill="#10863b">
+                        <Button fx:id="bt_resetimport" layoutX="490.0" layoutY="205.0" mnemonicParsing="false" onAction="#resetImportBill" prefHeight="35.0" prefWidth="93.0" text="Cập nhật" textFill="#10863b">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_removeimport" layoutX="610.0" layoutY="205.0" mnemonicParsing="false" onAction="#setBt_removeimport" prefHeight="35.0" prefWidth="80.0" text="Xóa" textFill="#10863b">
+                        <Button fx:id="bt_removeimport" layoutX="610.0" layoutY="205.0" mnemonicParsing="false" onAction="#removeImportBill" prefHeight="35.0" prefWidth="80.0" text="Xóa" textFill="#10863b">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
@@ -110,7 +110,7 @@
                               <TableColumn fx:id="cl_placementproduct" prefWidth="245.0" text="Vị trí" />
                           </columns>
                         </TableView>
-                        <Button fx:id="bt_timkiemproduct" layoutX="8.0" layoutY="137.0" mnemonicParsing="false" onAction="#setBt_timkiemproduct" text="Tìm kiếm" textFill="#0d973f">
+                        <Button fx:id="bt_timkiemproduct" layoutX="8.0" layoutY="137.0" mnemonicParsing="false" onAction="#findProduct" text="Tìm kiếm" textFill="#0d973f">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
@@ -119,7 +119,7 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>
-                        <Button fx:id="bt_updateproduct" layoutX="122.0" layoutY="137.0" mnemonicParsing="false" onAction="#setBt_updateproduct" text="Update" textFill="#0d973f">
+                        <Button fx:id="bt_updateproduct" layoutX="122.0" layoutY="137.0" mnemonicParsing="false" onAction="#updateProduct" text="Update" textFill="#0d973f">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
@@ -127,7 +127,7 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>
-                        <Button fx:id="bt_delete" layoutX="219.0" layoutY="137.0" mnemonicParsing="false" onAction="#setBt_delete" text="Xóa" textFill="#0d973f">
+                        <Button fx:id="bt_delete" layoutX="219.0" layoutY="137.0" mnemonicParsing="false" onAction="#removeProduct" text="Xóa" textFill="#0d973f">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font>
@@ -172,23 +172,23 @@
                         <TextField fx:id="textField_priceother" layoutX="204.0" layoutY="80.0" />
                         <TextField fx:id="textField_noteother" layoutX="436.0" layoutY="80.0" />
                         <DatePicker fx:id="date_other" layoutX="895.0" layoutY="80.0" prefHeight="31.0" prefWidth="182.0" />
-                        <Button fx:id="bt_timkiemother" layoutX="90.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#setBt_timkiemother" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" textFill="#167c35">
+                        <Button fx:id="bt_timkiemother" layoutX="90.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#findOtherBill" prefHeight="30.0" prefWidth="100.0" text="Tìm kiếm" textFill="#167c35">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_addother" layoutX="215.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#setBt_addother" prefHeight="30.0" prefWidth="100.0" text="Thêm" textFill="#167c35">
+                        <Button fx:id="bt_addother" layoutX="215.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#addOtherBill" prefHeight="30.0" prefWidth="100.0" text="Thêm" textFill="#167c35">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_fixother" layoutX="340.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#setBt_fixother" prefHeight="30.0" prefWidth="100.0" text="Sửa" textFill="#167c35">
+                        <Button fx:id="bt_fixother" layoutX="340.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#fixOtherBill" prefHeight="30.0" prefWidth="100.0" text="Sửa" textFill="#167c35">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_removeother" layoutX="465.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" minWidth="52.0" mnemonicParsing="false" onAction="#setBt_removeother" prefHeight="30.0" prefWidth="100.0" text="Xóa" textFill="#167c35">
+                        <Button fx:id="bt_removeother" layoutX="465.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" minWidth="52.0" mnemonicParsing="false" onAction="#removeOtherBill" prefHeight="30.0" prefWidth="100.0" text="Xóa" textFill="#167c35">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <Button fx:id="bt_resetother" layoutX="590.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#setBt_resetother" prefHeight="30.0" prefWidth="100.0" text="Đặt lại" textFill="#167c35">
+                        <Button fx:id="bt_resetother" layoutX="590.0" layoutY="170.0" maxHeight="120.0" maxWidth="120.0" mnemonicParsing="false" onAction="#resetOtherBill" prefHeight="30.0" prefWidth="100.0" text="Đặt lại" textFill="#167c35">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>

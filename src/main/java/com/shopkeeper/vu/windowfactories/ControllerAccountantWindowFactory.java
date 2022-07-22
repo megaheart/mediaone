@@ -95,7 +95,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
         comboBox_pick.getSelectionModel().selectFirst();
 
     }
-    public  void oa_phantich() throws Exception {
+    public  void analysis() throws Exception {
         LocalDate day1 = date_day1.getValue();
         LocalDate day2 = date_day2.getValue();
         if(day1.isAfter(day2)){
@@ -479,7 +479,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
             lineChart.setAnimated(false);
         }
     }
-    public void oa_all() {
+    public void listAll() {
         LocalDate day1 = date_day1.getValue();
         LocalDate day2 = date_day2.getValue();
         Accountant a = new Accountant();
@@ -492,7 +492,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
         tk_all.setData(list1);
         tk_all.setTitle("Biểu đồ của cửa hàng media");
     }
-    public void oa_xoa(){
+    public void delete(){
         comboBox_stye.getSelectionModel().selectFirst();
         comboBox_pick.getSelectionModel().selectFirst();
         lb_vanchuyen.setText(null);
@@ -506,7 +506,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
         tk_all.getData().clear();
         tk_all.setTitle(null);
     }
-    public void bt_pt1() throws Exception {
+    public void analysis1() throws Exception {
         LocalDate day3 = date_day3.getValue();
         LocalDate day4 = date_day4.getValue();
         if(day4.isBefore(day4)){
@@ -815,7 +815,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
             lineChart2.setAnimated(false);
         }
     }
-    public void bt_all1(){
+    public void listAll1(){
         LocalDate day3 = date_day3.getValue();
         LocalDate day4 = date_day4.getValue();
         Accountant a = new Accountant();
@@ -828,13 +828,15 @@ public class ControllerAccountantWindowFactory implements Initializable {
         pc22.setData(list);
         pc22.setTitle("Các loại sản phẩm của cửa hàng");
     }
-    public void bt_xoa1(){
+    public void delete1(){
         lb_musicsale.setText(null);
         lb_musicimport.setText(null);
         lb_bookimport.setText(null);
         lb_booksale.setText(null);
         lb_filmimport.setText(null);
         lb_filmsale.setText(null);
+        pc22.setTitle(null);
+        pc22.getData().clear();
         lineChart2.getData().clear();
         sr2.getData().clear();
     }
