@@ -12,6 +12,16 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="ancestor" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CartPage">
+   <JFXButton graphicTextGap="20.0" layoutX="224.0" layoutY="8.0" onMousePressed="#setPayFunction" prefHeight="50.0" prefWidth="150.0" ripplerFill="#235b8c" style="-fx-background-color: #FFA500; -fx-background-radius: 20;" text="Pay" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0">
+      <font>
+         <Font name="Times New Roman Bold" size="20.0" />
+      </font>
+      <graphic>
+         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../icons/pay.png" />
+         </ImageView>
+      </graphic>
+   </JFXButton>
    <ScrollPane layoutX="22.0" layoutY="50.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
       <ListView fx:id="boughtProducts" prefHeight="463.0" prefWidth="450.0" style="-fx-background-color: transparent;" />
    </ScrollPane>
@@ -22,41 +32,30 @@
          </font>
          <graphic>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../icons/remove.png"/>
+               <Image url="@../icons/remove.png" />
             </ImageView>
          </graphic>
       </JFXButton>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #023020; -fx-background-radius: 20;"
-                  AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
-         <Label fx:id="nameLabel" alignment="CENTER" layoutX="20.0" layoutY="26.0" prefHeight="50.0" prefWidth="170.0"
-                text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
+      <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #023020; -fx-background-radius: 20;" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="80.0">
+         <Label fx:id="nameLabel" alignment="CENTER" layoutX="20.0" layoutY="26.0" prefHeight="50.0" prefWidth="170.0" text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="20.0">
             <font>
-               <Font name="Times New Roman Italic" size="20.0"/>
+               <Font name="Times New Roman Italic" size="20.0" />
             </font>
          </Label>
-         <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" layoutX="5.0" layoutY="66.0"
-                    pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0"
-                    AnchorPane.topAnchor="70.0"/>
-         <Label fx:id="priceLabel" alignment="CENTER" layoutX="-31.0" layoutY="222.0" prefHeight="30.0"
-                prefWidth="170.0" text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
+         <ImageView fx:id="imageView" fitHeight="150.0" fitWidth="200.0" layoutX="5.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="70.0" />
+         <Label fx:id="priceLabel" alignment="CENTER" layoutX="-31.0" layoutY="222.0" prefHeight="30.0" prefWidth="170.0" text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="220.0">
             <font>
-               <Font name="Times New Roman Italic" size="20.0"/>
+               <Font name="Times New Roman Italic" size="20.0" />
             </font>
          </Label>
-         <Label fx:id="ratingLabel" alignment="CENTER" layoutX="-21.0" layoutY="232.0" prefHeight="30.0"
-                prefWidth="170.0" text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
+         <Label fx:id="ratingLabel" alignment="CENTER" layoutX="-21.0" layoutY="232.0" prefHeight="30.0" prefWidth="170.0" text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="250.0">
             <font>
-               <Font name="Times New Roman Italic" size="20.0"/>
+               <Font name="Times New Roman Italic" size="20.0" />
             </font>
          </Label>
-         <Label fx:id="dateLabel" alignment="CENTER" layoutX="-11.0" layoutY="242.0" prefHeight="30.0" prefWidth="170.0"
-                text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="0.0"
-                AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
+         <Label fx:id="dateLabel" alignment="CENTER" layoutX="-11.0" layoutY="242.0" prefHeight="30.0" prefWidth="170.0" text=" " textAlignment="CENTER" textFill="WHITE" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="280.0">
             <font>
-               <Font name="Times New Roman Italic" size="20.0"/>
+               <Font name="Times New Roman Italic" size="20.0" />
             </font>
          </Label>
       </AnchorPane>
@@ -90,14 +89,5 @@
          <DropShadow />
       </effect>
    </Separator>
-   <JFXButton graphicTextGap="20.0" layoutX="224.0" layoutY="8.0" onMousePressed="#setPayFunction" prefHeight="50.0" prefWidth="150.0" ripplerFill="#235b8c" style="-fx-background-color: #FFA500; -fx-background-radius: 20;" text="Pay" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0">
-      <font>
-         <Font name="Times New Roman Bold" size="20.0" />
-      </font>
-      <graphic>
-         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-            <Image url="@../icons/pay.png"/>
-         </ImageView>
-      </graphic>
-   </JFXButton>
+   <AnchorPane layoutX="440.0" layoutY="22.0" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 </AnchorPane>
