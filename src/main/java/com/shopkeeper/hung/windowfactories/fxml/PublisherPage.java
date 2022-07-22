@@ -101,7 +101,7 @@ public class PublisherPage extends Controller implements Initializable {
                 Integer.compare(o1.getText().toLowerCase().compareTo(o2.getText().toLowerCase()), 0));
         publisherListView.setItems(labels);
     }
-    private ObservableList<ProductInfo> showedProducts = FXCollections.observableArrayList();
+    private final ObservableList<ProductInfo> showedProducts = FXCollections.observableArrayList();
     public void initInfo(Publisher publisher) throws Exception {
         showedProducts.clear();
         ObservableList<ProductInfo> temp = FXCollections.observableArrayList();
