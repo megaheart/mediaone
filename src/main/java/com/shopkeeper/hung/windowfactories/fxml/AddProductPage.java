@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -197,7 +198,7 @@ public class AddProductPage extends Controller implements Initializable {
                     FilmInfo res = new FilmInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
                             , productInfo.getReleaseDate(), productInfo.getCurrentSalePrice(), productInfo.getPublisher(),
                             productInfo.getRating(), productInfo.getAward(), director, actors,
-                            LocalTime.parse(timeFilm.getText())
+                            LocalTime.parse(timeFilm.getText(),DateTimeFormatter.ofPattern("H:mm:ss"))
 
 //                        LocalTime.of(mins/60, mins%60)
                     );
@@ -235,7 +236,7 @@ public class AddProductPage extends Controller implements Initializable {
                 MusicInfo res=  new MusicInfo(productInfo.getTitle(), productInfo.getDescription(), productInfo.getCategory()
                 ,productInfo.getReleaseDate(),productInfo.getCurrentSalePrice(),productInfo.getPublisher(),
                         productInfo.getRating(),productInfo.getAward(),
-                        musicians,LocalTime.parse(timeMusic.getText())
+                        musicians,LocalTime.parse(timeMusic.getText(), DateTimeFormatter.ofPattern("H:mm:ss"))
 //                        LocalTime.of(mins/60, mins%60)
                 );
                 try{
