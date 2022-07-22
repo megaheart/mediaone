@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 
 import java.io.IOException;
 
-public class SaleBillItemListCellController {
+public class  SaleBillItemListCellController {
     public static SaleBillItemListCellController getController(){
         FXMLLoader fxmlLoader = new FXMLLoader(SaleBillItemListCellController.class.getResource("salebill-item-list-item.fxml"));
 
