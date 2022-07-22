@@ -17,9 +17,14 @@ import java.util.ArrayList;
 
 
 public class BillManager {
-    private static BillManager manager = null;
+    private static BillManager manager;
+
+    private BillManager() {}
 
     public static BillManager getManager(){
+        if (manager == null){
+            manager = new BillManager();
+        }
         return manager;
     }
 
@@ -92,7 +97,7 @@ public class BillManager {
         bills.addAll(otherBills);
         bills.addAll(importBills);
 
-        return bills;
+        return FXCollections.unmodifiableObservableList(bills);
     }
 
     public void add(ImportBill bill) throws Exception{

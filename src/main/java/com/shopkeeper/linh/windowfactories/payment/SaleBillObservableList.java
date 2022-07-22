@@ -67,26 +67,57 @@ public class SaleBillObservableList extends CustomUnmodifiableObservableList<Sal
             return o2.getLocation().compareTo(o1.getLocation());
         }
     };
-    public SaleBillObservableList(ObservableList<SaleBill> feedbacks) {
+    public SaleBillObservableList(ObservableList<SaleBill> saleBills) {
         super();
         comparator = timeAscending;
-        setSource(feedbacks);
+        setSource(saleBills);
         order = SaleBillListOrder.TimeAscending;
+        isAscend = true;
     }
     private SaleBillListOrder order;
     public void setOrder(SaleBillListOrder newOrder){
         if(newOrder == order) return;
         switch (newOrder){
-            case TimeAscending -> comparator = timeAscending;
-            case TimeDescending -> comparator = timeDescending;
-            case TitleAscending -> comparator = titleAscending;
-            case TitleDescending -> comparator = titleDescending;
-            case PriceAscending -> comparator = priceAscending;
-            case PriceDescending -> comparator = priceDescending;
-            case CustomerNameAscending -> comparator = customerNameAscending;
-            case CustomerNameDescending -> comparator = customerNameDescending;
-            case LocationAscending -> comparator = locationAscending;
-            case LocationDescending -> comparator = locationDescending;
+            case TimeAscending -> {
+                comparator = timeAscending;
+                isAscend = true;
+            }
+            case TimeDescending -> {
+                comparator = timeDescending;
+                isAscend = false;
+            }
+            case TitleAscending -> {
+                comparator = titleAscending;
+                isAscend = true;
+            }
+            case TitleDescending -> {
+                comparator = titleDescending;
+                isAscend = false;
+            }
+            case PriceAscending -> {
+                comparator = priceAscending;
+                isAscend = true;
+            }
+            case PriceDescending -> {
+                comparator = priceDescending;
+                isAscend = false;
+            }
+            case CustomerNameAscending -> {
+                comparator = customerNameAscending;
+                isAscend = true;
+            }
+            case CustomerNameDescending -> {
+                comparator = customerNameDescending;
+                isAscend = false;
+            }
+            case LocationAscending -> {
+                comparator = locationAscending;
+                isAscend = true;
+            }
+            case LocationDescending -> {
+                comparator = locationDescending;
+                isAscend = false;
+            }
         }
         if((newOrder == SaleBillListOrder.TimeDescending && order == SaleBillListOrder.TimeAscending)
                 || (newOrder == SaleBillListOrder.TimeAscending && order == SaleBillListOrder.TimeDescending)

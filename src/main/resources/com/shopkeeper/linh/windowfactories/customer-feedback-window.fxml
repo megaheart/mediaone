@@ -51,7 +51,7 @@
                         <Insets left="6.0" right="6.0" />
                      </HBox.margin>
                   </Text>
-                  <Pane fx:id="targetPane" />
+                  <Pane fx:id="targetPane" maxWidth="280.0" prefWidth="280.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER_LEFT">
@@ -84,7 +84,7 @@
                   </TextField>
                </children>
             </HBox>
-            <TextArea fx:id="feedbackDescriptionTxt" prefHeight="150.0" prefWidth="200.0" promptText="Miêu tả chi tiết thông tin về vấn đề/góp ý/đề xuất/phản hồi">
+            <TextArea fx:id="feedbackDescriptionTxt" prefHeight="150.0" prefWidth="200.0" promptText="Miêu tả chi tiết thông tin về vấn đề/góp ý/đề xuất/phản hồi" wrapText="true">
                <VBox.margin>
                   <Insets top="14.0" />
                </VBox.margin>

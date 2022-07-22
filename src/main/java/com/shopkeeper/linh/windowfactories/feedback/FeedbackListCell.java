@@ -14,6 +14,7 @@ public class FeedbackListCell extends ListCell<Feedback> {
     @Override
     public void updateItem(Feedback data, boolean empty)
     {
+        super.updateItem(data, empty);
         if (empty || data == null) {
             if(oldData != null){
                 oldData.propertyChangeListener = null;
@@ -23,7 +24,6 @@ public class FeedbackListCell extends ListCell<Feedback> {
             setGraphic(null);
             return;
         }
-        super.updateItem(data, empty);
         if(oldData != data){
             oldData = data;
             var controller = FeedbackListViewItemController.getController(data);

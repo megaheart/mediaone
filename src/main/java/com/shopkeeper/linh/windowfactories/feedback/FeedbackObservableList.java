@@ -14,15 +14,28 @@ public class FeedbackObservableList extends CustomUnmodifiableObservableList<Fee
         comparator = comparators.getTimeAscending();
         setSource(feedbacks);
         order = FeedbackListOrder.TimeAscending;
+        isAscend = true;
     }
     private FeedbackListOrder order;
     public void setOrder(FeedbackListOrder newOrder){
         if(newOrder == order) return;
         switch (newOrder){
-            case TimeAscending -> comparator = comparators.getTimeAscending();
-            case TimeDescending -> comparator = comparators.getTimeDescending();
-            case TitleAscending -> comparator = comparators.getTitleAscending();
-            case TitleDescending -> comparator = comparators.getTitleDescending();
+            case TimeAscending -> {
+                comparator = comparators.getTimeAscending();
+                isAscend = true;
+            }
+            case TimeDescending -> {
+                comparator = comparators.getTimeDescending();
+                isAscend = false;
+            }
+            case TitleAscending -> {
+                comparator = comparators.getTitleAscending();
+                isAscend = true;
+            }
+            case TitleDescending -> {
+                comparator = comparators.getTitleDescending();
+                isAscend = false;
+            }
         }
         if((newOrder == FeedbackListOrder.TimeDescending && order == FeedbackListOrder.TimeAscending)
         || (newOrder == FeedbackListOrder.TimeAscending && order == FeedbackListOrder.TimeDescending)
