@@ -146,14 +146,7 @@ public class CustomerProductPage extends Controller implements Initializable {
         }
     }
     public void searchByTitle(){
-        String s= searchName.getText().toLowerCase();
-        ObservableList<ProductInfo> temp =FXCollections.observableArrayList();
         setShowedProducts();
-        temp.addAll(showedProducts);
-        showedProducts.clear();
-        for(ProductInfo x : temp)
-            if(x.getTitle().toLowerCase().contains(s))
-                showedProducts.add(x);
         initShow(showedProducts);
     }
 
@@ -213,6 +206,9 @@ public class CustomerProductPage extends Controller implements Initializable {
     public void setShowedProducts(){
         showedProducts.clear();
         for(var productInfo: tempProduct){
+            if(!searchName.getText().equals(""))
+                if(!productInfo.getTitle().toLowerCase().contains(searchName.getText().toLowerCase()))
+                    continue;
             if(!checkDate(productInfo))
                 continue;
             String category = categoryComboBox.getValue();
@@ -222,41 +218,59 @@ public class CustomerProductPage extends Controller implements Initializable {
             if(publisher!=null)if(!publisher.equals("All Publishers") && !publisher.equals("" ) && !publisher.equals(productInfo.getPublisher().getName()))
                 continue;
             String person = personComboBox.getValue();
-            if(person!=null){
-                if (person.equals("All People"))
-                    if(!showedProducts.contains(productInfo))
-                        showedProducts.add(productInfo);
+            if(person!=null && !person.equals("")){
+                if (person.equals("All People")) {
+                    showedProducts.add(productInfo);
+                    continue;
+                }
+                boolean stop = false;
+
                 if (productInfo instanceof BookInfo) {
                     ArrayList<Person> temp = ((BookInfo) productInfo).getAuthors();
                     for(Person x: temp){
                         if(x.getName().equals(person))
-                            if(!showedProducts.contains(productInfo))
-                                showedProducts.add(productInfo);
+                        {
+                            showedProducts.add(productInfo);
+                            stop = true;
+                            break;
+                        }
                     }
                 }
+                if(stop )
+                    continue;
                 if(productInfo instanceof MusicInfo){
                     ArrayList<Person> temp = ((MusicInfo) productInfo).getMusicians();
                     for(Person x: temp){
                         if(x.getName().equals(person))
-                            if(!showedProducts.contains(productInfo))
-                                showedProducts.add(productInfo);
+                        {
+                            showedProducts.add(productInfo);
+                            stop = true;
+                            break;
+                        }
                     }
                 }
+                if(stop ) continue;
                 if(productInfo instanceof FilmInfo){
                     ArrayList<Person> temp = ((FilmInfo) productInfo).getActors();
                     for(Person x: temp){
                         if(x.getName().equals(person))
-                            if(!showedProducts.contains(productInfo))
-                                showedProducts.add(productInfo);
-                    }
-                    if(((FilmInfo) productInfo).getDirector().getName().equals(person))
-                        if(!showedProducts.contains(productInfo))
+                        {
                             showedProducts.add(productInfo);
+                            stop = true;
+                            break;
+                        }
+                    }
+                    if(stop)
+                        continue;
+                    if(((FilmInfo) productInfo).getDirector().getName().equals(person)) {
+                        {
+                            showedProducts.add(productInfo);
+                        }
+                    }
                 }
                 continue;
             }
-            if(!showedProducts.contains(productInfo))
-                showedProducts.add(productInfo);
+            showedProducts.add(productInfo);
             initShow(showedProducts);
         }
     }

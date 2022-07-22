@@ -75,7 +75,7 @@ public class ProductDetailPage extends Controller implements Initializable {
         }
         if(productInfo instanceof MusicInfo){
             icon.setImage( Icon.getMusicIcon());
-            timeMusic.setText(((MusicInfo) productInfo).getTimeLimit().toString());
+            timeMusic.setText(((MusicInfo) productInfo).getTimeLimit().format(DateTimeFormatter.ofPattern("H:mm:ss")));
             StringBuilder s= new StringBuilder();
             for(var temp : ((MusicInfo) productInfo).getMusicians()){
                 if(temp==null)
@@ -90,7 +90,7 @@ public class ProductDetailPage extends Controller implements Initializable {
         }
         if(productInfo instanceof FilmInfo){
             icon.setImage( Icon.getFilmIcon());
-            timeFilm.setText(((FilmInfo) productInfo).getTimeLimit()+"");
+            timeFilm.setText(((FilmInfo) productInfo).getTimeLimit().format(DateTimeFormatter.ofPattern("H:mm:ss"))+"");
             StringBuilder s= new StringBuilder();
             for(var temp : ((FilmInfo) productInfo).getActors()){
                 if(temp==null)
@@ -114,6 +114,8 @@ public class ProductDetailPage extends Controller implements Initializable {
         ProductPage parent =(ProductPage) this.getParent();
         parent.getShowedProducts().remove(productInfo);
         parent.initShow(parent.getShowedProducts());
+        parent.getTempProduct().remove(productInfo);
+        parent.getTempProduct().remove(productInfo);
         close();
     }
 

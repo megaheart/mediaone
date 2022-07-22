@@ -12,13 +12,14 @@
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancestor" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CustomerProductPage">
+<AnchorPane fx:id="ancestor" opacity="0.9" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CustomerProductPage">
    <TextField fx:id="searchName" layoutX="27.0" layoutY="23.0" prefHeight="30.0" prefWidth="250.0" promptText="Name" style="-fx-background-radius: 10;" AnchorPane.leftAnchor="270.0" AnchorPane.rightAnchor="325.0" AnchorPane.topAnchor="10.0">
       <font>
          <Font name="Times New Roman" size="16.0" />
@@ -115,7 +116,7 @@
    <AnchorPane layoutY="94.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="280.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="94.0">
       <Pagination fx:id="pagination" layoutX="14.0" layoutY="14.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0" />
    </AnchorPane>
-   <AnchorPane layoutX="10.0" layoutY="197.0" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #D7E5F0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <AnchorPane layoutX="10.0" layoutY="197.0" prefHeight="200.0" prefWidth="250.0" style="-fx-background-radius: 10; -fx-background-color: #D7E5F0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <effect>
          <DropShadow />
       </effect>
@@ -160,4 +161,7 @@
       </JFXButton>
    </AnchorPane>
    <Separator layoutX="257.0" layoutY="13.0" orientation="VERTICAL" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="265.0" AnchorPane.topAnchor="0.0" />
+   <effect>
+      <InnerShadow />
+   </effect>
 </AnchorPane>

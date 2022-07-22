@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -139,10 +140,7 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
                         director = x;
                 if (director.getName() == null)
                     return;
-
-                int mins = Integer.parseInt(timeFilm.getText());
-
-                ((FilmInfo) productInfo).setTimeLimit(LocalTime.of(mins / 60, mins % 60));
+                ((FilmInfo) productInfo).setTimeLimit(LocalTime.parse(timeFilm.getText(), DateTimeFormatter.ofPattern("H:mm:ss")));
                 ((FilmInfo) productInfo).setActors(actors);
                 ((FilmInfo) productInfo).setDirector(director);
                 ProductInfoManager.getManager().update(productInfo);
@@ -169,10 +167,8 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
                     musicians.add(dbMusicians.get(index));
                 }
 
-                int mins = Integer.parseInt(timeMusic.getText());
-
                 ((MusicInfo) productInfo).setMusicians(musicians);
-                ((MusicInfo) productInfo).setTimeLimit(LocalTime.of(mins / 60, mins % 60));
+                ((MusicInfo) productInfo).setTimeLimit(LocalTime.parse(timeMusic.getText(),DateTimeFormatter.ofPattern("H:mm:ss")));
                 ProductInfoManager.getManager().update(productInfo);
             }catch(Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -284,13 +280,13 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
         }
         if(productInfo instanceof MusicInfo){
             musicAnchorPane.toFront();
-            timeMusic.setText(((MusicInfo) productInfo).getTimeLimit().getMinute()+"");
+            timeMusic.setText(((MusicInfo) productInfo).getTimeLimit().format(DateTimeFormatter.ofPattern("H:mm:ss")));
             for( var x: ((MusicInfo) productInfo).getMusicians())
                 musicianName.add(x.getName());
         }
         if(productInfo instanceof FilmInfo){
             filmAnchorPane.toFront();
-            timeFilm.setText(((FilmInfo) productInfo).getTimeLimit().getMinute()+"");
+            timeFilm.setText(((FilmInfo) productInfo).getTimeLimit().format(DateTimeFormatter.ofPattern("H:mm:ss")));
             for( var x: ((FilmInfo) productInfo).getActors())
                 actorsName.add(x.getName());
             directorComboBox.setValue(((FilmInfo) productInfo).getDirector().getName());
