@@ -342,17 +342,19 @@ public class ControllerWarehouseManagerWindowFactory implements Initializable {
             }
         }
         else if(b.equals("Music")){
+            var adapter =DatabaseAdapter.getDbAdapter();
+            listProductVip = FXCollections.observableArrayList();
+            listProduct = adapter.getAllProducts();
+            ObservableList<MusicInfo> listy = adapter.getAllMusicInfos();
+            System.out.println(listProduct);
+            System.out.println(listy);
             try{
-                var adapter =DatabaseAdapter.getDbAdapter();
-                listProductVip = FXCollections.observableArrayList();
-                listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
                     if(a.getProductInfo() instanceof MusicInfo){
                         listProductVip.add(a);
                         a.getProductInfo().getTitle();
                     }
                 }
-
                 cl_idproduct.setCellValueFactory(new PropertyValueFactory<Product, Integer>("productId"));
                 cl_priceproduct.setCellValueFactory(new PropertyValueFactory<Product, Double>("saleValue"));
                 cl_stateproduct.setCellValueFactory(new PropertyValueFactory<Product, ProductState>("state"));

@@ -33,7 +33,7 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>
-                        <Label layoutX="238.0" layoutY="145.0" text="Nhà phần phối" textFill="#1130ae">
+                        <Label layoutX="238.0" layoutY="145.0" text="Nhà phân phối" textFill="#1130ae">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>
