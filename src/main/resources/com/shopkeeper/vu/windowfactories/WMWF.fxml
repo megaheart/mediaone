@@ -96,21 +96,11 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label layoutX="7.0" layoutY="70.0" prefHeight="30.0" prefWidth="150.0" text="Tên" textFill="#1a1c96">
+                        <Label layoutX="20.0" layoutY="70.0" prefHeight="30.0" prefWidth="71.0" text="Thể loại" textFill="#1a1c96">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>
-                        <Label layoutX="210.0" layoutY="70.0" prefHeight="30.0" prefWidth="16.0" text="ID" textFill="#1a1c96">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font></Label>
-                        <Label layoutX="425.0" layoutY="70.0" prefHeight="30.0" prefWidth="71.0" text="Thể loại" textFill="#1a1c96">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font></Label>
-                        <ComboBox fx:id="comboBox_kieuproduct" layoutX="509.0" layoutY="70.0" prefHeight="31.0" prefWidth="146.0" />
-                        <TextField fx:id="textField_nameoproduct" layoutX="44.0" layoutY="70.0" prefHeight="30.0" prefWidth="150.0" />
-                        <TextField fx:id="textField_idproduct" layoutX="247.0" layoutY="70.0" prefHeight="30.0" prefWidth="150.0" />
+                        <ComboBox fx:id="comboBox_kieuproduct" layoutX="104.0" layoutY="70.0" prefHeight="31.0" prefWidth="146.0" />
                         <TableView fx:id="tableView_product" layoutY="238.0" prefHeight="402.0" prefWidth="723.0">
                           <columns>
                             <TableColumn fx:id="cl_idproduct" prefWidth="100.0" text="ID" />
@@ -124,8 +114,8 @@
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Button>
-                        <TextField fx:id="textField_priceproduct" layoutX="825.0" layoutY="70.0" prefHeight="31.0" prefWidth="97.0" />
-                        <Label layoutX="691.0" layoutY="70.0" prefHeight="30.0" prefWidth="120.0" text="Định giá bán ra" textFill="#1a1c96">
+                        <TextField fx:id="textField_priceproduct" layoutX="420.0" layoutY="70.0" prefHeight="31.0" prefWidth="97.0" />
+                        <Label layoutX="286.0" layoutY="70.0" prefHeight="30.0" prefWidth="120.0" text="Định giá bán ra" textFill="#1a1c96">
                            <font>
                               <Font name="System Bold" size="15.0" />
                            </font></Label>

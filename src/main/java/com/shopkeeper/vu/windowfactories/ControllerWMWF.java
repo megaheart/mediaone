@@ -323,9 +323,7 @@ public class ControllerWMWF implements Initializable {
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
-                    String d = a.getTrialFilename();
-                    String e = textField_nameoproduct.getText();
-                    if(d.indexOf(e)>=0&& a.getProductInfo() instanceof  BookInfo){
+                    if(a.getProductInfo() instanceof  BookInfo){
                         listProductVip.add(a);
                     }
                 }
@@ -351,9 +349,7 @@ public class ControllerWMWF implements Initializable {
                 listProduct = adapter.getAllProducts();
 
                 for (Product a: listProduct) {
-                    String d = a.getTrialFilename();
-                    String e = textField_nameoproduct.getText();
-                    if(d.indexOf(e)>=0&&a.getProductInfo() instanceof MusicInfo){
+                    if(a.getProductInfo() instanceof MusicInfo){
                         listProductVip.add(a);
                         a.getProductInfo().getTitle();
                     }
@@ -380,9 +376,7 @@ public class ControllerWMWF implements Initializable {
                 listProductVip = FXCollections.observableArrayList();
                 listProduct = adapter.getAllProducts();
                 for (Product a: listProduct) {
-                    String d = a.getTrialFilename();
-                    String e = textField_nameoproduct.getText();
-                    if(d.indexOf(e)>=0&&a.getProductInfo() instanceof FilmInfo){
+                    if(a.getProductInfo() instanceof FilmInfo){
                         listProductVip.add(a);
                     }
                 }
