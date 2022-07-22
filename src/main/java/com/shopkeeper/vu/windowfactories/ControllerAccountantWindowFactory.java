@@ -76,13 +76,14 @@ public class ControllerAccountantWindowFactory implements Initializable {
 
     XYChart.Series sr;
     private  String[] pick = {"Ngày", "Tháng","Quý","Năm"};
+    private  String[] pick2 = {"Ngày", "Tháng","Năm"};
     private  String[] stye ={"Chi phí khác","Bán ra","Nhập hàng","Chi phí vận chuyển","Chi phí mặt bằng","Lương nhân viên","Lợi nhuận"};
     private String[] ty ={"Bán ra","Nhập vào"};
     private String[] loai ={"Music","Book","Film"};
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         comboBox_stye.getItems().addAll(stye);
-        cb_pick2.getItems().addAll(pick);
+        cb_pick2.getItems().addAll(pick2);
 
 
         comboBox_pick.getItems().addAll(pick);
@@ -527,6 +528,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Bán");
                 lineChart2.getData().add(sr2);
                 lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
             }
@@ -539,6 +541,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Bán");
                 lineChart2.getData().add(sr2);
                 lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
             }
@@ -551,6 +554,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Bán");
                 lineChart2.getData().add(sr2);
                 lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
             }
@@ -563,9 +567,10 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Nhập");
                 lineChart2.getData().add(sr2);
                 lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
-                System.out.println(1);
+
             }
             if(chon1.equals("Ngày")&&kieu1.equals("Nhập vào")&&loai.equals("Book")){
                 sr2 = new XYChart.Series();
@@ -576,6 +581,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Nhập");
                 lineChart2.getData().add(sr2);
                 lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
             }
@@ -588,6 +594,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Nhập");
                 lineChart2.getData().add(sr2);
                 lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
             }
@@ -602,6 +609,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Bán");
                 lineChart2.getData().add(sr2);
                 lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
             }
@@ -614,6 +622,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Bán");
                 lineChart2.getData().add(sr2);
                 lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
             }
@@ -626,6 +635,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Bán");
                 lineChart2.getData().add(sr2);
                 lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
             }
@@ -638,6 +648,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Nhập");
                 lineChart2.getData().add(sr2);
                 lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
             }
@@ -650,6 +661,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Nhập");
                 lineChart2.getData().add(sr2);
                 lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
             }
@@ -662,6 +674,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Nhập");
                 lineChart2.getData().add(sr2);
                 lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
             }
@@ -676,6 +689,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Bán");
                 lineChart2.getData().add(sr2);
                 lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
             }
@@ -688,6 +702,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Bán");
                 lineChart2.getData().add(sr2);
                 lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
             }
@@ -700,18 +715,20 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Bán");
                 lineChart2.getData().add(sr2);
                 lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
             }
             if(chon1.equals("Quý")&&kieu1.equals("Nhập vào")&&loai.equals("Music")){
                 sr2 = new XYChart.Series();
-                ObservableList<XYChart.Data<String , Double>> listmusicimportquater =FXCollections.observableArrayList();
+                ObservableList<XYChart.Data<String , Double>> listmusicimportquater = FXCollections.observableArrayList();
                 listmusicimportquater = a.getMusicImportStatistics(day3, day4, StatisticGranularity.Quarter);
                 double cost = 0;
                 for (XYChart.Data<String, Double> b: listmusicimportquater) {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Nhập");
                 lineChart2.getData().add(sr2);
                 lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
             }
@@ -724,6 +741,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Nhập");
                 lineChart2.getData().add(sr2);
                 lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
             }
@@ -736,6 +754,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Nhập");
                 lineChart2.getData().add(sr2);
                 lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
             }
@@ -749,6 +768,7 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Bán");
                 lineChart2.getData().add(sr2);
                 lb_musicsale.setText("Số music bán được là : "+ cost +" đồng");
             }
@@ -761,18 +781,20 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Bán");
                 lineChart2.getData().add(sr2);
                 lb_booksale.setText("Số Book bán được là : "+ cost +" đồng");
             }
             if(chon1.equals("Năm")&&kieu1.equals("Bán ra")&&loai.equals("Film")){
                 sr2 = new XYChart.Series();
                 ObservableList<XYChart.Data<String , Double>> listFilmsaleyear = FXCollections.observableArrayList();
-                listFilmsaleyear = a.getFilmSaleStatistics(day3, day3, StatisticGranularity.Quarter);
+                listFilmsaleyear = a.getFilmSaleStatistics(day3, day3, StatisticGranularity.Year);
                 double cost = 0;
                 for (XYChart.Data<String, Double> b: listFilmsaleyear) {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Bán");
                 lineChart2.getData().add(sr2);
                 lb_filmsale.setText("Số Film bán được là : "+ cost +" đồng");
             }
@@ -785,18 +807,20 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Book Nhập");
                 lineChart2.getData().add(sr2);
                 lb_bookimport.setText("Số Book nhập vào là : "+ cost +" đồng");
             }
             if(chon1.equals("Năm")&&kieu1.equals("Nhập vào")&&loai.equals("Film")){
                 sr2 = new XYChart.Series();
                 ObservableList<XYChart.Data<String , Double>> listFilmimportyear = FXCollections.observableArrayList();
-                listFilmimportyear = a.getFilmImportStatistics(day3, day4, StatisticGranularity.Quarter);
+                listFilmimportyear = a.getFilmImportStatistics(day3, day4, StatisticGranularity.Year);
                 double cost = 0;
                 for (XYChart.Data<String, Double> b: listFilmimportyear) {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Film Nhập");
                 lineChart2.getData().add(sr2);
                 lb_filmimport.setText("Số Film nhập vào là : "+ cost +" đồng");
             }
@@ -809,24 +833,12 @@ public class ControllerAccountantWindowFactory implements Initializable {
                     cost = cost + b.getYValue();
                     sr2.getData().add(b);
                 }
+                sr2.setName("Music Nhập");
                 lineChart2.getData().add(sr2);
                 lb_musicimport.setText("Số music nhập vào là : "+ cost +" đồng");
             }
             lineChart2.setAnimated(false);
         }
-    }
-    public void listAll1(){
-        LocalDate day3 = date_day3.getValue();
-        LocalDate day4 = date_day4.getValue();
-        Accountant a = new Accountant();
-        ObservableList<PieChart.Data> list = null;
-        try {
-            list = a.getAllInfor(day3, day4);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        pc22.setData(list);
-        pc22.setTitle("Các loại sản phẩm của cửa hàng");
     }
     public void delete1(){
         lb_musicsale.setText(null);
@@ -835,8 +847,6 @@ public class ControllerAccountantWindowFactory implements Initializable {
         lb_booksale.setText(null);
         lb_filmimport.setText(null);
         lb_filmsale.setText(null);
-        pc22.setTitle(null);
-        pc22.getData().clear();
         lineChart2.getData().clear();
         sr2.getData().clear();
     }

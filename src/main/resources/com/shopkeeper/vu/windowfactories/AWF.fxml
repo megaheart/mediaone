@@ -198,11 +198,6 @@
                                  </font></Label>
                            </children>
                         </GridPane>
-                        <PieChart fx:id="pc22" layoutX="878.0" layoutY="40.0" prefHeight="358.0" prefWidth="405.0" />
-                        <Button layoutX="921.0" layoutY="610.0" mnemonicParsing="false" onAction="#listAll1" text="Tất cả" textFill="#1a15b2">
-                           <font>
-                              <Font name="System Bold" size="15.0" />
-                           </font></Button>
                         <Button layoutX="1011.0" layoutY="610.0" mnemonicParsing="false" onAction="#analysis1" text="Phân tích " textFill="#1a15b2">
                            <font>
                               <Font name="System Bold" size="15.0" />
