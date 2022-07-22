@@ -90,7 +90,7 @@ public class ProductDetailPage extends Controller implements Initializable {
         }
         if(productInfo instanceof FilmInfo){
             icon.setImage( Icon.getFilmIcon());
-            timeFilm.setText(((FilmInfo) productInfo).getTimeLimit()+" mins");
+            timeFilm.setText(((FilmInfo) productInfo).getTimeLimit()+"");
             StringBuilder s= new StringBuilder();
             for(var temp : ((FilmInfo) productInfo).getActors()){
                 if(temp==null)

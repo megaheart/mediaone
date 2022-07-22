@@ -148,7 +148,8 @@ public class AddProductPage extends Controller implements Initializable {
                 ProductInfoManager.getManager().add(res);
 
                 ProductPage parent =(ProductPage) this.getParent();
-                parent.reload();
+//                parent.reload();
+                parent.getTempProduct().add(res);
                 parent.getShowedProducts().add(res);
                 parent.initShow(parent.getShowedProducts());
 
@@ -185,7 +186,8 @@ public class AddProductPage extends Controller implements Initializable {
                     res.setNumberOfProduct(productInfo.getNumberOfProduct());
                     ProductInfoManager.getManager().add(res);
                     ProductPage parent =(ProductPage) this.getParent();
-                    parent.reload();
+//                    parent.reload();
+                    parent.getTempProduct().add(res);
                     parent.getShowedProducts().add(res);
                     parent.initShow(parent.getShowedProducts());
                 }catch(Exception e){
@@ -222,7 +224,8 @@ public class AddProductPage extends Controller implements Initializable {
                     res.setNumberOfProduct(productInfo.getNumberOfProduct());
                     ProductInfoManager.getManager().add(res);
                     ProductPage parent = (ProductPage) this.getParent();
-                    parent.reload();
+//                    parent.reload();
+                    parent.getTempProduct().add(res);
                     parent.getShowedProducts().add(res);
                     parent.initShow(parent.getShowedProducts());
                 }catch(Exception e){

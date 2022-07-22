@@ -6,7 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.util.Pair;
 
 public class PaymentRequest {
-    private final ObservableList<Pair<ProductInfo, Integer>> chosenProduct = FXCollections.observableArrayList();
+    private ObservableList<Pair<ProductInfo, Integer>> chosenProduct = FXCollections.observableArrayList();
     public void addProductToCart(ProductInfo productInfo , Integer amount){
         for( var x: chosenProduct){
             ProductInfo temp= x.getKey();

@@ -18,7 +18,7 @@ public class CustomerPageController extends Controller implements Initializable{
     public void setCProductButton(){
         try{
             if(cProductPage!=null) {
-                cProductPage.reload();
+//                cProductPage.reload();
                 cProductPage.toFront();
                 return;
             }
@@ -36,6 +36,7 @@ public class CustomerPageController extends Controller implements Initializable{
         try{
             if(cartPage!=null) {
                 cartPage.toFront();
+                cartPage.reload();
                 return;
             }
             FXMLLoader loader = new FXMLLoader(getClass().getResource("cart-page.fxml"));

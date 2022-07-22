@@ -24,7 +24,7 @@ public class ManagerPageController extends Controller implements Initializable{
     public void setProductButton(){
         try{
             if(productPage!=null) {
-                productPage.reload();
+//                productPage.reload();
                 productPage.toFront();
                 return;
             }
@@ -56,7 +56,7 @@ public class ManagerPageController extends Controller implements Initializable{
     public void setPublisherButton(){
         try{
             if(publisherPage!=null) {
-                publisherPage.setReloadButton();
+//                publisherPage.setReloadButton();
                 publisherPage.toFront();
                 return;
             }
@@ -72,7 +72,7 @@ public class ManagerPageController extends Controller implements Initializable{
     public void setPersonButton(){
         try{
             if(personPage!=null) {
-                personPage.setReloadButton();
+//                personPage.setReloadButton();
                 personPage.toFront();
                 return;
             }
@@ -83,22 +83,6 @@ public class ManagerPageController extends Controller implements Initializable{
             personPage= controller;
         }catch(Exception e){
             System.out.println("bug setProductButton(): "+e);
-        }
-    }
-    public void setCProductButton(){
-        try{
-            if(cProductPage!=null) {
-                cProductPage.reload();
-                cProductPage.toFront();
-                return;
-            }
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("c-product-page.fxml"));
-            loader.load();
-            CustomerProductPage controller = loader.getController();
-            this.add(controller,250,100);
-            cProductPage= controller;
-        }catch(Exception e){
-            System.out.println("bug setCProductButton(): "+e);
         }
     }
 

@@ -23,7 +23,7 @@ public class CustomerPage extends Application {
         for(int i=0;i<20;i++)
             reqs[i]=new PaymentRequest();
     }
-    private final PaymentRequest[] reqs  = new PaymentRequest[20];
+    private PaymentRequest[] reqs  = new PaymentRequest[20];
     private Integer requestNumber=1;
     public ObservableList<Pair<ProductInfo, Integer>> getChosenProduct(){
         return reqs[requestNumber-1].getChosenProduct();

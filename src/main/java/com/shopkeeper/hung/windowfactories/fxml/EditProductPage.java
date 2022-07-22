@@ -33,6 +33,7 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
     @FXML
     ListView<String> musiciansList, actorsListView, authorsListView;
     private ProductInfo productInfo ;
+    private ProductInfo oldProductInfo;
 
     private final ObservableList<String> authorsName = FXCollections.observableArrayList();
     private final ObservableList<String> musicianName = FXCollections.observableArrayList();
@@ -185,7 +186,14 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
         ProductDetailPage parent =(ProductDetailPage) this.getParent();
         parent.setProductInfo(this.productInfo);
         ProductPage productPage= (ProductPage) parent.getParent();
-        productPage.reload();
+//        productPage.reload();
+        productPage.getTempProduct().set(productPage.getTempProduct().indexOf(oldProductInfo), productInfo);
+        productPage.getShowedProducts().set(productPage.getShowedProducts().indexOf(oldProductInfo), productInfo);
+//        productPage.getTempProduct().remove(oldProductInfo);
+//        productPage.getTempProduct().add(productInfo);
+//        productPage.getShowedProducts().remove(oldProductInfo);
+//        productPage.getShowedProducts().add(productInfo);
+        productPage.initShow(productPage.getShowedProducts());
         System.out.println("finish edit productInfo");
         this.getParent().close();
     }
@@ -252,6 +260,7 @@ AnchorPane ancestor, bookAnchorPane, musicAnchorPane, filmAnchorPane;
 
 
     public void setProductInfo(ProductInfo productInfo){
+        this.oldProductInfo= productInfo;
         this.productInfo = productInfo;
         name.setText(productInfo.getTitle());
         price.setText(""+(int)productInfo.getCurrentSalePrice());
