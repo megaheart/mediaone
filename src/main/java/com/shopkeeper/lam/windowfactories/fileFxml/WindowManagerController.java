@@ -32,28 +32,28 @@ public class WindowManagerController  {
 
     @FXML
     Button productManager,staffManager,feedbackManager,stockManager,paymentManager,revenueManager,dataSeed,customer;
-    public void openProductManager(ActionEvent event){
+    public void openProductManager(){
         ManagerPage.getMain().start(new Stage());
     }
-    public void openStaffManager(ActionEvent event){
+    public void openStaffManager(){
         StaffWindowFactory.getFactory().openWindow();
     }
-    public void openFeedbackManager(ActionEvent event){
+    public void openFeedbackManager(){
         FeedbackWindowFactory.getFactory().openWindow();
     }
-    public void openStockManager(ActionEvent event){
+    public void openStockManager(){
         WarehouseManagerWindowFactory.getFactory().openWindow();
     }
-    public void openPaymentManager(ActionEvent event){
+    public void openPaymentManager(){
         PaymentWindowFactory.getFactory().openWindow();
     }
-    public void openRevenueManager(ActionEvent event){
+    public void openRevenueManager(){
         AccountantWindowFactory.getFactory().openWindow();
     }
-    public void openCustomerManager(ActionEvent event){
+    public void openCustomerManager(){
         CustomerManagerWindowFactory.getFactory().openWindow();
     }
-    public void setDataSeed(ActionEvent event){
+    public void setDataSeed(){
         try {
             DataSeeder.SeedData();
         }
@@ -62,28 +62,6 @@ public class WindowManagerController  {
             throw new RuntimeException(exception);
         }
 
-//        Stage stage = new Stage();
-//        FXMLLoader fxmlLoader = new FXMLLoader(SeedingDataDialogController.class.getResource("seeding-data-dialog.fxml"));
-//        Scene scene = null;
-//        stage.setTitle("Tạo dữ liệu mẫu");
-//        stage.setResizable(false);
-//        stage.initStyle(StageStyle.UNDECORATED);
-//        try {
-//            scene = new Scene(fxmlLoader.load());
-//        }
-//        catch (IOException ioException){
-//            ioException.printStackTrace();
-//        }
-//        if(scene == null) {
-//            stage.close();
-//            return;
-//        }
-//        stage.setScene(scene);
-//        stage.addEventHandler(WindowEvent.WINDOW_SHOWN, event1 -> {
-//
-//            stage.close();
-//        });
-//        stage.showAndWait();
     }
 
 }

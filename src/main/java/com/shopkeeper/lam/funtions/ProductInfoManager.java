@@ -10,43 +10,6 @@ import java.util.Collections;
 
 public class ProductInfoManager {
     private static ProductInfoManager manager;
-    private ObservableList<BookInfo> listBookInfo = DatabaseAdapter.getDbAdapter().getAllBookInfos();
-    private ObservableList<MusicInfo> listMusicInfo = DatabaseAdapter.getDbAdapter().getAllMusicInfos();
-    private ObservableList<FilmInfo> listFilmInfo = DatabaseAdapter.getDbAdapter().getAllFilmInfos();
-
-
-
-   /* public void addMusicInfo(MusicInfo musicInfo) {
-        listMusicInfo.add(musicInfo);
-    }
-    public void addBookInfo(BookInfo bookInfo) {
-        listBookInfo.add(bookInfo);
-    }
-    public void addFilmInfo(FilmInfo filmInfo) {
-        listFilmInfo.add(filmInfo);
-    }*/
-    public void setListBookInfo(ObservableList<BookInfo> listBookInfo) {
-        this.listBookInfo = listBookInfo;
-    }
-
-    public void setListMusicInfo(ObservableList<MusicInfo> listMusicInfo) {
-        this.listMusicInfo = listMusicInfo;
-    }
-
-    public void setListFilmInfo(ObservableList<FilmInfo> listFilmInfo) {
-        this.listFilmInfo = listFilmInfo;
-    }
-
-    public ObservableList<BookInfo> getListBookInfo() {
-        return listBookInfo;
-    }
-    public ObservableList<MusicInfo> getListMusicInfo() {
-        return listMusicInfo;
-    }
-
-    public ObservableList<FilmInfo> getListFilmInfo() {
-        return listFilmInfo;
-    }
 
     public static ProductInfoManager getManager() {
         if (manager == null){
@@ -103,51 +66,4 @@ public class ProductInfoManager {
         }
     }
 
-    public MusicInfo findMusicInfoById(int id){
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var musicInfo : adapter.getAllMusicInfos()){
-            if(musicInfo.getProductInfoId() == id){
-                return musicInfo;
-            }
-        }
-        return null;
-    }
-    public FilmInfo findFilmInfoById(int id){
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var filmInfo : adapter.getAllFilmInfos()){
-            if(filmInfo.getProductInfoId() == id){
-                return filmInfo;
-            }
-        }
-        return null;
-    }
-    public BookInfo findBookInfoById(int id){
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(var bookInfo : adapter.getAllBookInfos()){
-            if(bookInfo.getProductInfoId() == id){
-                return bookInfo;
-            }
-        }
-        return null;
-    }
-    public ArrayList<ProductInfo> findByTitle(String title) throws Exception {
-        ArrayList<ProductInfo> productInfos = new ArrayList<>();
-        var adapter = DatabaseAdapter.getDbAdapter();
-        for(ProductInfo productInfo : adapter.getAllMusicInfos()){
-            if(productInfo.getTitle().equalsIgnoreCase(title.trim())){
-                productInfos.add(productInfo);
-            }
-        }
-        for(ProductInfo productInfo : adapter.getAllFilmInfos()){
-            if(productInfo.getTitle().equalsIgnoreCase(title.trim())){
-                productInfos.add(productInfo);
-            }
-        }
-        for(ProductInfo productInfo : adapter.getAllBookInfos()){
-            if(productInfo.getTitle().equalsIgnoreCase(title.trim())){
-                productInfos.add(productInfo);
-            }
-        }
-        return productInfos;
-    }
 }
