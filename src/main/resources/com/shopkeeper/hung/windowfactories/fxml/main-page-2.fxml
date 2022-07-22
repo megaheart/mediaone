@@ -57,5 +57,5 @@
          <Image url="@../background/background3.gif" />
       </image>
    </ImageView>
-   <AnchorPane fx:id="showAnchorPane" layoutX="253.0" layoutY="100.0" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #ADD8FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="100.0" />
+   <AnchorPane fx:id="showAnchorPane" layoutX="253.0" layoutY="100.0" opacity="0.0" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #ADD8FF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="250.0" AnchorPane.topAnchor="100.0" />
 </AnchorPane>

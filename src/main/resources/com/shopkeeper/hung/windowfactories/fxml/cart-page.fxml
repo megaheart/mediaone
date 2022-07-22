@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancestor" opacity="0.95" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CartPage">
+<AnchorPane fx:id="ancestor" opacity="0.9" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CartPage">
    <JFXButton graphicTextGap="20.0" layoutX="224.0" layoutY="8.0" onMousePressed="#setPayFunction" prefHeight="50.0" prefWidth="150.0" ripplerFill="#235b8c" style="-fx-background-color: #FFA500; -fx-background-radius: 20;" text="Pay" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0">
       <font>
          <Font name="Times New Roman Bold" size="20.0" />
