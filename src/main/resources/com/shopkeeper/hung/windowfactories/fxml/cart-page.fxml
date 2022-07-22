@@ -6,12 +6,13 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="ancestor" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CartPage">
+<AnchorPane fx:id="ancestor" opacity="0.95" prefHeight="500.0" prefWidth="750.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.shopkeeper.hung.windowfactories.fxml.CartPage">
    <JFXButton graphicTextGap="20.0" layoutX="224.0" layoutY="8.0" onMousePressed="#setPayFunction" prefHeight="50.0" prefWidth="150.0" ripplerFill="#235b8c" style="-fx-background-color: #FFA500; -fx-background-radius: 20;" text="Pay" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="8.0">
       <font>
          <Font name="Times New Roman Bold" size="20.0" />
@@ -25,7 +26,7 @@
    <ScrollPane layoutX="22.0" layoutY="50.0" prefWidth="450.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="100.0">
       <ListView fx:id="boughtProducts" prefHeight="463.0" prefWidth="450.0" style="-fx-background-color: transparent;" />
    </ScrollPane>
-   <AnchorPane prefWidth="290.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+   <AnchorPane prefWidth="290.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <JFXButton onMousePressed="#setRemoveFunction" prefHeight="50.0" prefWidth="150.0" ripplerFill="#235b8c" style="-fx-background-color: #FFA500; -fx-background-radius: 20;" text="Remove" textAlignment="CENTER" textFill="WHITE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="60.0">
          <font>
             <Font name="Times New Roman Bold" size="20.0" />
@@ -83,11 +84,13 @@
          <Font name="Times New Roman Italic" size="20.0" />
       </font>
    </Label>
-   <Separator orientation="VERTICAL" prefHeight="200.0" />
    <Separator layoutX="529.0" layoutY="-50.0" orientation="VERTICAL" prefHeight="200.0" style="-fx-background-color: #FF6347;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="540.0" AnchorPane.topAnchor="100.0">
       <effect>
          <DropShadow />
       </effect>
    </Separator>
    <AnchorPane layoutX="440.0" layoutY="22.0" prefHeight="60.0" prefWidth="300.0" style="-fx-background-color: #FFFFFF;" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+   <effect>
+      <InnerShadow />
+   </effect>
 </AnchorPane>

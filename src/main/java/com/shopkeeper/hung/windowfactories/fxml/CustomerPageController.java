@@ -4,6 +4,7 @@ import com.jfoenix.controls.JFXButton;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 import java.net.URL;
@@ -12,6 +13,8 @@ import java.util.ResourceBundle;
 public class CustomerPageController extends Controller implements Initializable{
     public JFXButton customerButton1;
     @FXML
+    ImageView background;
+    @FXML
     AnchorPane ancestor;
     CustomerProductPage cProductPage;
     CartPage cartPage;
@@ -19,6 +22,7 @@ public class CustomerPageController extends Controller implements Initializable{
         try{
             if(cProductPage!=null) {
 //                cProductPage.reload();
+                background.toFront();
                 cProductPage.toFront();
                 return;
             }
@@ -35,6 +39,7 @@ public class CustomerPageController extends Controller implements Initializable{
     public void setCartPage(){
         try{
             if(cartPage!=null) {
+                background.toFront();
                 cartPage.toFront();
                 cartPage.reload();
                 return;
