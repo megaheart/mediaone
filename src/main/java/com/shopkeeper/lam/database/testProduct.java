@@ -180,7 +180,7 @@ public class testProduct {
         product[151] = new Product(musics.get(10),ProductState.SOLD,importBills.get(50),saleBills.get(25),(int)importBills.get(50).getPrice()/3,30000,"link2","Không tồn tại");
         product[152] = new Product(musics.get(10),ProductState.IMPORTING,null,null,0,0,"link2","Không tồn tại");
         product[153] = new Product(musics.get(11),ProductState.READY,importBills.get(51),null,(int)importBills.get(51).getPrice()/3,50000,"link5","E1");
-        product[154] = new Product(musics.get(11),ProductState.SOLD,importBills.get(51),saleBills.get(29),(int)importBills.get(51).getPrice()/3,50000,"link5","Không tồn tại");
+        product[154] = new Product(musics.get(11),ProductState.SOLD,importBills.get(51),saleBills.get(28),(int)importBills.get(51).getPrice()/3,50000,"link5","Không tồn tại");
         product[155] = new Product(musics.get(11),ProductState.IMPORTING,null,null,0,0,"link5","Không tồn tại");
         product[156] = new Product(musics.get(12),ProductState.READY,importBills.get(52),null,(int)importBills.get(52).getPrice()/3,50000,"link1","A2");
         product[157] = new Product(musics.get(12),ProductState.SOLD,importBills.get(52),saleBills.get(28),(int)importBills.get(52).getPrice()/3,50000,"link1","Không tồn tại");
