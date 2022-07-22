@@ -48,7 +48,7 @@ public class SaleBillItemListCellController {
     public void setDataContext(SaleBillItem item){
         if(item == null) return;
         productInfoNameTxt.setText(item.getProductInfo().getTitle());
-        pricePerProductTxt.setText(priceToString(item.getPrice()));
+        pricePerProductTxt.setText(priceToString(item.getPricePerProduct()));
         amountTxt.setText(String.valueOf(item.getAmount()));
         priceTxt.setText(priceToString(item.getPrice()));
     }

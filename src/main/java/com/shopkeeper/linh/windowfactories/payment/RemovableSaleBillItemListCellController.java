@@ -67,7 +67,7 @@ public class RemovableSaleBillItemListCellController {
         }
         if(item != null) {
             productInfoNameTxt.setText(item.getProductInfo().getTitle());
-            pricePerProductTxt.setText(priceToString(item.getPrice()));
+            pricePerProductTxt.setText(priceToString(item.getPricePerProduct()));
             amountTxt.setText(String.valueOf(item.getAmount()));
             priceTxt.setText(priceToString(item.getPrice()));
             item.getProducts().addListener(listChangeListener);
