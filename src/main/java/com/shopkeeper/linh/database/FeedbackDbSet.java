@@ -34,7 +34,8 @@ public class FeedbackDbSet {
         sqlBuilder.append("productInfoRating     INTEGER     NOT NULL,");
         sqlBuilder.append("staffTargetId         INTEGER     NOT NULL,");
         sqlBuilder.append("isUseful              BOOLEAN     NOT NULL,");
-        sqlBuilder.append("time                  DATETIME    NOT NULL");
+        sqlBuilder.append("time                  DATETIME    NOT NULL,");
+        sqlBuilder.append("isRead                BOOLEAN     NOT NULL");
         sqlBuilder.append(");");
         String sql = sqlBuilder.toString();
         try (Statement stmt = conn.createStatement()) {
@@ -49,7 +50,7 @@ public class FeedbackDbSet {
         return true;
     }
     public void load() throws Exception{
-        String sql = "SELECT feedbackId, title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType FROM feedbacks";
+        String sql = "SELECT feedbackId, title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType, isRead FROM feedbacks";
         Statement stmt  = conn.createStatement();
         ResultSet rs    = stmt.executeQuery(sql);
         Feedback feedback;
@@ -123,6 +124,7 @@ public class FeedbackDbSet {
             }
             feedback.setIsUseful(rs.getBoolean("isUseful"));
             feedback.setTime(LocalDate.parse(rs.getString("time")));
+            feedback.setRead(rs.getBoolean("isRead"));
             list.add(feedback);
         }
 
@@ -191,7 +193,7 @@ public class FeedbackDbSet {
                 //Do nothing
                 break;
         }
-        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType) VALUES(?,?,?,?,?,?,?,?,?,DATE(?),?)";
+        String sql = "INSERT INTO feedbacks(title, description, feedbackAbout, feedbackType, productTargetId, productInfoTargetId, productInfoRating, staffTargetId, isUseful, time, productInfoType, isRead) VALUES(?,?,?,?,?,?,?,?,?,DATE(?),?, false)";
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, feedback.getTitle());
@@ -632,6 +634,51 @@ public class FeedbackDbSet {
                 break;
         }
         list.remove(index, index + 1);
+        return true;
+    }
+    public boolean removeAllUnusefulFeedback() {
+        String sql = "DELETE FROM feedbacks WHERE isUseful = false";
+
+        try (Statement pstmt = conn.createStatement()) {
+            pstmt.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        int i = list.size() - 1;
+        Feedback item;
+        while(i > - 1){
+            item = list.get(i);
+            if(!item.getIsUseful()){
+                list.remove(i, i + 1);
+            }
+            i--;
+        }
+        return true;
+    }
+    public boolean updateIsUseful(Feedback feedback) {
+        String sql = "UPDATE feedbacks SET isUseful=" + feedback.getIsUseful() + " WHERE feedbackId=" + feedback.getFeedbackId();
+
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public boolean markAsRead(Feedback feedback) {
+        if(feedback == null) return false;
+        if(feedback.isRead()) return true;
+        feedback.setRead(true);
+        String sql = "UPDATE feedbacks SET isRead=true WHERE feedbackId=" + feedback.getFeedbackId();
+
+        try (Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate(sql);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 }

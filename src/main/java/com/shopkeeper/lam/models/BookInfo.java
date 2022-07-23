@@ -1,14 +1,20 @@
 package com.shopkeeper.lam.models;
 
+import com.shopkeeper.mediaone.database.DatabaseAdapter;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public final class BookInfo extends ProductInfo{
     private ArrayList<Person> authors;//tac gia
     private int numberOfPage;//so trang cua sach
 
     public BookInfo(){
+
         super();
+        this.authors= new ArrayList<>(Arrays.asList(DatabaseAdapter.getDbAdapter().getAllPeople().get(0)));
+        this.numberOfPage=0;
     }
 
     public BookInfo(String title,  String description, Category category, LocalDate releaseDate, double currentSalePrice, Publisher publisher, double rating, ArrayList<String> award, ArrayList<Person> authors, int numberOfPage) {
