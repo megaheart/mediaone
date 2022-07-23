@@ -664,6 +664,14 @@
                                           <Text fill="#140ccf" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
                                        </graphic>
                                     </Button>
+                                    <Button mnemonicParsing="false" onMouseClicked="#deleteStaffBill" prefHeight="26.0" prefWidth="98.0" text="Xóa">
+                                       <graphic>
+                                          <Text fill="#cf0c12" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />
+                                       </graphic>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Button>
                                     <Button mnemonicParsing="false" onMouseClicked="#resetFilterPanel2" prefHeight="26.0" prefWidth="98.0" text="Đặt lại">
                                        <graphic>
                                           <Text fill="#0cb9cf" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: &quot;Material Icons&quot;;" text="" />

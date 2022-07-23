@@ -1981,14 +1981,17 @@ public class StaffWindowController {
             return;
         }
 
+        var adapter = DatabaseAdapter.getDbAdapter();
+
+
         if (staffBill.getIsEffected()) {
             result2.setText("Chỉ được xóa hóa đơn đã hết hiệu lực.");
             initializeStaffBillList(FXCollections.observableArrayList(new ArrayList<StaffBill>()));
             return;
         }
 
-        var adapter = DatabaseAdapter.getDbAdapter();
-        BillManager.getManager().deletedBills.add(new DeletedInfo(staffBill.getStaff().getStaffId(), staffBill.getTime()));
+
+
         adapter.deleteStaffBill(staffBill);
 
         // Display
